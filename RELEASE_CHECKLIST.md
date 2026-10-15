@@ -33,6 +33,7 @@ Updated 2026-10-15. This is a collaboration draft; it does not authorize public 
 ## Collaboration handoff
 
 - [x] Create the private personal `STLAND-admin/dynolat-web` repository.
-- [ ] Push the prepared local commit after GitHub CLI login is authorized.
-- [ ] Repository owner grants Taoming collaborator access before sharing private content.
+- [x] Push the prepared webpage, paper, and video assets to the private repository.
+- [x] Send a write-access invitation to Taoming Liu (`xiaotao1340`), verified via an existing shared relighting repository and his personal homepage.
+- [ ] Taoming accepts the GitHub collaborator invitation.
 - [ ] Decide the public release date and whether to make this repository public or publish a separate website build.
