@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="DynOLAT predicts temporally consistent full-body OLAT basis videos from monocular video, with a delighting stage for general inputs under uncontrolled illumination.">
+  <title>DynOLAT: OLAT Video Prediction for Controllable Dynamic Full-Body Relighting</title>
+  <link rel="preload" href="assets/fonts/lato-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar" data-topbar>
+    <div class="topbar__pill">
+      <a class="topbar__brand" href="#home" aria-label="DynOLAT home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="scroll-brand-left">DynOLAT</span>
+      </a>
+      <nav class="topbar__nav side-nav" aria-label="Section navigation">
+        <a class="topbar__link nav-link active" href="#home">Home</a>
+        <a class="topbar__link nav-link" href="#demo">Demo</a>
+        <a class="topbar__link nav-link" href="#abstract">Overview</a>
+        <a class="topbar__link nav-link" href="#method">Method</a>
+        <a class="topbar__link nav-link" href="#dataset">Dataset</a>
+        <a class="topbar__link nav-link" href="#experiment">Results</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="paper-page" id="top">
+    <section class="hero section-block" id="home" data-topbar-trigger>
+      <div class="container section-inner">
+        <h1 class="hero__title">
+          <span class="title hero__title-main" data-text="DynOLAT">DynOLAT<span class="hero__title-colon">:</span></span>
+          <span class="full-title hero__title-sub" data-text="OLAT Video Prediction for Controllable Dynamic Full-Body Relighting">
+            OLAT Video Prediction for<br class="hero__br--wide"> Controllable Dynamic Full-Body Relighting
+          </span>
+        </h1>
+
+        <p class="authors">
+          Taoming Liu<sup>*</sup>, Yinji ShenTu<sup>*</sup>, Guangzhao He, Yudong Jin, Yukang Ye, Siyu Zhang, Fan Jia, Wei Hua, Hujun Bao, Xiaowei Zhou<sup>&dagger;</sup>
+        </p>
+        <p class="affiliations">Zhejiang University <span aria-hidden="true">·</span> 4DV.ai Relighting Project</p>
+        <p class="author-note">
+          <span><sup>*</sup> Equal contribution.</span>
+          <span><sup>&dagger;</sup> Corresponding author.</span>
+        </p>
+
+        <div class="home-links actions" aria-label="Project links">
+          <a class="home-link-btn button" href="assets/dynolat.pdf" target="_blank" rel="noopener" title="Complete paper, including supplementary material; 28 pages">Paper + Supp</a>
+          <span class="home-link-btn button button--pending" aria-disabled="true" title="Code has not been released yet">Code <small>not released</small></span>
+          <a class="home-link-btn button" href="https://huggingface.co/datasets/STLAND/ZJU_OLAT" target="_blank" rel="noopener">Dataset</a>
+          <a class="home-link-btn button" href="#demo">Video</a>
+          <a class="home-link-btn button" href="assets/dynolat.pdf#page=18" target="_blank" rel="noopener">Supplement</a>
+        </div>
+      </div>
+
+      <div class="container hero-demo" id="demo">
+        <p class="hero-tagline">One video. Explicit light directions. Controllable relighting.</p>
+        <div class="preview-heading demo-heading">
+          <h2>Demo video</h2>
+          <div class="demo-actions">
+            <button class="preview-toggle" type="button" data-demo-toggle>Play demo</button>
+            <a href="assets/videos/dynolat-demo.mp4" download>Download video</a>
+          </div>
+        </div>
+        <figure class="full-demo">
+          <div class="media-frame media-frame--video">
+            <video id="demo-video" class="demo-video" controls playsinline preload="metadata" poster="assets/videos/dynolat-demo-poster.jpg" aria-label="DynOLAT full supplementary demo video">
+              <source src="assets/videos/dynolat-demo.mp4" type="video/mp4">
+              Your browser does not support this video. <a href="assets/videos/dynolat-demo.mp4" download>Download the MP4</a>.
+            </video>
+          </div>
+          <figcaption class="preview-caption">Full supplementary video · 4:48 · 720p</figcaption>
+        </figure>
+        <div class="preview-heading short-preview-heading">
+          <h2>Relighting in motion</h2>
+          <button class="preview-toggle" type="button" data-preview-toggle>Play previews</button>
+        </div>
+        <div class="preview-grid" aria-label="Relighting video previews">
+          <figure class="preview-item">
+            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under the Shanghai environment">
+              <source src="assets/videos/shanghai-sdr.mp4" type="video/mp4">
+            </video>
+            <figcaption><span>01</span> Shanghai</figcaption>
+          </figure>
+          <figure class="preview-item">
+            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under the sky environment">
+              <source src="assets/videos/sky-sdr.mp4" type="video/mp4">
+            </video>
+            <figcaption><span>02</span> Sky</figcaption>
+          </figure>
+          <figure class="preview-item">
+            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under environment one">
+              <source src="assets/videos/environment-01-sdr.mp4" type="video/mp4">
+            </video>
+            <figcaption><span>03</span> Environment 01</figcaption>
+          </figure>
+        </div>
+        <p class="preview-caption">Short relighting previews under different environment maps. SDR playback.</p>
+      </div>
+    </section>
+
+    <section class="section section-block" id="abstract">
+      <div class="container section-inner">
+        <div class="section__head">
+          <h2 class="section-title">Controlling light, preserving motion</h2>
+        </div>
+        <p class="section-text prose">
+          DynOLAT relights full-body human performances from monocular video. For general videos captured under uncontrolled illumination, a lightweight delighting model first reduces the existing lighting and maps the input toward the flat-lit training domain. The OLAT predictor then generates temporally consistent One-Light-At-a-Time basis videos. Instead of directly generating a single relit appearance, it makes light direction explicit in the predicted bases and controls relative lighting intensity through linear combinations derived from an environment map. A dynamic capture pipeline provides over 24 million frames from 224 identity-outfit combinations. Experiments evaluate lighting response, fine appearance detail, and temporal coherence under novel illumination.
+        </p>
+        <aside class="tldr-card callout">
+          <h3 class="card-title">TLDR</h3>
+          <p>Normalize the input lighting, predict the response to each light direction, then combine those responses to relight the same performance.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-block" id="method">
+      <div class="container section-inner">
+        <div class="section__head">
+          <h2 class="section-title">Method</h2>
+          <p class="section__lead section-text">
+            From general video to controllable light: a delighting stage bridges uncontrolled input illumination to the flat-lit domain. Our light-conditioned video model predicts a reusable set of OLAT basis videos, which can be recombined under new environment maps.
+          </p>
+        </div>
+        <figure class="method-figure">
+          <a href="assets/method-overview-dark.svg" target="_blank" rel="noopener" aria-label="Open the method diagram at full size"><img src="assets/method-overview-dark.svg" width="1360" height="490" loading="lazy" alt="General monocular video passes through Delighting, then an OLAT video predictor conditioned on light direction, and finally linear composition with environment-map weights to produce a relit video."></a>
+          <figcaption>System overview, redrawn for the web: the OLAT pipeline (Fig. 2) with the delighting stage described in Supplement §C. Click to enlarge.</figcaption>
+        </figure>
+        <ol class="method-list card-grid method-grid">
+          <li class="info-card">
+            <span class="method-list__index" aria-hidden="true">01</span>
+            <div><h3 class="card-title">Delighting for General Video</h3><p>A lightweight LoRA adaptation of Wan2.1 1.3B reduces uncontrolled illumination before OLAT prediction. This extends the system beyond directly captured flat-lit inputs; the internal OLAT predictor still uses the flat-lit domain.</p></div>
+          </li>
+          <li class="info-card">
+            <span class="method-list__index" aria-hidden="true">02</span>
+            <div><h3 class="card-title">Bridge Latent Matching</h3><p>Bridge matching transports flat-lit source latents toward OLAT target latents, reducing distribution mismatch while preserving temporal structure and identity details.</p></div>
+          </li>
+          <li class="info-card">
+            <span class="method-list__index" aria-hidden="true">03</span>
+            <div><h3 class="card-title">Light-Conditioned Video Prediction</h3><p>Lighting directions modulate the video model via AdaLN, producing temporally coherent OLAT basis videos that remain stable under dynamic body motion.</p></div>
+          </li>
+          <li class="info-card">
+            <span class="method-list__index" aria-hidden="true">04</span>
+            <div><h3 class="card-title">Linear OLAT Recomposition</h3><p>Predicted OLAT basis frames are accumulated in linear color space with illumination weights, yielding controllable full-body relighting under arbitrary environment maps.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section section-block" id="dataset">
+      <div class="container section-inner">
+        <div class="section__head">
+          <h2 class="section-title">Dataset</h2>
+        </div>
+        <div class="dataset-access">
+          <a class="button" href="https://huggingface.co/datasets/STLAND/ZJU_OLAT" target="_blank" rel="noopener">Access dataset on Hugging Face ↗</a>
+          <p>Gated access: sign in to Hugging Face and accept the dataset’s conditions, including sharing your contact information.</p>
+        </div>
+        <div class="dataset-summary" aria-label="Dataset scale">
+          <p><strong>24M+</strong><span>captured frames</span></p>
+          <p><strong>224</strong><span>identity-outfit combinations</span></p>
+          <p><strong>4K</strong><span>multi-view capture</span></p>
+        </div>
+        <div class="card-grid dataset-grid">
+          <article class="info-card">
+            <h3 class="card-title">Capture Setup</h3>
+            <p>A LightStage with 101 addressable light units. The dynamic and static subsets use 68 and 70 synchronized cameras, respectively.</p>
+          </article>
+          <article class="info-card">
+            <h3 class="card-title">Coverage</h3>
+            <p>189 dynamic and 35 static identity-outfit combinations, spanning varied clothing, motion, and viewpoints. Different outfits of one person count separately.</p>
+          </article>
+          <article class="info-card">
+            <h3 class="card-title">Paired supervision</h3>
+            <p>Time-multiplexed flat-lit and OLAT frames are aligned using optical flow to form paired supervision for learning light responses.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-block" id="experiment">
+      <div class="container section-inner">
+        <div class="section__head">
+          <h2 class="section-title">Results</h2>
+        </div>
+        <div class="comparison-showcase">
+          <h3 class="comparison-title">See the comparisons in motion</h3>
+          <p class="comparison-intro">Explore lighting response, captured test scenes, in-the-wild inputs, and temporal consistency. All clips are excerpts from the supplementary video, with the original method labels preserved.</p>
+          <div class="comparison-tabs" role="group" aria-label="Choose a video comparison">
+            <button type="button" data-comparison="lighting-response" aria-pressed="true">Lighting response</button>
+            <button type="button" data-comparison="captured-scenes" aria-pressed="false">Captured scenes</button>
+            <button type="button" data-comparison="in-the-wild" aria-pressed="false">In the wild</button>
+            <button type="button" data-comparison="temporal-consistency" aria-pressed="false">Temporal consistency</button>
+          </div>
+          <figure>
+            <div class="media-frame media-frame--video">
+              <video id="comparison-video" controls loop muted playsinline preload="metadata" poster="assets/videos/comparisons/lighting-response.jpg" aria-label="Lighting response comparison" src="assets/videos/comparisons/lighting-response.mp4"></video>
+            </div>
+            <figcaption id="comparison-caption" aria-live="polite">Light direction and relative intensity: DynOLAT, UniRelight, and DiffusionRenderer. Supplementary video 2:09–2:27.</figcaption>
+          </figure>
+          <div class="comparison-actions"><button class="preview-toggle" type="button" data-comparison-toggle>Play comparison</button><a id="comparison-download" href="assets/videos/comparisons/lighting-response.mp4" download>Download this clip ↗</a></div>
+        </div>
+        <p class="section-text prose">DynOLAT improves lighting-response fidelity across most reported image metrics and achieves the lowest errors in the reported temporal comparison. Results below reproduce Tables 2 and 3 of the paper.</p>
+        <div class="results-table-wrap" tabindex="0" role="region" aria-label="Image relighting results; scroll horizontally on small screens">
+          <table class="results-table">
+            <caption>Image relighting · channel-aligned evaluation</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">PSNR ↑</th><th scope="col">SSIM ↑</th><th scope="col">LPIPS ↓</th><th scope="col">FLIP ↓</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">IC-Light</th><td>19.51</td><td>0.8760</td><td>0.1322</td><td>0.1226</td></tr>
+              <tr><th scope="row">LBM</th><td>23.08</td><td><strong>0.9185</strong></td><td>0.1002</td><td>0.0874</td></tr>
+              <tr><th scope="row">UniRelight</th><td>22.91</td><td>0.9070</td><td>0.0928</td><td>0.0889</td></tr>
+              <tr><th scope="row">DiffusionRenderer</th><td>23.11</td><td>0.9057</td><td>0.0900</td><td>0.0841</td></tr>
+              <tr class="ours"><th scope="row">DynOLAT</th><td><strong>26.23</strong></td><td>0.9169</td><td><strong>0.0567</strong></td><td><strong>0.0602</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="results-table-wrap" tabindex="0" role="region" aria-label="Temporal consistency results; scroll horizontally on small screens">
+          <table class="results-table">
+            <caption>Temporal consistency</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Temporal LPIPS ↓</th><th scope="col">WE (RAFT) ↓</th><th scope="col">WE (AllTracker) ↓</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">RelightVid</th><td>0.02763</td><td>0.00107</td><td>0.00112</td></tr>
+              <tr><th scope="row">UniRelight</th><td>0.02660</td><td>0.00079</td><td>0.00082</td></tr>
+              <tr><th scope="row">DiffusionRenderer</th><td>0.02629</td><td>0.00078</td><td>0.00080</td></tr>
+              <tr class="ours"><th scope="row">DynOLAT</th><td><strong>0.02532</strong></td><td><strong>0.00065</strong></td><td><strong>0.00060</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="results-note">Bold marks the best value in each column. ↑ Higher is better; ↓ lower is better. See <a href="assets/dynolat.pdf#page=12" target="_blank" rel="noopener">§5.3 and Tables 2–3</a> for evaluation settings.</p>
+        <h3 class="playback-heading">SDR / HDR playback</h3>
+        <p class="section-text">Two encodings of a relighting example. This illustrates display formats, rather than a comparison between methods.</p>
+        <div class="experiment-video-grid">
+          <figure class="experiment-video-item">
+            <div class="media-frame media-frame--video">
+              <video class="experiment-video" controls preload="metadata" muted playsinline>
+                <source src="assets/videos/shanghai-sdr.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption class="video-caption">SDR (LDR)</figcaption>
+          </figure>
+          <figure class="experiment-video-item">
+            <div class="media-frame media-frame--video">
+              <video class="experiment-video hdr-video" controls preload="metadata" muted playsinline>
+                <source src="assets/videos/shanghai-hdr.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption class="video-caption">HDR</figcaption>
+          </figure>
+        </div>
+        <p class="experiment-hdr-note" id="hdrSupportNote">HDR Playback: Detecting support...</p>
+      </div>
+    </section>
+
+    <section class="section section-block" id="limitations">
+      <div class="container section-inner">
+        <div class="section__head"><h2 class="section-title">Scope &amp; limitations</h2></div>
+        <p class="section-text prose">The full system supports general video through delighting, while the OLAT predictor is trained in the flat-lit domain. Strong cast shadows and colored illumination can still leave residual lighting after delighting. Fine details are limited by the pretrained video VAE, and generating and storing many OLAT bases adds cost. Cross-OLAT and cross-view consistency is not explicitly guaranteed. See the <a href="assets/dynolat.pdf#page=19" target="_blank" rel="noopener">supplementary analysis</a> for failure cases.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><p>DynOLAT &middot; Zhejiang University &middot; 4DV.ai Relighting Project</p></div>
+  </footer>
+</body>
+</html>

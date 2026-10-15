@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="490" viewBox="0 0 1360 490" role="img" aria-labelledby="title desc">
+<title id="title">DynOLAT: from general video to controllable relighting</title>
+<desc id="desc">Delighting normalizes input illumination toward the flat-lit domain. A light-conditioned bridge matching model predicts OLAT basis videos. Linear composition with environment-map weights produces relit video.</desc>
+<defs>
+ <linearGradient id="card" x2="0" y2="1"><stop stop-color="#17212e"/><stop offset="1" stop-color="#101620"/></linearGradient>
+ <linearGradient id="input"><stop stop-color="#efae67"/><stop offset="1" stop-color="#6779af"/></linearGradient>
+ <linearGradient id="output"><stop stop-color="#78dcdf"/><stop offset="1" stop-color="#b797f5"/></linearGradient>
+ <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#80bde9" stroke-width="1.6"/></marker>
+ <g id="person"><circle cx="0" cy="-22" r="9"/><path d="M-12-7Q0-13 12-7L18 18H10L9 45H1L0 20L-1 45H-9L-10 18H-18Z"/></g>
+</defs>
+<rect width="1360" height="490" rx="18" fill="#090c12"/>
+<g font-family="Arial, Helvetica, sans-serif">
+ <text x="40" y="49" fill="#f0f6ff" font-size="25" font-weight="600">From general video to controllable light</text>
+ <text x="40" y="78" fill="#8e9eaf" font-size="18">Normalize illumination · predict directional responses · recompose lighting</text>
+ <g fill="url(#card)" stroke="#344355" stroke-width="1.5">
+  <rect x="38" y="174" width="170" height="205" rx="14"/>
+  <rect x="247" y="174" width="220" height="205" rx="14"/>
+  <rect x="506" y="174" width="290" height="205" rx="14"/>
+  <rect x="835" y="174" width="270" height="205" rx="14"/>
+  <rect x="1144" y="174" width="178" height="205" rx="14"/>
+ </g>
+ <g fill="#e8f1fc" text-anchor="middle" font-size="22" font-weight="600">
+  <text x="123" y="209">Input video</text><text x="357" y="209">Delighting</text><text x="651" y="209">OLAT prediction</text><text x="970" y="209">Linear relighting</text><text x="1233" y="209">Relit video</text>
+ </g>
+ <g stroke="#80bde9" stroke-width="2" fill="none" marker-end="url(#arrow)">
+  <path d="M210 276H239"/><path d="M469 276H498"/><path d="M798 276H827"/><path d="M1107 276H1136"/>
+  <path d="M651 146V166"/><path d="M970 146V166"/>
+ </g>
+ <g fill="#101e2b" stroke="#3c6683"><rect x="541" y="108" width="220" height="38" rx="19"/><rect x="859" y="108" width="222" height="38" rx="19"/></g>
+ <g fill="#99d2fc" text-anchor="middle" font-size="18"><text x="651" y="133">Light direction ω</text><text x="970" y="133">Environment map</text></g>
+ <rect x="75" y="230" width="96" height="93" rx="7" fill="url(#input)" opacity=".27"/>
+ <use href="#person" transform="translate(123 266)" fill="url(#input)"/>
+ <rect x="1185" y="230" width="96" height="93" rx="7" fill="url(#output)" opacity=".22"/>
+ <use href="#person" transform="translate(1233 266)" fill="url(#output)"/>
+ <g text-anchor="middle" font-size="18" fill="#aebbc9">
+  <text x="123" y="350">General lighting</text><text x="1233" y="350">Same performance</text>
+  <text x="357" y="247">Wan2.1 1.3B + LoRA</text><text x="357" y="275">Lighting normalization</text>
+  <text x="651" y="247">Bridge latent matching</text><text x="651" y="275">Direction-conditioned AdaLN</text>
+  <text x="651" y="303">Recurrent bridge context</text>
+  <text x="970" y="247">OLAT basis videos</text><text x="970" y="275">× environment weights</text><text x="970" y="303">Σ in linear color space</text>
+ </g>
+ <g font-size="18" text-anchor="middle" fill="#9fd4f8"><text x="357" y="351">Flat-lit representation</text><text x="651" y="351">Temporally coherent bases</text><text x="970" y="351">Direction + intensity control</text></g>
+ <path d="M40 410H1320" stroke="#263243"/>
+ <text x="40" y="444" fill="#acb9c9" font-size="18">General inputs use delighting; the OLAT predictor is trained in the flat-lit domain.</text>
+ <text x="40" y="471" fill="#77889c" font-size="16">Web schematic based on Fig. 2 and Supplement §C. Strong shadows and colored illumination can remain challenging.</text>
+</g>
+</svg>
