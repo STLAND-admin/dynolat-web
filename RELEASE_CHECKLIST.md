@@ -32,6 +32,7 @@ Updated 2026-10-15. This is a collaboration draft; it does not authorize public 
 
 ## Collaboration handoff
 
-- [ ] Create/push the private personal `dynolat-web` repository.
+- [x] Create the private personal `STLAND-admin/dynolat-web` repository.
+- [ ] Push the prepared local commit after GitHub CLI login is authorized.
 - [ ] Repository owner grants Taoming collaborator access before sharing private content.
 - [ ] Decide the public release date and whether to make this repository public or publish a separate website build.

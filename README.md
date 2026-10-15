@@ -1,5 +1,7 @@
 # DynOLAT project webpage
 
+Private collaboration repository: https://github.com/STLAND-admin/dynolat-web
+
 Private working repository for the DynOLAT release page, maintained separately from the model/training repository (`ZJUOLAT/DynOLAT`). This repository contains the static website, paper, and web-ready media. The model Code button intentionally remains disabled until that repository is released.
 
 ## Preview locally
