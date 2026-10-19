@@ -22,7 +22,7 @@ Demo
 
 ### a
 
-Motivation
+Project Source
 
 ### a
 
@@ -46,7 +46,7 @@ DynOLAT: OLAT Video Prediction for Controllable Dynamic Full-Body Relighting
 
 ### p
 
-Accepted SIGGRAPH Asia 2026 Journal Track
+SIGGRAPH Asia 2026 Journal Track
 
 ### p
 
@@ -96,57 +96,9 @@ Download the MP4
 
 Full supplementary video · 4:48 · 720p
 
-### p
-
-The motivation behind DynOLAT
-
 ### h2 · project-source-title
 
 Project Source
-
-### h3
-
-Can we change the lightwithout changing the performance?
-
-### p
-
-When a filmed person is placed into a new scene, the lighting needs to belong to that scene. For film production, immersive telepresence, and virtual environments, shadows, highlights, and brightness should follow the lights an artist specifies.
-
-### p
-
-Our starting point is this need for control: preserve the person and their motion while making the lighting response predictable.
-
-### h3
-
-Put the light where it belongs.
-
-### p
-
-Moving a light should move the shading and highlights in the corresponding direction.
-
-### h3
-
-Let brightness follow the light.
-
-### p
-
-Changing the relative strength of the environment lighting should produce a corresponding change in the subject’s appearance.
-
-### h3
-
-Keep the performance coherent.
-
-### p
-
-The relit result should preserve identity, clothing detail, and temporal consistency as the body moves.
-
-### p
-
-DynOLAT learns the video response to individual light directions, then combines those responses under a new environment map. A delighting stage brings general video inputs toward the lighting domain used by the OLAT predictor.
-
-### a
-
-See how the method works ↘
 
 ### h2
 
@@ -357,7 +309,7 @@ DynOLAT · Zhejiang University · 4DV.ai Relighting Project
 | Element | Attribute | Target |
 |---|---|---|
 | link | href | `assets/fonts/lato-latin-400-normal.woff2` |
-| link | href | `styles.css?v=20261019` |
+| link | href | `styles.css?v=20261019-2` |
 | script | src | `script.js` |
 | a | href | `#home` |
 | a | href | `#home` |
@@ -375,7 +327,6 @@ DynOLAT · Zhejiang University · 4DV.ai Relighting Project
 | video | poster | `assets/videos/dynolat-demo-poster.jpg` |
 | source | src | `assets/videos/dynolat-demo.mp4` |
 | a | href | `assets/videos/dynolat-demo.mp4` |
-| a | href | `#method` |
 | a | href | `assets/method-overview-dark.svg` |
 | img | src | `assets/method-overview-dark.svg` |
 | a | href | `https://huggingface.co/datasets/STLAND/ZJU_OLAT` |

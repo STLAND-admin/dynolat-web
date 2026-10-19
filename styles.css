@@ -823,24 +823,11 @@ video:-webkit-full-screen {
   .comparison-intro, .comparison-showcase figcaption { font-size: .8rem; }
 }
 
-/* Release narrative: demo first, motivation next, extra results at the end. */
+/* Release narrative: demo first, project source next, extra results at the end. */
 .publication-note { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: .45rem .65rem; margin: .8rem auto 1.35rem; color: #d2e6f5; font-size: .93rem; letter-spacing: .025em; }
-.publication-note__status { color: #86c9c8; font-size: .72rem; text-transform: uppercase; letter-spacing: .13em; }
 .publication-note__track { border: 1px solid #344a5c; border-radius: 999px; padding: .25rem .65rem; font-size: .75rem; color: #a9bfd2; }
 .hero .full-demo { margin-bottom: 0; }
-.section-eyebrow { color: #8ebbd6; text-transform: uppercase; letter-spacing: .16em; font-size: .7rem; text-align: center; margin-bottom: .65rem; }
 .project-source .section__head { margin-bottom: 2.5rem; }
-.motivation-opening { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2.5rem; align-items: start; }
-.motivation-opening > h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.4; letter-spacing: -.02em; font-weight: 400; color: #e8f0f6; }
-.motivation-context { color: #b0b7c1; font-size: 1rem; line-height: 1.7; }
-.motivation-context p + p { margin-top: .9rem; }
-.motivation-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1.5rem; margin: 2.4rem 0 1.8rem; }
-.motivation-grid article { padding-top: 1.2rem; border-top: 1px solid #344957; }
-.motivation-number { color: #83b4cd; font-size: .72rem; letter-spacing: .06em; }
-.motivation-grid h3 { font-size: 1rem; font-weight: 400; line-height: 1.45; margin: .7rem 0 .55rem; }
-.motivation-grid p { color: #9fa9b5; font-size: .9rem; line-height: 1.65; }
-.motivation-resolution { color: #c7d2dd; font-size: .98rem; line-height: 1.7; max-width: 50rem; }
-.motivation-method-link { display: inline-block; margin-top: 1.1rem; color: #8bceff; font-size: .85rem; }
 .more-results .short-preview-heading h2 { color: var(--text); font-size: var(--step-heading); font-weight: 600; }
 .more-results .preview-grid { margin-top: 1.5rem; }
 .playback-note { display: grid; grid-template-columns: 1fr 16rem; gap: .75rem 2rem; align-items: center; margin-top: 2rem; padding: 1.3rem 1.5rem; border: 1px solid #2a3037; border-radius: 12px; background: #0c0e12; }
@@ -853,10 +840,7 @@ video:-webkit-full-screen {
 .playback-note .experiment-hdr-note { grid-column: 1 / -1; text-align: left; max-width: none; margin: 0; font-size: .7rem; line-height: 1.5; }
 @media (max-width: 44rem) {
   .publication-note { font-size: .8rem; gap: .35rem .5rem; }
-  .publication-note__status, .publication-note__track { font-size: .65rem; }
-  .motivation-opening { grid-template-columns: 1fr; gap: 1.2rem; }
-  .motivation-grid { grid-template-columns: 1fr; gap: 1.2rem; margin-top: 1.6rem; }
-  .motivation-context, .motivation-resolution { font-size: .9rem; }
+  .publication-note__track { font-size: .65rem; }
   .playback-note { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
   .playback-note .experiment-video-grid { max-width: 13rem; }
   .playback-note .media-frame--video { height: 8rem; }

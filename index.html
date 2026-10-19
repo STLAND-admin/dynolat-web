@@ -6,7 +6,7 @@
   <meta name="description" content="DynOLAT predicts temporally consistent full-body OLAT basis videos from monocular video, with a delighting stage for general inputs under uncontrolled illumination.">
   <title>DynOLAT: OLAT Video Prediction for Controllable Dynamic Full-Body Relighting</title>
   <link rel="preload" href="assets/fonts/lato-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20261019">
+  <link rel="stylesheet" href="styles.css?v=20261019-2">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -19,7 +19,7 @@
       <nav class="topbar__nav side-nav" aria-label="Section navigation">
         <a class="topbar__link nav-link active" href="#home">Home</a>
         <a class="topbar__link nav-link" href="#demo">Demo</a>
-        <a class="topbar__link nav-link" href="#project-source">Motivation</a>
+        <a class="topbar__link nav-link" href="#project-source">Project Source</a>
         <a class="topbar__link nav-link" href="#abstract">Overview</a>
         <a class="topbar__link nav-link" href="#method">Method</a>
         <a class="topbar__link nav-link" href="#dataset">Dataset</a>
@@ -38,7 +38,7 @@
           </span>
         </h1>
 
-        <p class="publication-note"><span class="publication-note__status">Accepted</span> SIGGRAPH Asia 2026 <span class="publication-note__track">Journal Track</span></p>
+        <p class="publication-note">SIGGRAPH Asia 2026 <span class="publication-note__track">Journal Track</span></p>
 
         <p class="authors">
           Taoming Liu<sup>*</sup>, Yinji ShenTu<sup>*</sup>, Guangzhao He, Yudong Jin, Yukang Ye, Siyu Zhang, Fan Jia, Wei Hua, Hujun Bao, Xiaowei Zhou<sup>&dagger;</sup>
@@ -82,23 +82,8 @@
     <section class="section section-block project-source" id="project-source" aria-labelledby="project-source-title">
       <div class="container section-inner">
         <div class="section__head">
-          <p class="section-eyebrow">The motivation behind DynOLAT</p>
           <h2 class="section-title" id="project-source-title">Project Source</h2>
         </div>
-        <div class="motivation-opening">
-          <h3>Can we change the light<br>without changing the performance?</h3>
-          <div class="motivation-context">
-            <p>When a filmed person is placed into a new scene, the lighting needs to belong to that scene. For film production, immersive telepresence, and virtual environments, shadows, highlights, and brightness should follow the lights an artist specifies.</p>
-            <p>Our starting point is this need for control: preserve the person and their motion while making the lighting response predictable.</p>
-          </div>
-        </div>
-        <div class="motivation-grid">
-          <article><span class="motivation-number">01 / Direction</span><h3>Put the light where it belongs.</h3><p>Moving a light should move the shading and highlights in the corresponding direction.</p></article>
-          <article><span class="motivation-number">02 / Intensity</span><h3>Let brightness follow the light.</h3><p>Changing the relative strength of the environment lighting should produce a corresponding change in the subject’s appearance.</p></article>
-          <article><span class="motivation-number">03 / Motion</span><h3>Keep the performance coherent.</h3><p>The relit result should preserve identity, clothing detail, and temporal consistency as the body moves.</p></article>
-        </div>
-        <p class="motivation-resolution">DynOLAT learns the video response to individual light directions, then combines those responses under a new environment map. A delighting stage brings general video inputs toward the lighting domain used by the OLAT predictor.</p>
-        <a class="motivation-method-link" href="#method">See how the method works <span aria-hidden="true">↘</span></a>
       </div>
     </section>
 
