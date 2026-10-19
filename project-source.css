@@ -86,3 +86,5 @@
 
 .story-document { scroll-behavior: auto; scroll-padding-top: 5rem; }
 @media (max-width: 52rem) { .story-document { scroll-padding-top: 6rem; } }
+
+#rendering .source-math { font-size: clamp(.94rem, 1.8vw, 1.25rem); }

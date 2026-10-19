@@ -6,7 +6,7 @@
   <meta name="description" content="Why DynOLAT learns OLAT responses from dynamic human capture: light transport, supervision, and the path from static poses to motion.">
   <title>The Insights Behind DynOLAT</title>
   <link rel="stylesheet" href="styles.css?v=20261019-4">
-  <link rel="stylesheet" href="project-source.css?v=20261019-3">
+  <link rel="stylesheet" href="project-source.css?v=20261020-1">
 </head>
 <body class="story-page">
   <a class="story-skip" href="#project-source">Skip to story</a>
@@ -20,23 +20,24 @@
         </div>
 
         <article id="rendering" class="source-chapter">
-          <header><span class="source-index">01 / The rendering challenge</span><h2>Realism depends on the transport we can recover.</h2></header>
+          <header><span class="source-index">01 / The rendering challenge</span><h2>Accurate assets.<br>Demanding approximations.</h2></header>
           <div class="source-body">
-            <p>Physically based rendering gives us a principled way to simulate light. For a moving person, however, recovering accurate geometry and the materials of skin, hair, and clothing is difficult. Path tracing can reproduce complex illumination, subsurface scattering, and self-shadowing; achieving production quality requires detailed assets, computation, and substantial capture and artist effort. Scaling that process across people and performances is the challenge.</p>
-            <figure class="story-figure"><img src="assets/project-source/transport-paths.svg" width="640" height="400" loading="lazy" alt="Light enters from several directions and reaches the camera through surface reflection, subsurface scattering, and a path blocked by the body."><figcaption>Light paths, one observed appearance. Geometry, materials, visibility, and scattering all shape the transport we want to reproduce.</figcaption></figure>
-            <div class="source-equation" role="group" aria-label="Light transport formulation">
-              <p class="source-equation__label">The quantity we want to reproduce</p>
-              <p class="source-math"><i>I</i><sub>t</sub>(<i>x</i>; <i>L</i>) = ∫<sub>𝕊²</sub> <i>T</i><sub>t</sub>(<i>x</i>, <i>ω</i>) <i>L</i>(<i>ω</i>) d<i>ω</i></p>
-              <p class="source-equation__caption">For a fixed view and scene state at time <i>t</i>, transport <i>T</i> maps incoming environment light <i>L</i> to image pixel <i>x</i>. It includes visibility, reflections, and scattering. We assume distant illumination and linear radiometric values, with any fixed emission removed.</p>
+            <p>For moving humans, a physical renderer needs accurate geometry and the materials of skin, hair, and clothing. Recovering these assets from images is underconstrained, and production quality often requires substantial capture, artist effort, and computation. These practical costs make scaling across people and performances difficult.</p>
+            <figure class="story-figure"><img src="assets/project-source/transport-paths.svg" width="640" height="400" loading="lazy" alt="Reflection, scattering, and self-occlusion depend on the person's geometry and materials, and all contribute to the rendered appearance."><figcaption>Asset fidelity and transport approximation both matter. Complex light paths can be simulated, but their appearance depends on the scene model and the numerical approximation.</figcaption></figure>
+            <p>There is also a limit to compressing general transport into finite representations. In <a href="https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf">A Theoretical Analysis of Compactness of the Light Transport Operator</a>, Soler, Molazem, and Subr (2022) show that the general transport operator is non-compact. Finite-rank approximations therefore cannot converge to it uniformly over all unit-norm input radiance fields.</p>
+            <div class="source-equation" role="group" aria-label="Rendering equation and the limitation of finite-rank uniform approximation">
+              <p class="source-equation__label">A limit on uniform finite-rank approximation</p>
+              <p class="source-math"><i>ℓ</i> = <i>e</i> + 𝒦<i>ℓ</i><br>𝒦 non-compact ⇒ ∥𝒦 − 𝒦<sub>N</sub>∥<sub>op</sub> ↛ 0</p>
+              <p class="source-equation__caption">𝒦 transports the full, infinite-dimensional radiance field by one bounce; 𝒦<sub>N</sub> is finite-rank. The operator norm measures worst-case error over unit-norm inputs. This operator differs from the finite light-to-image transport matrices below.</p>
             </div>
-            <p>A renderer estimates this response from an explicit scene model. We ask whether a learned model can predict the response directly from real observations. <a href="https://www.pbr-book.org/4ed/Light_Transport_I_Surface_Reflection">Light transport background ↗</a></p>
+            <p>This result limits uniform approximation with lighting-independent finite bases; it does not rule out Monte Carlo convergence for a fixed rendering problem. Our direction is to learn measured human appearance with structured lighting supervision, while evaluating the remaining approximation and generalization errors.</p>
           </div>
         </article>
 
         <article id="supervision" class="source-chapter">
           <header><span class="source-index">02 / The supervision challenge</span><h2>A convincing image does not yet mean precise light control.</h2></header>
           <div class="source-body">
-            <p>Video generation models offer strong priors for realistic appearance and motion. But learning relighting without sufficient real, paired supervision can leave a gap between training data and real human appearance. Real captures provide direct supervision: the Light Stage work of <a href="https://www.pauldebevec.com/Research/LS/">Paul Debevec and colleagues</a>, <a href="https://gvv-assets.mpi-inf.mpg.de/">HumanOLAT from Christian Theobalt’s group at MPI</a>, and <a href="https://shunsukesaito.github.io/rgca/">Shunsuke Saito and colleagues’ Relightable Gaussian Codec Avatars at Meta</a> demonstrate different ways of measuring and learning real lighting responses.</p>
+            <p>Video generation models offer strong priors for realistic appearance and motion. But learning relighting without sufficient real, paired supervision can leave a gap between training data and real human appearance. Real captures provide direct supervision: the Light Stage work of Paul Debevec and colleagues, HumanOLAT from Christian Theobalt’s group at MPI, and Shunsuke Saito and colleagues’ Relightable Gaussian Codec Avatars at Meta demonstrate different ways of measuring and learning real lighting responses.</p>
             <figure class="story-figure"><img src="assets/project-source/mixed-supervision.svg" width="640" height="400" loading="lazy" alt="Mixed environment observations combine columns of a transport matrix; normalized OLAT observations isolate each column."><figcaption>A change of supervision. Environment-lit images measure mixtures of directional responses; OLAT measures them separately. The three-direction example is schematic.</figcaption></figure>
             <p>There is a separate question about the supervision itself. In an environment-lit image, many directions contribute at once. When the entire environment map conditions a generator, each direction’s contribution is not necessarily exposed or constrained separately. The model may reproduce the overall appearance while missing the requested shadow direction or relative intensity—the behavior that motivated our work.</p>
             <div class="source-equation" role="group" aria-label="Mixed and isolated light transport measurements">
@@ -66,7 +67,7 @@
               <p class="source-equation__caption"><i>B</i><sub>t,k</sub> is the OLAT response for direction <i>k</i>. Environment-derived weights <i>w</i><sub>k</sub> control its contribution, per color channel, in linear color space. Finite lighting samples and prediction errors make this an approximation.</p>
             </div>
             <p><strong>The data representation changes what we need to sample.</strong> Arbitrary environment maps span a large space of lighting combinations. At fixed light normalization, OLAT instead samples directions on the same compact sphere, <span class="source-inline-math">ω ∈ 𝕊²</span>. More samples refine directional coverage; composition supplies the combinations. People, motion, materials, and viewpoints still require broad coverage.</p>
-            <p>This suggested a learnable, structured family of OLAT responses in image and video space. A compact lighting domain does not by itself prove a smooth manifold or guarantee generalization; it gives us a useful hypothesis for designing supervision.</p>
+            <p>This suggested a learnable, structured family of OLAT responses in image and video space. Compactness of the direction domain is different from compactness of a transport operator: functions on the sphere still form an infinite-dimensional space. OLAT does not remove finite-sampling error or prove a globally learnable manifold; its advantage here is explicit directional supervision and linear composition.</p>
             <p>Before starting DynOLAT, we were inspired by <a href="https://arxiv.org/abs/2410.08188">DifFRelight</a>: its subject-specific diffusion model showed highly realistic facial performance relighting from flat-lit and OLAT captures. We wanted to extend that direction to <strong>full bodies, motion, and unseen people</strong>, using a pretrained video model’s appearance and temporal priors.</p>
           </div>
         </article>

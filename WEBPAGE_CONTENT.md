@@ -348,51 +348,43 @@ This question led us from rendering and generative models to a choice about data
 
 ### h2
 
-Realism depends on the transport we can recover.
+Accurate assets.Demanding approximations.
 
 ### p
 
-Physically based rendering gives us a principled way to simulate light. For a moving person, however, recovering accurate geometry and the materials of skin, hair, and clothing is difficult. Path tracing can reproduce complex illumination, subsurface scattering, and self-shadowing; achieving production quality requires detailed assets, computation, and substantial capture and artist effort. Scaling that process across people and performances is the challenge.
+For moving humans, a physical renderer needs accurate geometry and the materials of skin, hair, and clothing. Recovering these assets from images is underconstrained, and production quality often requires substantial capture, artist effort, and computation. These practical costs make scaling across people and performances difficult.
 
 ### figcaption
 
-Light paths, one observed appearance. Geometry, materials, visibility, and scattering all shape the transport we want to reproduce.
-
-### p
-
-The quantity we want to reproduce
-
-### p
-
-It(x; L) = ∫𝕊² Tt(x, ω) L(ω) dω
-
-### p
-
-For a fixed view and scene state at time t, transport T maps incoming environment light L to image pixel x. It includes visibility, reflections, and scattering. We assume distant illumination and linear radiometric values, with any fixed emission removed.
+Asset fidelity and transport approximation both matter. Complex light paths can be simulated, but their appearance depends on the scene model and the numerical approximation.
 
 ### a
 
-Light transport background ↗
+A Theoretical Analysis of Compactness of the Light Transport Operator
 
 ### p
 
-A renderer estimates this response from an explicit scene model. We ask whether a learned model can predict the response directly from real observations. Light transport background ↗
+There is also a limit to compressing general transport into finite representations. In A Theoretical Analysis of Compactness of the Light Transport Operator, Soler, Molazem, and Subr (2022) show that the general transport operator is non-compact. Finite-rank approximations therefore cannot converge to it uniformly over all unit-norm input radiance fields.
+
+### p
+
+A limit on uniform finite-rank approximation
+
+### p
+
+ℓ = e + 𝒦ℓ𝒦 non-compact ⇒ ∥𝒦 − 𝒦N∥op ↛ 0
+
+### p
+
+𝒦 transports the full, infinite-dimensional radiance field by one bounce; 𝒦N is finite-rank. The operator norm measures worst-case error over unit-norm inputs. This operator differs from the finite light-to-image transport matrices below.
+
+### p
+
+This result limits uniform approximation with lighting-independent finite bases; it does not rule out Monte Carlo convergence for a fixed rendering problem. Our direction is to learn measured human appearance with structured lighting supervision, while evaluating the remaining approximation and generalization errors.
 
 ### h2
 
 A convincing image does not yet mean precise light control.
-
-### a
-
-Paul Debevec and colleagues
-
-### a
-
-HumanOLAT from Christian Theobalt’s group at MPI
-
-### a
-
-Shunsuke Saito and colleagues’ Relightable Gaussian Codec Avatars at Meta
 
 ### p
 
@@ -464,7 +456,7 @@ The data representation changes what we need to sample. Arbitrary environment ma
 
 ### p
 
-This suggested a learnable, structured family of OLAT responses in image and video space. A compact lighting domain does not by itself prove a smooth manifold or guarantee generalization; it gives us a useful hypothesis for designing supervision.
+This suggested a learnable, structured family of OLAT responses in image and video space. Compactness of the direction domain is different from compactness of a transport operator: functions on the sphere still form an infinite-dimensional space. OLAT does not remove finite-sampling error or prove a globally learnable manifold; its advantage here is explicit directional supervision and linear composition.
 
 ### a
 
@@ -568,7 +560,7 @@ Explore the method →
 | index.html | source | src | `assets/videos/shanghai-hdr.mp4` |
 | index.html | a | href | `assets/dynolat.pdf#page=19` |
 | project-source.html | link | href | `styles.css?v=20261019-4` |
-| project-source.html | link | href | `project-source.css?v=20261019-3` |
+| project-source.html | link | href | `project-source.css?v=20261020-1` |
 | project-source.html | a | href | `#project-source` |
 | project-source.html | a | href | `index.html` |
 | project-source.html | a | href | `#rendering` |
@@ -576,10 +568,7 @@ Explore the method →
 | project-source.html | a | href | `#olat` |
 | project-source.html | a | href | `#motion` |
 | project-source.html | img | src | `assets/project-source/transport-paths.svg` |
-| project-source.html | a | href | `https://www.pbr-book.org/4ed/Light_Transport_I_Surface_Reflection` |
-| project-source.html | a | href | `https://www.pauldebevec.com/Research/LS/` |
-| project-source.html | a | href | `https://gvv-assets.mpi-inf.mpg.de/` |
-| project-source.html | a | href | `https://shunsukesaito.github.io/rgca/` |
+| project-source.html | a | href | `https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf` |
 | project-source.html | img | src | `assets/project-source/mixed-supervision.svg` |
 | project-source.html | img | src | `assets/project-source/olat-composition.svg` |
 | project-source.html | a | href | `https://arxiv.org/abs/2410.08188` |
