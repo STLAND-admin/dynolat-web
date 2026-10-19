@@ -1,0 +1,88 @@
+/* Project origin: four steps from light transport to dynamic supervision. */
+.source-question { text-align: center; max-width: 48rem; margin: 1.5rem auto 0; font-size: clamp(1.4rem, 2.8vw, 1.95rem); line-height: 1.4; color: #e2ecf3; letter-spacing: -.025em; }
+.source-intro { text-align: center; max-width: 39rem; margin: 1.2rem auto 0; font-size: 1rem; line-height: 1.7; color: #a5afbc; }
+.source-chapter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr); gap: 2.5rem; padding: 2.7rem 0; border-top: 1px solid #27313b; }
+.source-index { display: block; color: #7db5d1; font-size: .72rem; letter-spacing: .055em; margin-bottom: 1rem; }
+.source-chapter header h2 { margin: 0; font-size: 1.35rem; line-height: 1.4; font-weight: 400; letter-spacing: -.02em; }
+.source-body { min-width: 0; font-size: .97rem; line-height: 1.75; color: #b8c0cb; }
+.source-body > p { margin: 0 0 1.1rem; }
+.source-body > :last-child { margin-bottom: 0; }
+.source-body strong { color: #e0eaf2; font-weight: 700; }
+.source-body a { color: #8ec8ef; text-underline-offset: .2em; }
+.source-equation { background: #0b1116; border: 1px solid #293b49; border-radius: 10px; padding: 1.3rem 1.4rem; margin: 1.5rem 0; }
+.source-equation__label { margin: 0 0 .8rem; font-size: .72rem; letter-spacing: .05em; color: #89bcd1; }
+.source-math { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.05rem, 2vw, 1.4rem); color: #f0f4f7; margin: 0 0 .9rem; line-height: 1.9; }
+.source-math sub { font-size: .65em; }
+.source-equation__caption { font-size: .79rem; line-height: 1.7; color: #99a9b8; margin: 0; }
+.source-inline-math { font-family: Georgia, 'Times New Roman', serif; white-space: nowrap; color: #d9e7ef; }
+.source-contrast { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.source-contrast > div { border-left: 2px solid #405362; padding: .1rem 0 .1rem 1rem; }
+.source-contrast > div:last-child { border-color: #61b6ad; }
+.source-contrast__label { font-size: .73rem; color: #8eb9cf; }
+.source-contrast p { margin: .5rem 0 0; font-size: .9rem; line-height: 1.8; }
+.source-detail { border-top: 1px solid #2b3540; border-bottom: 1px solid #2b3540; margin-top: 1.4rem; font-size: .85rem; }
+.source-detail summary { cursor: pointer; padding: .9rem 0; color: #afc7da; line-height: 1.6; }
+.source-detail summary:hover { color: #e4f2ff; }
+.source-detail summary:focus-visible { outline: 2px solid #8ec8ef; outline-offset: 4px; }
+.source-detail > div { padding: 0 0 .8rem; }
+.source-detail p { margin: .3rem 0 .9rem; }
+.source-chapter--key { border-top-color: #40716c; }
+.source-chapter--key .source-index { color: #80ccc2; }
+.source-capture-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: .75rem; align-items: center; margin: 1.5rem 0; padding: 1rem 0; }
+.source-capture-flow div { min-width: 0; }
+.source-capture-flow div > span { display: block; font-size: .7rem; color: #82b4cb; margin-bottom: .45rem; }
+.source-capture-flow strong { font-size: .82rem; line-height: 1.65; font-weight: 400; display: block; }
+.source-flow-arrow { color: #5e7f92; }
+.source-takeaway { border-top: 1px solid #27313b; text-align: center; padding-top: 2.5rem; margin: 0; color: #9fadb9; font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.8; }
+.source-takeaway strong { color: #d6e7ed; font-weight: 400; }
+@media (max-width: 44rem) {
+  .source-wide-break { display: none; }
+  .source-question { font-size: 1.35rem; }
+  .source-intro { font-size: .9rem; }
+  .source-chapter { grid-template-columns: 1fr; gap: 1.1rem; padding: 2rem 0; }
+  .source-chapter header h2 { font-size: 1.3rem; }
+  .source-index { margin-bottom: .6rem; }
+  .source-body { font-size: .9rem; }
+  .source-equation { padding: 1rem; }
+  .source-math { font-size: 1.06rem; }
+  .source-contrast { gap: .7rem; }
+  .source-contrast p { font-size: .8rem; }
+  .source-capture-flow { gap: .4rem; }
+  .source-capture-flow strong { font-size: .72rem; }
+}
+
+.story-page { --container: 70rem; }
+.story-page .project-source { padding-top: 4.5rem; }
+.story-page .section__head { margin-bottom: 3.5rem; }
+.story-page .section-title { text-align: center; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.15; letter-spacing: -.04em; }
+.story-kicker { text-align: center; color: #82b9d2; font-size: .8rem; letter-spacing: .08em; margin: 0 0 1.1rem; }
+.story-nav { position: sticky; top: 0; z-index: 10; background: rgba(0,0,0,.94); border-bottom: 1px solid #25313c; backdrop-filter: blur(16px); }
+.story-nav > div { max-width: 70rem; margin: auto; padding: 1rem var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.story-home { color: #e5edf4; white-space: nowrap; }
+.story-nav nav { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; font-size: .8rem; }
+.story-nav nav a { color: #a4b7c7; }
+.story-page .source-chapter { scroll-margin-top: 1rem; grid-template-columns: minmax(0,1fr) minmax(0,2.8fr); gap: 3rem; padding: 3.5rem 0; }
+.story-page .source-chapter header { align-self: start; position: sticky; top: 7rem; }
+.story-page .source-chapter header h2 { font-size: 1.5rem; }
+.story-figure { margin: 1.7rem 0; }
+.story-figure img { width: 100%; height: auto; border: 1px solid #283744; border-radius: 12px; background: #080e13; }
+.story-figure figcaption { margin-top: .8rem; font-size: .8rem; line-height: 1.7; color: #91a5b6; }
+.story-page .source-body { font-size: 1rem; }
+.story-footer { max-width: 70rem; padding: 3rem var(--gutter); margin: 0 auto; display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid #26313a; }
+.story-footer a { color: #91c6e7; font-size: .9rem; }
+.story-skip { position: fixed; top: -5rem; left: 1rem; z-index: 30; padding: .8rem 1rem; background: #152b3a; color: #fff; }
+.story-skip:focus { top: .5rem; }
+.story-page a:focus-visible { outline: 2px solid #89c1e1; outline-offset: 4px; }
+@media (max-width: 52rem) {
+  .story-nav > div { align-items: flex-start; gap: 1rem; }
+  .story-nav nav { gap: .4rem 1rem; justify-content: flex-end; font-size: .72rem; }
+  .story-home { font-size: .9rem; }
+  .story-page .project-source { padding-top: 3rem; }
+  .story-page .source-chapter { grid-template-columns: 1fr; gap: 1.3rem; padding: 2.5rem 0; scroll-margin-top: 1rem; }
+  .story-page .source-chapter header { position: static; }
+  .story-page .source-body { font-size: .95rem; }
+  .story-page .source-math { font-size: 1.05rem; }
+}
+
+.story-document { scroll-behavior: auto; scroll-padding-top: 5rem; }
+@media (max-width: 52rem) { .story-document { scroll-padding-top: 6rem; } }

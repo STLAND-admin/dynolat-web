@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" class="story-document">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Why DynOLAT learns OLAT responses from dynamic human capture: light transport, supervision, and the path from static poses to motion.">
+  <title>Project Source — DynOLAT</title>
+  <link rel="stylesheet" href="styles.css?v=20261019-4">
+  <link rel="stylesheet" href="project-source.css?v=20261019-3">
+</head>
+<body class="story-page">
+  <a class="story-skip" href="#project-source">Skip to story</a>
+  <header class="story-nav"><div><a class="story-home" href="index.html">← DynOLAT</a><nav aria-label="Story chapters"><a href="#rendering">01 · Rendering</a><a href="#supervision">02 · Supervision</a><a href="#olat">03 · OLAT</a><a href="#motion">04 · Motion</a></nav></div></header>
+  <main>    <section class="section section-block project-source" id="project-source" aria-labelledby="project-source-title">
+      <div class="container section-inner">
+        <div class="section__head">
+          <p class="story-kicker">The ideas behind DynOLAT</p><h1 class="section-title" id="project-source-title">Project Source</h1>
+          <p class="source-question">How can we render a person under arbitrary lighting<br class="source-wide-break"> while staying consistent over time?</p>
+          <p class="source-intro">This question led us from rendering and generative models to a choice about data: learn individual light responses, and capture them in motion.</p>
+        </div>
+
+        <article id="rendering" class="source-chapter">
+          <header><span class="source-index">01 / The rendering challenge</span><h2>Realism depends on the transport we can recover.</h2></header>
+          <div class="source-body">
+            <p>Physically based rendering gives us a principled way to simulate light. For a moving person, however, recovering accurate geometry and the materials of skin, hair, and clothing is difficult. Path tracing can reproduce complex illumination, subsurface scattering, and self-shadowing; achieving production quality requires detailed assets, computation, and substantial capture and artist effort. Scaling that process across people and performances is the challenge.</p>
+            <figure class="story-figure"><img src="assets/project-source/transport-paths.svg" width="640" height="400" loading="lazy" alt="Light enters from several directions and reaches the camera through surface reflection, subsurface scattering, and a path blocked by the body."><figcaption>Light paths, one observed appearance. Geometry, materials, visibility, and scattering all shape the transport we want to reproduce.</figcaption></figure>
+            <div class="source-equation" role="group" aria-label="Light transport formulation">
+              <p class="source-equation__label">The quantity we want to reproduce</p>
+              <p class="source-math"><i>I</i><sub>t</sub>(<i>x</i>; <i>L</i>) = ∫<sub>𝕊²</sub> <i>T</i><sub>t</sub>(<i>x</i>, <i>ω</i>) <i>L</i>(<i>ω</i>) d<i>ω</i></p>
+              <p class="source-equation__caption">For a fixed view and scene state at time <i>t</i>, transport <i>T</i> maps incoming environment light <i>L</i> to image pixel <i>x</i>. It includes visibility, reflections, and scattering. We assume distant illumination and linear radiometric values, with any fixed emission removed.</p>
+            </div>
+            <p>A renderer estimates this response from an explicit scene model. We ask whether a learned model can predict the response directly from real observations. <a href="https://www.pbr-book.org/4ed/Light_Transport_I_Surface_Reflection">Light transport background ↗</a></p>
+          </div>
+        </article>
+
+        <article id="supervision" class="source-chapter">
+          <header><span class="source-index">02 / The supervision challenge</span><h2>A convincing image does not yet mean precise light control.</h2></header>
+          <div class="source-body">
+            <p>Video generation models offer strong priors for realistic appearance and motion. But learning relighting without sufficient real, paired supervision can leave a gap between training data and real human appearance. Real captures provide direct supervision: the Light Stage work of <a href="https://www.pauldebevec.com/Research/LS/">Paul Debevec and colleagues</a>, <a href="https://gvv-assets.mpi-inf.mpg.de/">HumanOLAT from Christian Theobalt’s group at MPI</a>, and <a href="https://shunsukesaito.github.io/rgca/">Shunsuke Saito and colleagues’ Relightable Gaussian Codec Avatars at Meta</a> demonstrate different ways of measuring and learning real lighting responses.</p>
+            <figure class="story-figure"><img src="assets/project-source/mixed-supervision.svg" width="640" height="400" loading="lazy" alt="Mixed environment observations combine columns of a transport matrix; normalized OLAT observations isolate each column."><figcaption>A change of supervision. Environment-lit images measure mixtures of directional responses; OLAT measures them separately. The three-direction example is schematic.</figcaption></figure>
+            <p>There is a separate question about the supervision itself. In an environment-lit image, many directions contribute at once. When the entire environment map conditions a generator, each direction’s contribution is not necessarily exposed or constrained separately. The model may reproduce the overall appearance while missing the requested shadow direction or relative intensity—the behavior that motivated our work.</p>
+            <div class="source-equation" role="group" aria-label="Mixed and isolated light transport measurements">
+              <p class="source-equation__label">Mixtures versus a calibrated basis</p>
+              <p class="source-math"><i>Y</i> = <i>T E</i><br>OLAT: <i>E</i> = <i>I</i><sub>N</sub> ⇒ <i>Y</i> = <i>T</i></p>
+              <p class="source-equation__caption">For one fixed scene and color channel, each column of <i>E</i> is a lighting configuration and each column of <i>Y</i> is its image. Normalized, ideal OLAT observations isolate the columns of <i>T</i>; real measurements include calibration error and noise.</p>
+            </div>
+            <p>This is an identification problem: changing a whole environment often changes several variables together. To recover each light’s effect from mixtures, the training illuminations must provide enough independent variation. OLAT makes that intervention explicit.</p>
+            <details class="source-detail">
+              <summary>Why mixed lighting can leave the response ambiguous</summary>
+              <div>
+                <p>For a fixed scene and a discretization into <i>N</i> lighting directions, write <span class="source-inline-math">Y = T E</span>. The columns of <i>E</i> are training environments; the columns of <i>Y</i> are their observed images. If <span class="source-inline-math">rank(E) &lt; N</span>, those observations cannot uniquely identify an unrestricted transport matrix <i>T</i>. Repeated or highly correlated environments add little independent information; scene and motion variation make the learning problem harder still.</p>
+                <p>With calibrated OLAT measurements, <i>E</i> is the identity basis up to light scaling, so each observation isolates a column of <i>T</i>. Diverse environment pairs can also identify transport, and priors can reduce the required data. Our point is the directness of the supervision, not that environment-map conditioning is inherently incapable of precise relighting. The capture-based works above use different representations; they are not all holistic environment-conditioned generators.</p>
+              </div>
+            </details>
+          </div>
+        </article>
+
+        <article id="olat" class="source-chapter source-chapter--key">
+          <header><span class="source-index">03 / Why OLAT</span><h2>Learn the responses.<br>Compose the light.</h2></header>
+          <div class="source-body">
+            <p>Under ordinary linear light transport, contributions from separate lights add. An OLAT image contains the full response to one light—including its shadows and indirect scattering. Predict those responses for the same performance, and a new environment becomes a controlled linear combination.</p>
+            <figure class="story-figure"><img src="assets/project-source/olat-composition.svg" width="640" height="400" loading="lazy" alt="Three directional OLAT responses are multiplied by separate weights and added into one relit image."><figcaption>Predict once per direction, then compose. The illustrated lighting lobes represent basis responses; they are conceptual diagrams, not DynOLAT outputs.</figcaption></figure>
+            <div class="source-equation" role="group" aria-label="OLAT video recomposition">
+              <p class="source-equation__label">One basis video per light direction</p>
+              <p class="source-math"><i>I</i><sub>t</sub>(<i>x</i>; <i>L</i>) ≈ ∑<sub>k</sub> <i>w</i><sub>k</sub>(<i>L</i>) <i>B</i><sub>t,k</sub>(<i>x</i>)</p>
+              <p class="source-equation__caption"><i>B</i><sub>t,k</sub> is the OLAT response for direction <i>k</i>. Environment-derived weights <i>w</i><sub>k</sub> control its contribution, per color channel, in linear color space. Finite lighting samples and prediction errors make this an approximation.</p>
+            </div>
+            <p><strong>The data representation changes what we need to sample.</strong> Arbitrary environment maps span a large space of lighting combinations. At fixed light normalization, OLAT instead samples directions on the same compact sphere, <span class="source-inline-math">ω ∈ 𝕊²</span>. More samples refine directional coverage; composition supplies the combinations. People, motion, materials, and viewpoints still require broad coverage.</p>
+            <p>This suggested a learnable, structured family of OLAT responses in image and video space. A compact lighting domain does not by itself prove a smooth manifold or guarantee generalization; it gives us a useful hypothesis for designing supervision.</p>
+            <p>Before starting DynOLAT, we were inspired by <a href="https://arxiv.org/abs/2410.08188">DifFRelight</a>: its subject-specific diffusion model showed highly realistic facial performance relighting from flat-lit and OLAT captures. We wanted to extend that direction to <strong>full bodies, motion, and unseen people</strong>, using a pretrained video model’s appearance and temporal priors.</p>
+          </div>
+        </article>
+
+        <article id="motion" class="source-chapter">
+          <header><span class="source-index">04 / Why capture motion</span><h2>A few poses cannot represent a performance.</h2></header>
+          <div class="source-body">
+            <p>Our initial plan was to collect many conventional static flat-lit / OLAT pairs—the origin of our static subset. In our early experiments, static poses did not provide enough motion coverage, even for a fixed subject. Articulation, clothing deformation, and changing self-occlusion pushed us toward dynamic full-body capture.</p>
+            <figure class="story-figure"><img src="assets/project-source/dynamic-pairs.svg" width="640" height="400" loading="lazy" alt="Static capture holds one pose across lights; dynamic capture interleaves flat-lit and OLAT frames, then aligns them into paired sequences."><figcaption>From a pose to a performance. Dynamic capture gives changing poses paired lighting supervision without recording a full OLAT sweep at every instant. The illustrated frames are schematic.</figcaption></figure>
+            <p>For direct image-based relighting, a full OLAT sweep needs the same scene state across lights. A moving person makes that difficult: the captured responses no longer belong to the same instant. Yet a video model can learn from partial directional observations across motion. Our system interleaves flat-lit and OLAT frames and uses optical flow to align them into training pairs. It does not capture every OLAT at each instant; the model learns to predict the missing responses.</p>
+            <div class="source-equation" role="group" aria-label="Video conditioned OLAT prediction task">
+              <p class="source-equation__label">Learn a response across an entire sequence</p>
+              <p class="source-math">B̂<sub>1:T,k</sub> = <i>F</i><sub>θ</sub>(<i>V</i><sup>flat</sup><sub>1:T</sub>, <i>ω</i><sub>k</sub>)</p>
+              <p class="source-equation__caption">The video model <i>F</i><sub>θ</sub> predicts a basis sequence for light direction <i>ω</i><sub>k</sub>, conditioned on a flat-lit sequence. Aligned dynamic pairs supervise lighting response across motion. This is the prediction task, not a guarantee of perfect temporal consistency. For general video inputs, delighting first maps the input toward the flat-lit domain.</p>
+            </div>
+            <p>The captures are synchronized across views. Within our compute and training-time budget, we did not explicitly enforce multi-view consistency. Our downstream 4D Gaussian Splatting example nevertheless shows useful implicit coherence in independently relit views; this is a qualitative observation, not a guarantee for all views or performances. <a href="assets/dynolat.pdf#page=20">Supplement §F ↗</a></p>
+            <details class="source-detail">
+              <summary>What we hope this enables next</summary>
+              <div><p>We hope the data and learned OLAT responses support faster inference, distillation, and explicit multi-view training. One possibility is to compose OLAT predictions into environment-lit training pairs, then distill them into a model that takes an environment map directly. This could retain the benefits of structured supervision while reducing the cost of generating many basis videos. These are directions for future work.</p></div>
+            </details>
+          </div>
+        </article>
+        <p class="source-takeaway">The choice of data comes first:<br><strong>isolate the light response, then learn it through motion.</strong></p>
+      </div>
+    </section></main>
+  <footer class="story-footer"><a href="index.html#demo">Watch the demo</a><a href="index.html#method">Explore the method →</a></footer>
+</body>
+</html>
