@@ -392,7 +392,7 @@ Video generation models offer strong priors for realistic appearance and motion.
 
 ### figcaption
 
-A change of supervision. Environment-lit images measure mixtures of directional responses; OLAT measures them separately. The three-direction example is schematic.
+From overlapping environments to an orthogonal lighting basis. OLAT isolates each input direction; the resulting images need not be orthogonal. The three-direction example is schematic.
 
 ### p
 
@@ -400,31 +400,39 @@ There is a separate question about the supervision itself. In an environment-lit
 
 ### p
 
-Mixtures versus a calibrated basis
+Independent lighting variation makes individual responses identifiable. Changing a whole environment often changes several variables together. A complete set of orthogonal illumination patterns offers a particularly clean design: after normalization, it forms a well-conditioned basis for separating each input’s effect. Orthogonality is a useful design target, rather than a requirement for a neural model to learn.
 
 ### p
 
-Y = T EOLAT: E = IN ⇒ Y = T
+Independent inputs → orthogonal lighting → OLAT
 
 ### p
 
-For one fixed scene and color channel, each column of E is a lighting configuration and each column of Y is its image. Normalized, ideal OLAT observations isolate the columns of T; real measurements include calibration error and noise.
+Y = T Eei ≥ 0, ⟨ei, ej⟩ = 0 (i ≠ j)OLAT: E = IN ⇒ Y = T
 
 ### p
 
-This is an identification problem: changing a whole environment often changes several variables together. To recover each light’s effect from mixtures, the training illuminations must provide enough independent variation. OLAT makes that intervention explicit.
+For one fixed scene and color channel, the columns ei of E are illumination patterns; the columns of Y are their images. Nonnegative, orthogonal patterns have disjoint directional support. A complete set of N such patterns over N directions becomes the OLAT identity basis after normalization and ordering.
+
+### p
+
+Physical light intensities are nonnegative. Two such environment maps can be orthogonal only if they illuminate disjoint sets of directions. Requiring a complete orthogonal basis with one pattern per sampled direction therefore leads naturally to OLAT: each pattern lights exactly one direction, and each observation directly measures its transport response.
 
 ### summary
 
-Why mixed lighting can leave the response ambiguous
+Why this design leads to OLAT—and what it assumes
 
 ### p
 
-For a fixed scene and a discretization into N lighting directions, write Y = T E. The columns of E are training environments; the columns of Y are their observed images. If rank(E) < N, those observations cannot uniquely identify an unrestricted transport matrix T. Repeated or highly correlated environments add little independent information; scene and motion variation make the learning problem harder still.
+For a fixed scene discretized into N lighting directions, Y = T E. If rank(E) < N, the observations cannot uniquely identify an unrestricted transport matrix T. Full row rank is sufficient in the noiseless case; poor conditioning makes recovery sensitive to measurement noise. Non-orthogonal environments can also provide a full-rank, well-conditioned design, and learned priors can reduce the required data.
 
 ### p
 
-With calibrated OLAT measurements, E is the identity basis up to light scaling, so each observation isolates a column of T. Diverse environment pairs can also identify transport, and priors can reduce the required data. Our point is the directness of the supervision, not that environment-map conditioning is inherently incapable of precise relighting. The capture-based works above use different representations; they are not all holistic environment-conditioned generators.
+For two nonnegative patterns, ⟨eᵢ, eⱼ⟩ = ∑ₖ eₖᵢ eₖⱼ = 0 means every product is zero: no direction is active in both. With N nonzero, pairwise orthogonal patterns over N directions, these disjoint supports must each contain exactly one direction. Thus the normalized columns of E are a permutation of the identity basis. Fewer orthogonal patterns may illuminate disjoint groups of directions; orthogonality alone does not uniquely specify OLAT.
+
+### p
+
+This argument concerns input lighting patterns, not orthogonality of their rendered images. It assumes ideal, calibrated directional illumination; real captures have finite light footprints, calibration error, and noise. The benefit is explicit supervision of individual responses, not a guarantee of perfect learning. The capture-based works above use different representations; they are not all holistic environment-conditioned generators.
 
 ### h2
 
