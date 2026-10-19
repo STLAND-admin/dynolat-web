@@ -6,7 +6,7 @@
   <meta name="description" content="DynOLAT predicts temporally consistent full-body OLAT basis videos from monocular video, with a delighting stage for general inputs under uncontrolled illumination.">
   <title>DynOLAT: OLAT Video Prediction for Controllable Dynamic Full-Body Relighting</title>
   <link rel="preload" href="assets/fonts/lato-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261019">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -19,6 +19,7 @@
       <nav class="topbar__nav side-nav" aria-label="Section navigation">
         <a class="topbar__link nav-link active" href="#home">Home</a>
         <a class="topbar__link nav-link" href="#demo">Demo</a>
+        <a class="topbar__link nav-link" href="#project-source">Motivation</a>
         <a class="topbar__link nav-link" href="#abstract">Overview</a>
         <a class="topbar__link nav-link" href="#method">Method</a>
         <a class="topbar__link nav-link" href="#dataset">Dataset</a>
@@ -36,6 +37,8 @@
             OLAT Video Prediction for<br class="hero__br--wide"> Controllable Dynamic Full-Body Relighting
           </span>
         </h1>
+
+        <p class="publication-note"><span class="publication-note__status">Accepted</span> SIGGRAPH Asia 2026 <span class="publication-note__track">Journal Track</span></p>
 
         <p class="authors">
           Taoming Liu<sup>*</sup>, Yinji ShenTu<sup>*</sup>, Guangzhao He, Yudong Jin, Yukang Ye, Siyu Zhang, Fan Jia, Wei Hua, Hujun Bao, Xiaowei Zhou<sup>&dagger;</sup>
@@ -73,31 +76,29 @@
           </div>
           <figcaption class="preview-caption">Full supplementary video · 4:48 · 720p</figcaption>
         </figure>
-        <div class="preview-heading short-preview-heading">
-          <h2>Relighting in motion</h2>
-          <button class="preview-toggle" type="button" data-preview-toggle>Play previews</button>
+      </div>
+    </section>
+
+    <section class="section section-block project-source" id="project-source" aria-labelledby="project-source-title">
+      <div class="container section-inner">
+        <div class="section__head">
+          <p class="section-eyebrow">The motivation behind DynOLAT</p>
+          <h2 class="section-title" id="project-source-title">Project Source</h2>
         </div>
-        <div class="preview-grid" aria-label="Relighting video previews">
-          <figure class="preview-item">
-            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under the Shanghai environment">
-              <source src="assets/videos/shanghai-sdr.mp4" type="video/mp4">
-            </video>
-            <figcaption><span>01</span> Shanghai</figcaption>
-          </figure>
-          <figure class="preview-item">
-            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under the sky environment">
-              <source src="assets/videos/sky-sdr.mp4" type="video/mp4">
-            </video>
-            <figcaption><span>02</span> Sky</figcaption>
-          </figure>
-          <figure class="preview-item">
-            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under environment one">
-              <source src="assets/videos/environment-01-sdr.mp4" type="video/mp4">
-            </video>
-            <figcaption><span>03</span> Environment 01</figcaption>
-          </figure>
+        <div class="motivation-opening">
+          <h3>Can we change the light<br>without changing the performance?</h3>
+          <div class="motivation-context">
+            <p>When a filmed person is placed into a new scene, the lighting needs to belong to that scene. For film production, immersive telepresence, and virtual environments, shadows, highlights, and brightness should follow the lights an artist specifies.</p>
+            <p>Our starting point is this need for control: preserve the person and their motion while making the lighting response predictable.</p>
+          </div>
         </div>
-        <p class="preview-caption">Short relighting previews under different environment maps. SDR playback.</p>
+        <div class="motivation-grid">
+          <article><span class="motivation-number">01 / Direction</span><h3>Put the light where it belongs.</h3><p>Moving a light should move the shading and highlights in the corresponding direction.</p></article>
+          <article><span class="motivation-number">02 / Intensity</span><h3>Let brightness follow the light.</h3><p>Changing the relative strength of the environment lighting should produce a corresponding change in the subject’s appearance.</p></article>
+          <article><span class="motivation-number">03 / Motion</span><h3>Keep the performance coherent.</h3><p>The relit result should preserve identity, clothing detail, and temporal consistency as the body moves.</p></article>
+        </div>
+        <p class="motivation-resolution">DynOLAT learns the video response to individual light directions, then combines those responses under a new environment map. A delighting stage brings general video inputs toward the lighting domain used by the OLAT predictor.</p>
+        <a class="motivation-method-link" href="#method">See how the method works <span aria-hidden="true">↘</span></a>
       </div>
     </section>
 
@@ -229,12 +230,43 @@
           </table>
         </div>
         <p class="results-note">Bold marks the best value in each column. ↑ Higher is better; ↓ lower is better. See <a href="assets/dynolat.pdf#page=12" target="_blank" rel="noopener">§5.3 and Tables 2–3</a> for evaluation settings.</p>
-        <h3 class="playback-heading">SDR / HDR playback</h3>
-        <p class="section-text">Two encodings of a relighting example. This illustrates display formats, rather than a comparison between methods.</p>
+      </div>
+    </section>
+
+    <section class="section section-block more-results" id="more-results">
+      <div class="container section-inner">
+        <div class="preview-heading short-preview-heading">
+          <h2 class="section-title">More Results</h2>
+          <button class="preview-toggle" type="button" data-preview-toggle>Play previews</button>
+        </div>
+        <div class="preview-grid" aria-label="Relighting video previews">
+          <figure class="preview-item">
+            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under the Shanghai environment">
+              <source src="assets/videos/shanghai-sdr.mp4" type="video/mp4">
+            </video>
+            <figcaption><span>01</span> Shanghai</figcaption>
+          </figure>
+          <figure class="preview-item">
+            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under the sky environment">
+              <source src="assets/videos/sky-sdr.mp4" type="video/mp4">
+            </video>
+            <figcaption><span>02</span> Sky</figcaption>
+          </figure>
+          <figure class="preview-item">
+            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under environment one">
+              <source src="assets/videos/environment-01-sdr.mp4" type="video/mp4">
+            </video>
+            <figcaption><span>03</span> Environment 01</figcaption>
+          </figure>
+        </div>
+        <p class="preview-caption">Short relighting previews under different environment maps. SDR playback.</p>
+        <aside class="playback-note" aria-labelledby="playback-title">
+        <div class="playback-note__copy"><h3 class="playback-heading" id="playback-title">SDR / HDR playback</h3>
+        <p class="section-text">The same relighting example in two display formats. HDR appearance depends on your browser and screen.</p></div>
         <div class="experiment-video-grid">
           <figure class="experiment-video-item">
             <div class="media-frame media-frame--video">
-              <video class="experiment-video" controls preload="metadata" muted playsinline>
+              <video class="experiment-video" aria-label="SDR relighting playback" controls preload="metadata" muted playsinline>
                 <source src="assets/videos/shanghai-sdr.mp4" type="video/mp4">
               </video>
             </div>
@@ -242,7 +274,7 @@
           </figure>
           <figure class="experiment-video-item">
             <div class="media-frame media-frame--video">
-              <video class="experiment-video hdr-video" controls preload="metadata" muted playsinline>
+              <video class="experiment-video hdr-video" aria-label="HDR relighting playback" controls preload="metadata" muted playsinline>
                 <source src="assets/videos/shanghai-hdr.mp4" type="video/mp4">
               </video>
             </div>
@@ -250,6 +282,7 @@
           </figure>
         </div>
         <p class="experiment-hdr-note" id="hdrSupportNote">HDR Playback: Detecting support...</p>
+        </aside>
       </div>
     </section>
 
