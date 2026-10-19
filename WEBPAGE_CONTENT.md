@@ -22,7 +22,7 @@ Demo
 
 ### a
 
-Project Source
+Insights
 
 ### a
 
@@ -98,7 +98,7 @@ Full supplementary video · 4:48 · 720p
 
 ### a
 
-Project Source How the project began ↗
+Insights The ideas behind DynOLAT ↗
 
 ### h2
 
@@ -308,7 +308,7 @@ DynOLAT · Zhejiang University · 4DV.ai Relighting Project
 
 ### title
 
-Project Source — DynOLAT
+The Insights Behind DynOLAT
 
 ### a
 
@@ -334,13 +334,9 @@ Skip to story
 
 04 · Motion
 
-### p
-
-The ideas behind DynOLAT
-
 ### h1 · project-source-title
 
-Project Source
+The Insights Behind DynOLAT
 
 ### p
 
