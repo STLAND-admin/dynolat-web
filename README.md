@@ -18,10 +18,7 @@ Open http://127.0.0.1:8766/. Set `PORT=8767` if the port is occupied. The previe
 
 - `index.html`: visible text, links, tables, and page sections.
 - `styles.css`: shared styles and main-page layout.
-- `project-source.html` / `project-source.css`: original technical Insights essay with editable 2D diagrams and optional mathematical explanations.
-- `project-source-visual.html` / `.css` / `.js`: parallel visual story for a general audience, with Chinese/English switching, photorealistic conceptual illustrations, and actual supplementary video excerpts.
-- `INSIGHTS_VISUAL_ZH_EN.md`: editable bilingual draft for the visual story; sync edits with the HTML deliberately.
-- `VISUAL_ASSETS.md`: image provenance and final generation prompts; new images live in `assets/insights-visual/`.
+- `project-source.html` / `project-source.css`: standalone project-origin story, with one formula and diagram per chapter.
 - `INSIGHTS_ZH_EN.md`: editable Chinese–English counterpart of the Insights page. Edit the Chinese paragraphs, then sync the English and HTML deliberately; do not overwrite this draft with an automatic export.
 - `assets/project-source/`: four editable SVG concept diagrams; these are illustrations, not model outputs.
 - `script.js`: video controls, comparison selector, navigation, and HDR status.
