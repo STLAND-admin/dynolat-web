@@ -137,23 +137,23 @@ Generative models provide strong priors for appearance and motion, with outputs 
 
 ### 02.F01 / 配图
 
-![一个平光人体输入连接到生成模型。三个环境图分别以 0.8/0.2、0.2/0.8 和 0.5/0.5 混合暖色左光与青色右光；每张对应结果都用人体渐变呈现两束光的混合。](assets/project-source/mixed-supervision.svg)
+![同一个平光输入连接到生成模型。三张具有空间分布的环境图包含背景光照和不同位置的彩色亮区；输出人体以平滑渐变综合呈现这些光照的方向、颜色和强弱。](assets/project-source/mixed-supervision.svg)
 
 **中文｜02.F01 / 图注**
 
-同一个平光输入，三种光照要求。暖色左光与青色右光分别按 0.8/0.2、0.2/0.8 和 0.5/0.5 混合。示意结果也在线性 RGB 中按相同权重组合两个方向的响应，用来说明目标光照效果，并非实测的生成模型输出。
+同一个平光输入，三种不同的环境光照。每个概念输出综合整张环境图的光照：分别为暖色左上光与冷色右下光、青色右上光与暖色左下光、蓝色顶光与青色左下光。人体渐变同时包含分布式背景光照和彩色亮区的贡献。
 
 **English**
 
-One shared flat-lit input; three lighting requests. Warm left and teal right lights are mixed at 0.8/0.2, 0.2/0.8, and 0.5/0.5. The illustrated results use the same weighted blends of two directional responses in linear RGB; they depict the intended lighting, not measured generator outputs.
+One flat-lit input under three different environments. Each conceptual output combines illumination across its entire map: warm upper-left with cool lower-right light, teal upper-right with warm lower-left light, and blue overhead with teal lower-left light. The body gradients reflect both the broad background illumination and the colored bright regions.
 
 **中文｜图片替代文本**
 
-一个平光人体输入连接到生成模型。三个环境图分别以 0.8/0.2、0.2/0.8 和 0.5/0.5 混合暖色左光与青色右光；每张对应结果都用人体渐变呈现两束光的混合。
+同一个平光输入连接到生成模型。三张具有空间分布的环境图包含背景光照和不同位置的彩色亮区；输出人体以平滑渐变综合呈现这些光照的方向、颜色和强弱。
 
 **English alt text**
 
-A shared flat-lit human input feeds Generation. Three environment maps mix warm left and teal right lights at 0.8/0.2, 0.2/0.8, and 0.5/0.5. Each corresponding result shows that two-light mixture as a gradient on the human.
+A shared flat-lit input feeds Generation. Three spatial environment maps retain distributed background illumination and colored bright regions in different positions. Each output combines their directions, colors, and strengths in a smooth body gradient.
 
 **图内文字对照**
 
@@ -164,9 +164,6 @@ A shared flat-lit human input feeds Generation. Three environment maps mix warm 
 | 环境光照图 | Environment map |
 | 生成图像 | Generated image |
 | 生成 | Generation |
-| 0.8 | 0.8 |
-| 0.2 | 0.2 |
-| 0.5 | 0.5 |
 
 **中文｜02.P04**
 

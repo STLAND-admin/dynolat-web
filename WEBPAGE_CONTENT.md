@@ -388,7 +388,7 @@ DiffusionRenderer. Its forward renderer conditions video generation on G-buffers
 
 ### figcaption
 
-One shared flat-lit input; three lighting requests. Warm left and teal right lights are mixed at 0.8/0.2, 0.2/0.8, and 0.5/0.5. The illustrated results use the same weighted blends of two directional responses in linear RGB; they depict the intended lighting, not measured generator outputs.
+One flat-lit input under three different environments. Each conceptual output combines illumination across its entire map: warm upper-left with cool lower-right light, teal upper-right with warm lower-left light, and blue overhead with teal lower-left light. The body gradients reflect both the broad background illumination and the colored bright regions.
 
 ### p
 
@@ -591,7 +591,7 @@ Explore the method →
 | project-source.html | a | href | `https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf` |
 | project-source.html | a | href | `https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf` |
 | project-source.html | a | href | `https://arxiv.org/abs/2501.18590` |
-| project-source.html | img | src | `assets/project-source/mixed-supervision.svg?v=20261020-3` |
+| project-source.html | img | src | `assets/project-source/mixed-supervision.svg?v=20261020-4` |
 | project-source.html | a | href | `https://www.pauldebevec.com/Research/LS/debevec-siggraph2000-high.pdf` |
 | project-source.html | a | href | `https://arxiv.org/abs/2508.09137` |
 | project-source.html | a | href | `https://arxiv.org/abs/2312.03704` |
