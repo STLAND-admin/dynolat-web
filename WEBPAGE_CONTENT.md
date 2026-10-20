@@ -354,13 +354,17 @@ For moving humans, a physical renderer needs accurate geometry and the materials
 
 Asset fidelity and transport approximation both matter. Complex light paths can be simulated, but their appearance depends on the scene model and the numerical approximation.
 
+### p
+
+Beyond asset acquisition, numerical approximation has a theoretical limitation. Soler, Molazem, and Subr (2022) show that the general light transport operator is non-compact: enlarging a finite basis cannot drive the worst-case error to zero uniformly across all normalized input light fields. In practical terms, accuracy under selected lighting conditions does not guarantee accuracy under arbitrary illumination.
+
 ### a
 
 A Theoretical Analysis of Compactness of the Light Transport Operator
 
 ### p
 
-For a systematic mathematical discussion of the limits of finite representations of light transport, see A Theoretical Analysis of Compactness of the Light Transport Operator by Soler, Molazem, and Subr (2022).
+This limits uniform approximation across all inputs; it does not rule out accurate rendering or convergence for a fixed input. For the precise assumptions and proof, see A Theoretical Analysis of Compactness of the Light Transport Operator.
 
 ### h2
 

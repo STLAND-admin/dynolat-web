@@ -89,11 +89,19 @@ Reflection, scattering, and self-occlusion depend on the person's geometry and m
 
 **中文｜01.P02**
 
-关于光传输有限表示的理论限制，具体可参阅 Soler、Molazem 和 Subr（2022）的论文 [A Theoretical Analysis of Compactness of the Light Transport Operator](https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf)，其中有系统的数学讨论。
+除了场景资产的获取成本，数值近似本身也存在理论限制。Soler、Molazem 和 Subr（2022）指出，一般光传输算子是非紧的：即使不断增加有限基的规模，也无法让所有归一化输入光场上的最坏情况误差一致趋于零。直观地说，在某些光照下近似得很好，并不保证在任意光照下都能保持同样的精度。
 
 **English**
 
-For a systematic mathematical discussion of the limits of finite representations of light transport, see [A Theoretical Analysis of Compactness of the Light Transport Operator](https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf) by Soler, Molazem, and Subr (2022).
+Beyond asset acquisition, numerical approximation has a theoretical limitation. Soler, Molazem, and Subr (2022) show that the general light transport operator is non-compact: enlarging a finite basis cannot drive the worst-case error to zero uniformly across all normalized input light fields. In practical terms, accuracy under selected lighting conditions does not guarantee accuracy under arbitrary illumination.
+
+**中文｜01.P03**
+
+这一结论限制的是跨所有输入的一致近似，并不否定针对特定输入实现高精度渲染或收敛。具体的适用假设与证明，请参阅论文 [A Theoretical Analysis of Compactness of the Light Transport Operator](https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf)。
+
+**English**
+
+This limits uniform approximation across all inputs; it does not rule out accurate rendering or convergence for a fixed input. For the precise assumptions and proof, see [A Theoretical Analysis of Compactness of the Light Transport Operator](https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf).
 
 
 ---
