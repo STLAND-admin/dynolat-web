@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
 <title id="title">Color-consistent directional OLAT composition</title>
-<desc id="desc">Three small figures in the same pose show warm left, teal right, and blue overhead lighting. Each light matches the gradient on the figure. The overhead example includes a chin shadow and a compact ground shadow. The basis images are weighted and combined in linear color.</desc>
+<desc id="desc">Three figures in the same pose show warm left, teal right, and blue overhead lighting through body gradients alone. Each light matches the gradient on the figure. The basis images are weighted and combined in linear color.</desc>
 
 <defs>
   <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10" fill="#83a9bc"/></marker>
@@ -15,6 +15,8 @@
   <g id="pose3"><circle cy="-55" r="17"/><path d="M-17-32 -37-58 -45-82 -56-78 -49-46 -28-8 -17 8 -19 43 -26 91 -12 94 0 48 12 94 26 91 19 43 17 8 28-8 49-46 56-78 45-82 37-58 17-32 Q0-41 -17-32Z"/></g>
 </defs>
 
+<defs></defs>
+
 <style>
 text{font-family:Arial,sans-serif;fill:#dbe7ef;font-size:20px}
 .heading{font-size:24px;font-weight:600}.small{font-size:18px}
@@ -24,23 +26,17 @@ text{font-family:Arial,sans-serif;fill:#dbe7ef;font-size:20px}
 <rect width="640" height="400" rx="12" fill="#080e13"/>
 <text x="25" y="36" class="heading" text-anchor="start">Directional bases → a new environment</text>
 <rect x="38" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/>
-<path d="M48 218 H178" stroke="#273945"/>
-<ellipse cx="125" cy="219" rx="32" ry="5" fill="#03070c" stroke="#35445b" stroke-opacity=".45"/>
 <g transform="translate(113 151) scale(0.65)"><use href="#pose1" fill="url(#warm)"/></g>
 <circle cx="61" cy="100" r="7" fill="#edc37a"/>
 <text x="113" y="275" class="" text-anchor="middle">0.6 × B₁</text>
 <text x="215" y="165" class="heading" text-anchor="middle">+</text>
 <rect x="243" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/>
-<path d="M253 218 H383" stroke="#273945"/>
-<ellipse cx="306" cy="219" rx="32" ry="5" fill="#03070c" stroke="#35445b" stroke-opacity=".45"/>
 <g transform="translate(318 151) scale(0.65)"><use href="#pose1" fill="url(#teal)"/></g>
 <circle cx="369" cy="100" r="7" fill="#82c4bd"/>
 <text x="318" y="275" class="" text-anchor="middle">0.3 × B₂</text>
 <text x="420" y="165" class="heading" text-anchor="middle">+</text>
 <rect x="448" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/>
-<path d="M458 218 H588" stroke="#273945"/>
-<ellipse cx="523" cy="219" rx="22" ry="8" fill="#03070c" stroke="#35445b" stroke-opacity=".45"/>
-<g transform="translate(523 151) scale(0.65)"><use href="#pose1" fill="url(#top)"/><ellipse cx="0" cy="-31" rx="10" ry="4" fill="#101927" opacity=".8"/></g>
+<g transform="translate(523 151) scale(0.65)"><use href="#pose1" fill="url(#top)"/></g>
 <circle cx="523" cy="87" r="7" fill="#a9c5ee"/>
 <text x="523" y="275" class="" text-anchor="middle">0.1 × B₃</text>
 <path class="arrow" d="M320 291 L320 319"/>

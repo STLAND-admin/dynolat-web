@@ -360,35 +360,15 @@ A Theoretical Analysis of Compactness of the Light Transport Operator
 
 ### p
 
-There is also a limit to compressing general transport into finite representations. In A Theoretical Analysis of Compactness of the Light Transport Operator, Soler, Molazem, and Subr (2022) show that the general transport operator is non-compact. Finite-rank approximations therefore cannot converge to it uniformly over all unit-norm input radiance fields.
-
-### p
-
-A limit on uniform finite-rank approximation
-
-### p
-
-ℓ = e + 𝒦ℓ𝒦 non-compact ⇒ ∥𝒦 − 𝒦N∥op ↛ 0
-
-### p
-
-ℓ is the total radiance field; e is emitted radiance from the light sources; 𝒦ℓ is radiance arriving after propagation and one reflection. In plain terms: total light = emitted light + bounced light. 𝒦N is a finite-rank approximation; the operator norm measures worst-case error over unit-norm inputs.
-
-### p
-
-Why can a finite representation miss something? Think of a finite basis as a limited vocabulary of light patterns. General transport can preserve variations that lie outside any such finite vocabulary. Enlarging it helps for particular inputs, but cannot make the worst-case error vanish over every possible unit-norm radiance field. Mathematically, finite-rank operators are compact, and their operator-norm limits remain compact; a non-compact operator cannot be such a limit.
-
-### p
-
-This concerns uniform finite-rank approximation of the full radiance field; it does not rule out scene-specific rendering methods or Monte Carlo convergence. Next we turn to a different question: at finite resolution, how can we design informative supervision for a generative model?
+For a systematic mathematical discussion of the limits of finite representations of light transport, see A Theoretical Analysis of Compactness of the Light Transport Operator by Soler, Molazem, and Subr (2022).
 
 ### h2
 
-A convincing image does not yet mean precise light control.
+How can we achieve precise control in a generative model?
 
 ### p
 
-Generative models provide strong priors for appearance and motion. Environment-map conditioning turns relighting into a generation task: predict a new image or video for a requested illumination. Two questions remain: how faithfully the training pairs represent real lighting changes, and how independently they constrain different lighting directions.
+Generative models provide strong priors for appearance and motion, with outputs that can closely match real-world appearance. Environment-map conditioning turns relighting into a generation task: predict a new image or video for a requested illumination. Two questions remain: how faithfully the training pairs represent real lighting changes, and how independently they constrain different lighting directions.
 
 ### a
 
@@ -396,7 +376,7 @@ IC-Light
 
 ### p
 
-Stanford / HKUST (IC-Light). Its in-the-wild branch creates relighting pairs by degrading or augmenting input appearance and estimating target lighting, rather than recapturing the same scene under calibrated lights. The full method also uses rendered and real Light Stage data, and imposes light-transport consistency. Our concern is that augmentation and estimated lighting provide approximate supervision, even when the target photograph is real.
+IC-Light. Its in-the-wild branch creates relighting pairs by degrading or augmenting input appearance and estimating target lighting, rather than recapturing the same scene under calibrated lights. The full method also uses rendered and real Light Stage data, and imposes light-transport consistency. Our concern is that augmentation and estimated lighting provide approximate supervision, even when the target photograph is real.
 
 ### a
 
@@ -404,47 +384,47 @@ DiffusionRenderer
 
 ### p
 
-NVIDIA / University of Toronto (DiffusionRenderer). Its forward renderer conditions video generation on G-buffers and an environment map. Synthetic data provides exact labels, but the paper reports a domain gap when training on synthetic data alone. It therefore adds auto-labeled real videos and a LoRA for real data; the estimated geometry, materials, and lighting can still contain errors. This motivates measured pairs without implying that either method uses only synthetic supervision.
+DiffusionRenderer. Its forward renderer conditions video generation on G-buffers and an environment map. Synthetic data provides exact labels, but the paper reports a domain gap when training on synthetic data alone. It therefore adds auto-labeled real videos and a LoRA for real data; the estimated geometry, materials, and lighting can still contain errors. This motivates measured pairs without implying that either method uses only synthetic supervision.
 
 ### figcaption
 
-One environment map, one generated result. The three maps mix multiple lighting directions; changing a map changes several variables together. The shared subject and pose are held fixed in this conceptual example.
+One shared flat-lit input; three lighting requests. Warm left and teal right lights are mixed at 0.8/0.2, 0.2/0.8, and 0.5/0.5. The illustrated results use the same weighted blends of two directional responses in linear RGB; they depict the intended lighting, not measured generator outputs.
 
 ### p
 
-Even with perfect pairs, mixed illumination leaves an identification question. Flatten an h × w environment map into N = hw directional values for one color channel. For a fixed scene, each image pixel has N unknown directional coefficients. One environment-lit observation supplies one equation for those coefficients. To identify an unrestricted response, we need at least N independent illumination configurations.
+The question is: how much does each light contribute? Even with perfectly measured pairs, an environment-lit image only shows their combined effect. For a fixed person, pose, and camera, consider the brightness at one image pixel in one color channel. If two lights illuminate the person, their separate contributions are two unknowns. This is the familiar problem of solving simultaneous linear equations: two unknowns need at least two independent equations.
 
 ### p
 
-How many independent environments are enough?
+Two unknowns → two independent observations
 
 ### p
 
-N = hwE = [e1, …, eM] ∈ ℝN×MY = T Erank(E) = N ⇒ M ≥ N = hwOLAT: M = N, E = IN
+Photo 1: 80% left light + 20% right light → measured brightness 12.
 
 ### p
 
-h and w are the environment-map dimensions; M is the number of illumination configurations. Each column ej of E is one map. For an image with P pixels, T ∈ ℝP×N maps directional illumination to linear image intensity, and Y ∈ ℝP×M contains the observed images. The rank condition identifies an arbitrary T in the noiseless, fixed-scene setting, per color channel. It is not a universal dataset-size requirement for a generative model.
+Photo 2: 20% left light + 80% right light → measured brightness 18.
 
 ### p
 
-OLAT is the most direct complete design. A normalized orthogonal basis avoids redundant lighting directions and has condition number one. Physical light is nonnegative, so orthogonal patterns cannot overlap in directional support. A complete set of N such patterns over N directions must light one direction at a time: after ordering, E = IN and Y = T. OLAT reaches the N-measurement lower bound for this ideal identification problem and removes the need to unmix measured responses.
-
-### summary
-
-The rank argument, in plain language
+Together, these observations tell us that the left light alone contributes 10 and the right light alone contributes 20. Check: 80% of 10 plus 20% of 20 is 12; reversing the weights gives 18. These are illustrative values in linear brightness units.
 
 ### p
 
-More images do not automatically mean more independent information. If every environment is just a brighter or darker copy of one map, the columns of E are proportional and its rank is only one. With fewer than N independent directions in their span, some changes in T remain invisible in all the training observations. Full row rank removes that linear ambiguity; good conditioning reduces sensitivity to noise.
+Simply making the first lighting setup twice as bright gives twice the total, but no new clue about the two separate contributions. We need a different mixing ratio, not just another photograph.
 
 ### p
 
-For nonnegative patterns, ⟨eᵢ, eⱼ⟩ = ∑ₖ eₖᵢ eₖⱼ = 0 means every product is zero. Hence the patterns illuminate disjoint direction sets. With N nonzero, pairwise orthogonal patterns over N bins, each set contains one bin. Non-orthogonal full-rank designs also work; orthogonality is a well-conditioned choice, not a requirement for learning.
+Now extend this to an environment map. An h × w map has h × w directional bins. At each image pixel, there is one unknown contribution per direction. Recovering them all, without additional assumptions, therefore needs at least that many independent lighting observations. More photographs help only if they add independent equations.
 
 ### p
 
-This count assumes a fixed subject, pose, viewpoint, and linear response; varying the pose also changes T. Priors, reduced angular bandwidth, or a restricted response family can lower the data requirement. Orthogonality concerns the lighting inputs, not their images or learned latents. OLAT does not universally minimize capture time or noise: multiplexed lighting can have advantages under different sensor and illumination budgets.
+OLAT makes the unknowns directly observable. Turn on only the left light, and measure its contribution; then turn on only the right light. There is no mixture to disentangle. Repeating this for each direction gives a complete set of independent observations. These single-direction lighting patterns are orthogonal: they have no illuminated directions in common. Since physical light intensities are nonnegative, overlapping directions cannot cancel to make two patterns orthogonal. Seeking a complete, orthogonal lighting design therefore naturally leads to one light at a time.
+
+### p
+
+This counting argument applies to a fixed scene with a linear response. It explains the supervision design, not a universal training-set size for a generative model. Learned priors can reduce the observations needed; non-orthogonal but independent lighting patterns can also provide enough equations.
 
 ### h2
 
@@ -600,24 +580,24 @@ Explore the method →
 | index.html | source | src | `assets/videos/shanghai-hdr.mp4` |
 | index.html | a | href | `assets/dynolat.pdf#page=19` |
 | project-source.html | link | href | `styles.css?v=20261019-4` |
-| project-source.html | link | href | `project-source.css?v=20261020-2` |
+| project-source.html | link | href | `project-source.css?v=20261020-3` |
 | project-source.html | a | href | `#project-source` |
 | project-source.html | a | href | `index.html` |
 | project-source.html | a | href | `#rendering` |
 | project-source.html | a | href | `#supervision` |
 | project-source.html | a | href | `#olat` |
 | project-source.html | a | href | `#motion` |
-| project-source.html | img | src | `assets/project-source/transport-paths.svg` |
+| project-source.html | img | src | `assets/project-source/transport-paths.svg?v=20261020-3` |
 | project-source.html | a | href | `https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf` |
 | project-source.html | a | href | `https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf` |
 | project-source.html | a | href | `https://arxiv.org/abs/2501.18590` |
-| project-source.html | img | src | `assets/project-source/mixed-supervision.svg` |
+| project-source.html | img | src | `assets/project-source/mixed-supervision.svg?v=20261020-3` |
 | project-source.html | a | href | `https://www.pauldebevec.com/Research/LS/debevec-siggraph2000-high.pdf` |
 | project-source.html | a | href | `https://arxiv.org/abs/2508.09137` |
 | project-source.html | a | href | `https://arxiv.org/abs/2312.03704` |
-| project-source.html | img | src | `assets/project-source/olat-composition.svg` |
+| project-source.html | img | src | `assets/project-source/olat-composition.svg?v=20261020-3` |
 | project-source.html | a | href | `https://arxiv.org/abs/2410.08188` |
-| project-source.html | img | src | `assets/project-source/dynamic-pairs.svg` |
+| project-source.html | img | src | `assets/project-source/dynamic-pairs.svg?v=20261020-3` |
 | project-source.html | a | href | `assets/dynolat.pdf#page=20` |
 | project-source.html | a | href | `index.html#demo` |
 | project-source.html | a | href | `index.html#method` |

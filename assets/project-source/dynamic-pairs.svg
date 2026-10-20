@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
 <title id="title">Static pose coverage and three aligned dynamic pairs</title>
-<desc id="desc">The top row shows three separately held poses with directional OLAT shading. The bottom row has six images grouped into three pairs. Within each pair, flat-lit and OLAT images use exactly the same pose; poses differ between pairs. OLAT shading uses directional gradients.</desc>
+<desc id="desc">The top row shows three separately held poses with directional OLAT gradients. The bottom row has six images grouped into three pairs. Within each pair, flat-lit and OLAT images use exactly the same pose; poses differ between pairs. Only body gradients depict lighting.</desc>
 
 <defs>
   <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10" fill="#83a9bc"/></marker>
@@ -15,6 +15,8 @@
   <g id="pose3"><circle cy="-55" r="17"/><path d="M-17-32 -37-58 -45-82 -56-78 -49-46 -28-8 -17 8 -19 43 -26 91 -12 94 0 48 12 94 26 91 19 43 17 8 28-8 49-46 56-78 45-82 37-58 17-32 Q0-41 -17-32Z"/></g>
 </defs>
 
+<defs></defs>
+
 <style>
 text{font-family:Arial,sans-serif;fill:#dbe7ef;font-size:20px}
 .heading{font-size:24px;font-weight:600}.small{font-size:18px}
@@ -24,46 +26,37 @@ text{font-family:Arial,sans-serif;fill:#dbe7ef;font-size:20px}
 <rect width="640" height="400" rx="12" fill="#080e13"/>
 <text x="25" y="33" class="heading" text-anchor="start">Static subset: distinct held poses</text>
 <rect x="29" y="51" width="170" height="117" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="114" cy="156" rx="25" ry="5" fill="#050a10"/>
 <g transform="translate(114 101) scale(0.54)"><use href="#pose1" fill="url(#warm)"/></g>
 <text x="114" y="192" class="small" text-anchor="middle">Pose 1 · OLAT 1</text>
 <rect x="235" y="51" width="170" height="117" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="320" cy="156" rx="25" ry="5" fill="#050a10"/>
 <g transform="translate(320 101) scale(0.54)"><use href="#pose2" fill="url(#teal)"/></g>
 <text x="320" y="192" class="small" text-anchor="middle">Pose 2 · OLAT 2</text>
 <rect x="441" y="51" width="170" height="117" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="526" cy="156" rx="25" ry="5" fill="#050a10"/>
-<g transform="translate(526 101) scale(0.54)"><use href="#pose3" fill="url(#top)"/><ellipse cx="0" cy="-31" rx="10" ry="4" fill="#101927" opacity=".8"/></g>
+<g transform="translate(526 101) scale(0.54)"><use href="#pose3" fill="url(#top)"/></g>
 <text x="526" y="192" class="small" text-anchor="middle">Pose 3 · OLAT 3</text>
 <path d="M25 208 H615" stroke="#2e3e4b"/>
 <text x="25" y="238" class="heading" text-anchor="start">Dynamic pairs: matched after alignment</text>
 <rect x="22" y="254" width="88" height="89" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="66" cy="334" rx="17" ry="3" fill="#060b12"/>
 <g transform="translate(66 293) scale(0.41)"><use href="#pose1" fill="#c5d1da"/></g>
 <text x="66" y="365" class="small" text-anchor="middle">Flat</text>
 <rect x="120" y="254" width="88" height="89" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="164" cy="334" rx="17" ry="3" fill="#060b12"/>
 <g transform="translate(164 293) scale(0.41)"><use href="#pose1" fill="url(#warm)"/></g>
 <text x="164" y="365" class="small" text-anchor="middle">OLAT</text>
 <path d="M27 373 V378 H203 V373" stroke="#52788b" fill="none"/>
 <text x="115" y="396" class="small muted" text-anchor="middle">Pair 1</text>
 <rect x="228" y="254" width="88" height="89" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="272" cy="334" rx="17" ry="3" fill="#060b12"/>
 <g transform="translate(272 293) scale(0.41)"><use href="#pose2" fill="#c5d1da"/></g>
 <text x="272" y="365" class="small" text-anchor="middle">Flat</text>
 <rect x="326" y="254" width="88" height="89" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="370" cy="334" rx="17" ry="3" fill="#060b12"/>
 <g transform="translate(370 293) scale(0.41)"><use href="#pose2" fill="url(#teal)"/></g>
 <text x="370" y="365" class="small" text-anchor="middle">OLAT</text>
 <path d="M233 373 V378 H409 V373" stroke="#52788b" fill="none"/>
 <text x="321" y="396" class="small muted" text-anchor="middle">Pair 2</text>
 <rect x="434" y="254" width="88" height="89" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="478" cy="334" rx="17" ry="3" fill="#060b12"/>
 <g transform="translate(478 293) scale(0.41)"><use href="#pose3" fill="#c5d1da"/></g>
 <text x="478" y="365" class="small" text-anchor="middle">Flat</text>
 <rect x="532" y="254" width="88" height="89" rx="8" fill="#101d27" stroke="#304655"/>
-<ellipse cx="576" cy="334" rx="17" ry="3" fill="#060b12"/>
-<g transform="translate(576 293) scale(0.41)"><use href="#pose3" fill="url(#top)"/><ellipse cx="0" cy="-31" rx="10" ry="4" fill="#101927" opacity=".8"/></g>
+<g transform="translate(576 293) scale(0.41)"><use href="#pose3" fill="url(#top)"/></g>
 <text x="576" y="365" class="small" text-anchor="middle">OLAT</text>
 <path d="M439 373 V378 H615 V373" stroke="#52788b" fill="none"/>
 <text x="527" y="396" class="small muted" text-anchor="middle">Pair 3</text>

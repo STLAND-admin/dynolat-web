@@ -88,3 +88,10 @@
 @media (max-width: 52rem) { .story-document { scroll-padding-top: 6rem; } }
 
 #rendering .source-math { font-size: clamp(.94rem, 1.8vw, 1.25rem); }
+
+
+.source-example { margin: 1.5rem 0; padding: 1.3rem 1.4rem; border: 1px solid #34534e; border-radius: 10px; background: #0c1518; }
+.source-example p { margin: 0 0 .9rem; font-size: .9rem; line-height: 1.75; }
+.source-example p:last-child { margin-bottom: 0; }
+.source-example .source-example__title { color: #9bd5c9; font-size: 1.05rem; font-weight: 600; }
+@media (max-width: 52rem) { .source-example { padding: 1rem; } }

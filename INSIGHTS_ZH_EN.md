@@ -89,58 +89,11 @@ Reflection, scattering, and self-occlusion depend on the person's geometry and m
 
 **中文｜01.P02**
 
-将一般光传输压缩为有限表示，也存在理论上的限制。在论文 [A Theoretical Analysis of Compactness of the Light Transport Operator](https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf) 中，Soler、Molazem 和 Subr（2022）指出，一般光传输算子是非紧的。因此，有限秩近似无法在所有单位范数的输入辐亮度场上，一致收敛到该算子。
+关于光传输有限表示的理论限制，具体可参阅 Soler、Molazem 和 Subr（2022）的论文 [A Theoretical Analysis of Compactness of the Light Transport Operator](https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf)，其中有系统的数学讨论。
 
 **English**
 
-There is also a limit to compressing general transport into finite representations. In [A Theoretical Analysis of Compactness of the Light Transport Operator](https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf), Soler, Molazem, and Subr (2022) show that the general transport operator is non-compact. Finite-rank approximations therefore cannot converge to it uniformly over all unit-norm input radiance fields.
-
-
-### 01.E01 / 公式
-
-**中文｜01.E01 / 公式标题**
-
-有限秩一致近似的局限
-
-**English**
-
-A limit on uniform finite-rank approximation
-
-**公式（中英文共用）**
-
-$$
-\begin{gathered}
-\ell = e + \mathcal{K}\ell
-\\
-\mathcal{K}\text{ non-compact}
-\;\Rightarrow\;
-\lVert\mathcal{K}-\mathcal{K}_N\rVert_{\mathrm{op}}\not\to 0
-\end{gathered}
-$$
-
-**中文｜01.E01 / 公式说明**
-
-$\ell$ 是总辐亮度场；$e$ 是光源发出的辐亮度；$\mathcal{K}\ell$ 是光经过传播并反射一次后贡献的辐亮度。通俗地说：总光 = 光源发出的光 + 反射来的光。$\mathcal{K}_N$ 是有限秩近似，算子范数衡量所有单位范数输入上的最坏情况误差。
-
-**English**
-
-<i>ℓ</i> is the total radiance field; <i>e</i> is emitted radiance from the light sources; 𝒦<i>ℓ</i> is radiance arriving after propagation and one reflection. In plain terms: total light = emitted light + bounced light. 𝒦<sub>N</sub> is a finite-rank approximation; the operator norm measures worst-case error over unit-norm inputs.
-
-**中文｜01.P03**
-
-**为什么有限表示总可能漏掉一些东西？** 可以把有限基理解为一套数量有限的“光照词汇”。一般光传输仍能保留这套词汇之外的变化。增加词汇能改善特定输入的近似，却不能让所有可能的单位范数辐亮度场上的最坏情况误差都趋近于零。数学上的原因是：有限秩算子都是紧算子，而紧算子在算子范数下的极限仍然是紧的，因此非紧算子不可能成为这样的极限。
-
-**English**
-
-**Why can a finite representation miss something?** Think of a finite basis as a limited vocabulary of light patterns. General transport can preserve variations that lie outside any such finite vocabulary. Enlarging it helps for particular inputs, but cannot make the worst-case error vanish over every possible unit-norm radiance field. Mathematically, finite-rank operators are compact, and their operator-norm limits remain compact; a non-compact operator cannot be such a limit.
-
-**中文｜01.P04**
-
-这一结论针对完整辐亮度场的一致有限秩近似；它并不否定针对具体场景的渲染方法或蒙特卡洛方法的收敛性。下文将转向一个不同的问题：在有限分辨率下，如何设计足够有信息量的监督来学习生成模型。
-
-**English**
-
-This concerns uniform finite-rank approximation of the full radiance field; it does not rule out scene-specific rendering methods or Monte Carlo convergence. Next we turn to a different question: at finite resolution, how can we design informative supervision for a generative model?
+For a systematic mathematical discussion of the limits of finite representations of light transport, see [A Theoretical Analysis of Compactness of the Light Transport Operator](https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf) by Soler, Molazem, and Subr (2022).
 
 
 ---
@@ -151,147 +104,144 @@ This concerns uniform finite-rank approximation of the full radiance field; it d
 
 **中文｜02 / 章节标题**
 
-图像逼真，并不意味着光照控制精确。
+如何实现在生成模型中实现精确的控制。
 
 **English**
 
-A convincing image does not yet mean precise light control.
+How can we achieve precise control in a generative model?
 
 **中文｜02.P01**
 
-生成模型为外观与运动提供了强大的先验。以环境光照图作为条件，可以把重光照转化为生成任务：根据指定光照，预测新的图像或视频。但仍有两个问题：训练数据对是否忠实反映真实的光照变化，以及它们是否能独立约束不同光照方向的作用。
+生成模型为外观与运动提供了强大的先验，生成的结果基本对齐了真实的 domain。以环境光照图作为条件，可以把重光照转化为生成任务：根据指定光照，预测新的图像或视频。但仍有两个问题：训练数据对是否忠实反映真实的光照变化，以及它们是否能独立约束不同光照方向的作用。
 
 **English**
 
-Generative models provide strong priors for appearance and motion. Environment-map conditioning turns relighting into a generation task: predict a new image or video for a requested illumination. Two questions remain: how faithfully the training pairs represent real lighting changes, and how independently they constrain different lighting directions.
+Generative models provide strong priors for appearance and motion, with outputs that can closely match real-world appearance. Environment-map conditioning turns relighting into a generation task: predict a new image or video for a requested illumination. Two questions remain: how faithfully the training pairs represent real lighting changes, and how independently they constrain different lighting directions.
 
 **中文｜02.P02**
 
-**Stanford / HKUST（[IC-Light](https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf)）。** 其自然图像分支通过退化或增强输入外观，并估计目标光照来构造重光照数据对，而不是在经过标定的不同光照下重新拍摄同一场景。完整方法也使用了渲染数据与真实 Light Stage 数据，并施加光传输一致性约束。我们关注的是：即使目标照片是真实的，增强流程和估计光照所提供的监督仍然是近似的。
+**（[IC-Light](https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf)）。** 其自然图像分支通过退化或增强输入外观，并估计目标光照来构造重光照数据对，而不是在经过标定的不同光照下重新拍摄同一场景。完整方法也使用了渲染数据与真实 Light Stage 数据，并施加光传输一致性约束。我们关注的是：即使目标照片是真实的，增强流程和估计光照所提供的监督仍然是近似的。
 
 **English**
 
-**Stanford / HKUST ([IC-Light](https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf)).** Its in-the-wild branch creates relighting pairs by degrading or augmenting input appearance and estimating target lighting, rather than recapturing the same scene under calibrated lights. The full method also uses rendered and real Light Stage data, and imposes light-transport consistency. Our concern is that augmentation and estimated lighting provide approximate supervision, even when the target photograph is real.
+**[IC-Light](https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf).** Its in-the-wild branch creates relighting pairs by degrading or augmenting input appearance and estimating target lighting, rather than recapturing the same scene under calibrated lights. The full method also uses rendered and real Light Stage data, and imposes light-transport consistency. Our concern is that augmentation and estimated lighting provide approximate supervision, even when the target photograph is real.
 
 **中文｜02.P03**
 
-**NVIDIA / University of Toronto（[DiffusionRenderer](https://arxiv.org/abs/2501.18590)）。** 其正向渲染器以 G-buffers 和环境光照图为条件生成视频。合成数据提供精确标签，但论文指出，仅用合成数据训练会产生域差距。因此，方法进一步加入自动标注的真实视频，以及用于真实数据的 LoRA；估计出的几何、材质和光照仍可能含有误差。这促使我们重视实测数据对，但并不意味着上述方法只使用合成监督。
+**（[DiffusionRenderer](https://arxiv.org/abs/2501.18590)）。** 其正向渲染器以 G-buffers 和环境光照图为条件生成视频。合成数据提供精确标签，但论文指出，仅用合成数据训练会产生域差距。因此，方法进一步加入自动标注的真实视频，以及用于真实数据的 LoRA；估计出的几何、材质和光照仍可能含有误差。这促使我们重视实测数据对，但并不意味着上述方法只使用合成监督。
 
 **English**
 
-**NVIDIA / University of Toronto ([DiffusionRenderer](https://arxiv.org/abs/2501.18590)).** Its forward renderer conditions video generation on G-buffers and an environment map. Synthetic data provides exact labels, but the paper reports a domain gap when training on synthetic data alone. It therefore adds auto-labeled real videos and a LoRA for real data; the estimated geometry, materials, and lighting can still contain errors. This motivates measured pairs without implying that either method uses only synthetic supervision.
+**[DiffusionRenderer](https://arxiv.org/abs/2501.18590).** Its forward renderer conditions video generation on G-buffers and an environment map. Synthetic data provides exact labels, but the paper reports a domain gap when training on synthetic data alone. It therefore adds auto-labeled real videos and a LoRA for real data; the estimated geometry, materials, and lighting can still contain errors. This motivates measured pairs without implying that either method uses only synthetic supervision.
 
 
 ### 02.F01 / 配图
 
-![三个环境光照图纵向排列，每个环境图通过生成模型，得到同一姿态在不同光照下的一张对应图像。](assets/project-source/mixed-supervision.svg)
+![一个平光人体输入连接到生成模型。三个环境图分别以 0.8/0.2、0.2/0.8 和 0.5/0.5 混合暖色左光与青色右光；每张对应结果都用人体渐变呈现两束光的混合。](assets/project-source/mixed-supervision.svg)
 
 **中文｜02.F01 / 图注**
 
-每个环境图对应一张生成结果。三个环境图都混合了多个光照方向；更换环境图会同时改变多个变量。这个概念示例中，人物和姿态保持一致。
+同一个平光输入，三种光照要求。暖色左光与青色右光分别按 0.8/0.2、0.2/0.8 和 0.5/0.5 混合。示意结果也在线性 RGB 中按相同权重组合两个方向的响应，用来说明目标光照效果，并非实测的生成模型输出。
 
 **English**
 
-One environment map, one generated result. The three maps mix multiple lighting directions; changing a map changes several variables together. The shared subject and pose are held fixed in this conceptual example.
+One shared flat-lit input; three lighting requests. Warm left and teal right lights are mixed at 0.8/0.2, 0.2/0.8, and 0.5/0.5. The illustrated results use the same weighted blends of two directional responses in linear RGB; they depict the intended lighting, not measured generator outputs.
 
 **中文｜图片替代文本**
 
-三个环境光照图纵向排列，每个环境图通过生成模型，得到同一姿态在不同光照下的一张对应图像。
+一个平光人体输入连接到生成模型。三个环境图分别以 0.8/0.2、0.2/0.8 和 0.5/0.5 混合暖色左光与青色右光；每张对应结果都用人体渐变呈现两束光的混合。
 
 **English alt text**
 
-Three environment maps are arranged vertically. Each conditions generation of one corresponding image of the same pose, with a different lighting appearance.
+A shared flat-lit human input feeds Generation. Three environment maps mix warm left and teal right lights at 0.8/0.2, 0.2/0.8, and 0.5/0.5. Each corresponding result shows that two-light mixture as a gradient on the human.
 
 **图内文字对照**
 
 | 中文 | English |
 | --- | --- |
 | 环境光照条件下的生成 | Environment-conditioned generation |
+| 平光输入 | Flat-lit input |
 | 环境光照图 | Environment map |
 | 生成图像 | Generated image |
 | 生成 | Generation |
-| 相同输入 | same input |
+| 0.8 | 0.8 |
+| 0.2 | 0.2 |
+| 0.5 | 0.5 |
 
 **中文｜02.P04**
 
-即使数据对完全准确，混合光照仍然带来一个辨识问题。把单颜色通道的 $h\times w$ 环境光照图展开为 $N=hw$ 个方向上的数值。对于固定场景，每个图像像素都有 $N$ 个待确定的方向系数；一张环境光照下的观测图像，为这些系数提供一个方程。要完整辨识不受额外约束的响应，至少需要 $N$ 个线性独立的光照配置。
+**问题是：每盏灯究竟贡献了多少？** 即使数据对完全来自真实测量，一张环境光照图像也只给出了多个光源共同作用的结果。固定人物、姿态和相机，只看一个图像像素的一个颜色通道。如果有两盏灯，它们各自的贡献就是两个未知数。这其实就是熟悉的“解联立线性方程组”问题：**两个未知数，至少需要两个独立方程。**
 
 **English**
 
-Even with perfect pairs, mixed illumination leaves an identification question. Flatten an <i>h</i> × <i>w</i> environment map into <i>N</i> = <i>hw</i> directional values for one color channel. For a fixed scene, each image pixel has <i>N</i> unknown directional coefficients. One environment-lit observation supplies one equation for those coefficients. To identify an unrestricted response, we need at least <i>N</i> independent illumination configurations.
+**The question is: how much does each light contribute?** Even with perfectly measured pairs, an environment-lit image only shows their combined effect. For a fixed person, pose, and camera, consider the brightness at one image pixel in one color channel. If two lights illuminate the person, their separate contributions are two unknowns. This is the familiar problem of solving simultaneous linear equations: **two unknowns need at least two independent equations.**
 
 
-### 02.E01 / 公式
+### 02.X01 / 直观例子
 
-**中文｜02.E01 / 公式标题**
+**中文｜02.X01 / 例子标题**
 
-需要多少个独立的环境光照？
-
-**English**
-
-How many independent environments are enough?
-
-**公式（中英文共用）**
-
-$$
-\begin{gathered}
-N=hw,\qquad E=[e_1,\ldots,e_M]\in\mathbb{R}^{N\times M}
-\\ Y=TE
-\\ \operatorname{rank}(E)=N \;\Rightarrow\; M\geq N=hw
-\\ \text{OLAT:}\quad M=N,\quad E=I_N
-\end{gathered}
-$$
-
-**中文｜02.E01 / 公式说明**
-
-$h,w$ 是环境图的高与宽，$M$ 是光照配置数量；$E$ 的每一列 $e_j$ 都是一张展开后的环境图。若输出图像有 $P$ 个像素，则 $T\in\mathbb{R}^{P\times N}$ 将各方向的光照映射为线性图像强度，$Y\in\mathbb{R}^{P\times M}$ 存放对应的观测图像。秩条件用于在无噪声、固定场景、单颜色通道条件下辨识任意 $T$，并不是生成模型训练集规模的普遍下界。
+两个未知数 → 两次独立观测
 
 **English**
 
-<i>h</i> and <i>w</i> are the environment-map dimensions; <i>M</i> is the number of illumination configurations. Each column <i>e</i><sub>j</sub> of <i>E</i> is one map. For an image with <i>P</i> pixels, <i>T</i> ∈ ℝ<sup>P×N</sup> maps directional illumination to linear image intensity, and <i>Y</i> ∈ ℝ<sup>P×M</sup> contains the observed images. The rank condition identifies an arbitrary <i>T</i> in the noiseless, fixed-scene setting, per color channel. It is not a universal dataset-size requirement for a generative model.
+Two unknowns → two independent observations
+
+**中文｜02.X01.P01**
+
+照片 1：80% 左光 + 20% 右光 → 测得亮度为 12。
+
+**English**
+
+Photo 1: 80% left light + 20% right light → measured brightness 12.
+
+**中文｜02.X01.P02**
+
+照片 2：20% 左光 + 80% 右光 → 测得亮度为 18。
+
+**English**
+
+Photo 2: 20% left light + 80% right light → measured brightness 18.
+
+**中文｜02.X01.P03**
+
+结合这两次观测，就能解出：左光单独的贡献为 10，右光单独的贡献为 20。代回去很容易检查：10 的 80% 加上 20 的 20% 等于 12，交换权重后就得到 18。这里的数值仅作示例，使用线性亮度单位。
+
+**English**
+
+Together, these observations tell us that the left light alone contributes 10 and the right light alone contributes 20. Check: 80% of 10 plus 20% of 20 is 12; reversing the weights gives 18. These are illustrative values in linear brightness units.
+
+**中文｜02.X01.P04**
+
+如果只是把第一种光照整体调亮一倍，总亮度也会翻倍，却没有提供区分两盏灯贡献的新线索。我们需要改变混合比例，而不只是再拍一张照片。
+
+**English**
+
+Simply making the first lighting setup twice as bright gives twice the total, but no new clue about the two separate contributions. We need a different mixing ratio, not just another photograph.
 
 **中文｜02.P05**
 
-**OLAT 是最直接的完整设计。** 归一化的正交基避免了光照方向上的冗余，其条件数为 1。物理光强非负，因此正交模式的方向支撑集不能重叠。在 $N$ 个方向上构造 $N$ 个这样的完整模式，就必须一次只照亮一个方向：重排后 $E=I_N$，于是 $Y=T$。对于这个理想的辨识问题，OLAT 达到了 $N$ 次测量的下界，并且不需要再从混合观测中分离各个响应。
+**把这个问题扩展到环境光照图。** 一张 $h\times w$ 的环境图包含 $h\times w$ 个方向格。对每个图像像素而言，每个方向都对应一个未知贡献。若不引入额外假设，要把它们全部求出来，就至少需要同样数量的独立光照观测。更多照片只有在提供了新的独立方程时，才增加有效信息。
 
 **English**
 
-**OLAT is the most direct complete design.** A normalized orthogonal basis avoids redundant lighting directions and has condition number one. Physical light is nonnegative, so orthogonal patterns cannot overlap in directional support. A complete set of <i>N</i> such patterns over <i>N</i> directions must light one direction at a time: after ordering, <i>E</i> = <i>I</i><sub>N</sub> and <i>Y</i> = <i>T</i>. OLAT reaches the <i>N</i>-measurement lower bound for this ideal identification problem and removes the need to unmix measured responses.
+**Now extend this to an environment map.** An <i>h</i> × <i>w</i> map has <i>h</i> × <i>w</i> directional bins. At each image pixel, there is one unknown contribution per direction. Recovering them all, without additional assumptions, therefore needs at least that many independent lighting observations. More photographs help only if they add independent equations.
 
+**中文｜02.P06**
 
-### 02.D01 / 网页中的折叠说明
-
-**中文｜02.D01 / 展开标题**
-
-用直观语言理解秩条件
+**OLAT 让每个未知数可以被直接观测。** 只开左灯，就测到左灯的贡献；只开右灯，就测到右灯的贡献，不再需要从混合结果中拆解。对每个方向重复一次，就得到一套完整、独立的观测。这些单方向光照模式是正交的：它们照亮的方向互不重叠。物理光强非负，重叠方向上的贡献无法通过正负抵消来实现正交。因此，寻找一套完整、正交的光照设计，就自然导向了一次只开一盏灯。
 
 **English**
 
-The rank argument, in plain language
+**OLAT makes the unknowns directly observable.** Turn on only the left light, and measure its contribution; then turn on only the right light. There is no mixture to disentangle. Repeating this for each direction gives a complete set of independent observations. These single-direction lighting patterns are orthogonal: they have no illuminated directions in common. Since physical light intensities are nonnegative, overlapping directions cannot cancel to make two patterns orthogonal. Seeking a complete, orthogonal lighting design therefore naturally leads to one light at a time.
 
-**中文｜02.D01.P01**
+**中文｜02.P07**
 
-图像更多，并不自动意味着独立信息更多。如果所有环境图只是一张图的变亮或变暗版本，$E$ 的各列成比例，秩仍然只有 1。如果这些列所张成的空间不足 $N$ 维，那么 $T$ 的某些变化在全部训练观测中都不可见。满行秩消除了这种线性歧义，而良好的条件数进一步降低了对噪声的敏感性。
-
-**English**
-
-More images do not automatically mean more independent information. If every environment is just a brighter or darker copy of one map, the columns of <i>E</i> are proportional and its rank is only one. With fewer than <i>N</i> independent directions in their span, some changes in <i>T</i> remain invisible in all the training observations. Full row rank removes that linear ambiguity; good conditioning reduces sensitivity to noise.
-
-**中文｜02.D01.P02**
-
-对于非负模式，$\langle e_i,e_j\rangle=\sum_k e_{ki}e_{kj}=0$ 意味着每项乘积都为零，因此各模式照亮的方向集合互不重叠。在 $N$ 个方向格上构造 $N$ 个非零、两两正交的模式时，每个集合就只能包含一个方向格。非正交的满秩设计同样可行；正交性是条件良好的选择，而不是学习的必要条件。
+上述计数针对固定场景中的线性响应，用来解释监督形式的设计，并不是生成模型训练集规模的普遍要求。学习到的先验可以降低观测需求；不正交但相互独立的光照模式，也可以提供足够的方程。
 
 **English**
 
-For nonnegative patterns, $\langle e_i,e_j\rangle = \sum_k e_{ki}e_{kj} = 0$ means every product is zero. Hence the patterns illuminate disjoint direction sets. With <i>N</i> nonzero, pairwise orthogonal patterns over <i>N</i> bins, each set contains one bin. Non-orthogonal full-rank designs also work; orthogonality is a well-conditioned choice, not a requirement for learning.
-
-**中文｜02.D01.P03**
-
-上述计数假设人物、姿态、视角及线性响应固定；姿态变化时，$T$ 也会改变。先验、受限的角度带宽或响应集合都可以降低数据需求。正交性指输入光照，不是图像或学习得到的 latent。OLAT 也不意味着在所有硬件条件下都具有最短采集时间或最低噪声；在不同的传感器与光照预算下，多光源复用可能有其优势。
-
-**English**
-
-This count assumes a fixed subject, pose, viewpoint, and linear response; varying the pose also changes <i>T</i>. Priors, reduced angular bandwidth, or a restricted response family can lower the data requirement. Orthogonality concerns the lighting inputs, not their images or learned latents. OLAT does not universally minimize capture time or noise: multiplexed lighting can have advantages under different sensor and illumination budgets.
+This counting argument applies to a fixed scene with a linear response. It explains the supervision design, not a universal training-set size for a generative model. Learned priors can reduce the observations needed; non-orthogonal but independent lighting patterns can also provide enough equations.
 
 
 ---
@@ -335,7 +285,7 @@ Under ordinary linear light transport, contributions from separate lights add. A
 
 ### 03.F01 / 配图
 
-![较小的人体分别接受暖色左侧光、青色右侧光和蓝色顶光；光源与明暗渐变颜色一致，顶光在下巴下方与地面形成阴影。](assets/project-source/olat-composition.svg)
+![三个人体仅通过自身渐变，分别呈现暖色左光、青色右光和蓝色顶光；光源颜色与方向均和人体渐变一致。](assets/project-source/olat-composition.svg)
 
 **中文｜03.F01 / 图注**
 
@@ -347,11 +297,11 @@ A consistent basis for composition. Each example uses the same pose, with color 
 
 **中文｜图片替代文本**
 
-较小的人体分别接受暖色左侧光、青色右侧光和蓝色顶光；光源与明暗渐变颜色一致，顶光在下巴下方与地面形成阴影。
+三个人体仅通过自身渐变，分别呈现暖色左光、青色右光和蓝色顶光；光源颜色与方向均和人体渐变一致。
 
 **English alt text**
 
-A smaller human figure under warm left lighting, teal right lighting, and blue top lighting. Each light matches its shading color; top lighting adds a shadow below the chin and on the ground.
+Three human figures show warm left lighting, teal right lighting, and blue top lighting through body gradients. The light colors and directions match the gradients.
 
 **图内文字对照**
 
@@ -419,7 +369,7 @@ Before starting DynOLAT, we were inspired by [DifFRelight](https://arxiv.org/abs
 
 ---
 
-## 04 / 为什么需要采集动态 · Why capture motion
+## 04 / 为什么需要采集动态 · The Data challenge
 
 网页位置：`#motion`
 
