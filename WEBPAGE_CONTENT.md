@@ -340,15 +340,11 @@ The Insights Behind DynOLAT
 
 ### p
 
-How can we render a person under arbitrary lighting while staying consistent over time?
-
-### p
-
-This question led us from rendering and generative models to a choice about data: learn individual light responses, and capture them in motion.
+How can we render a person under arbitrary lighting while preserving temporal consistency in motion?
 
 ### h2
 
-Accurate assets.Demanding approximations.
+Theoretical limits of computing light transport.
 
 ### p
 
@@ -376,11 +372,15 @@ A limit on uniform finite-rank approximation
 
 ### p
 
-𝒦 transports the full, infinite-dimensional radiance field by one bounce; 𝒦N is finite-rank. The operator norm measures worst-case error over unit-norm inputs. This operator differs from the finite light-to-image transport matrices below.
+ℓ is the total radiance field; e is emitted radiance from the light sources; 𝒦ℓ is radiance arriving after propagation and one reflection. In plain terms: total light = emitted light + bounced light. 𝒦N is a finite-rank approximation; the operator norm measures worst-case error over unit-norm inputs.
 
 ### p
 
-This result limits uniform approximation with lighting-independent finite bases; it does not rule out Monte Carlo convergence for a fixed rendering problem. Our direction is to learn measured human appearance with structured lighting supervision, while evaluating the remaining approximation and generalization errors.
+Why can a finite representation miss something? Think of a finite basis as a limited vocabulary of light patterns. General transport can preserve variations that lie outside any such finite vocabulary. Enlarging it helps for particular inputs, but cannot make the worst-case error vanish over every possible unit-norm radiance field. Mathematically, finite-rank operators are compact, and their operator-norm limits remain compact; a non-compact operator cannot be such a limit.
+
+### p
+
+This concerns uniform finite-rank approximation of the full radiance field; it does not rule out scene-specific rendering methods or Monte Carlo convergence. Next we turn to a different question: at finite resolution, how can we design informative supervision for a generative model?
 
 ### h2
 
@@ -388,55 +388,87 @@ A convincing image does not yet mean precise light control.
 
 ### p
 
-Video generation models offer strong priors for realistic appearance and motion. But learning relighting without sufficient real, paired supervision can leave a gap between training data and real human appearance. Real captures provide direct supervision: the Light Stage work of Paul Debevec and colleagues, HumanOLAT from Christian Theobalt’s group at MPI, and Shunsuke Saito and colleagues’ Relightable Gaussian Codec Avatars at Meta demonstrate different ways of measuring and learning real lighting responses.
+Generative models provide strong priors for appearance and motion. Environment-map conditioning turns relighting into a generation task: predict a new image or video for a requested illumination. Two questions remain: how faithfully the training pairs represent real lighting changes, and how independently they constrain different lighting directions.
+
+### a
+
+IC-Light
+
+### p
+
+Stanford / HKUST (IC-Light). Its in-the-wild branch creates relighting pairs by degrading or augmenting input appearance and estimating target lighting, rather than recapturing the same scene under calibrated lights. The full method also uses rendered and real Light Stage data, and imposes light-transport consistency. Our concern is that augmentation and estimated lighting provide approximate supervision, even when the target photograph is real.
+
+### a
+
+DiffusionRenderer
+
+### p
+
+NVIDIA / University of Toronto (DiffusionRenderer). Its forward renderer conditions video generation on G-buffers and an environment map. Synthetic data provides exact labels, but the paper reports a domain gap when training on synthetic data alone. It therefore adds auto-labeled real videos and a LoRA for real data; the estimated geometry, materials, and lighting can still contain errors. This motivates measured pairs without implying that either method uses only synthetic supervision.
 
 ### figcaption
 
-From overlapping environments to an orthogonal lighting basis. OLAT isolates each input direction; the resulting images need not be orthogonal. The three-direction example is schematic.
+One environment map, one generated result. The three maps mix multiple lighting directions; changing a map changes several variables together. The shared subject and pose are held fixed in this conceptual example.
 
 ### p
 
-There is a separate question about the supervision itself. In an environment-lit image, many directions contribute at once. When the entire environment map conditions a generator, each direction’s contribution is not necessarily exposed or constrained separately. The model may reproduce the overall appearance while missing the requested shadow direction or relative intensity—the behavior that motivated our work.
+Even with perfect pairs, mixed illumination leaves an identification question. Flatten an h × w environment map into N = hw directional values for one color channel. For a fixed scene, each image pixel has N unknown directional coefficients. One environment-lit observation supplies one equation for those coefficients. To identify an unrestricted response, we need at least N independent illumination configurations.
 
 ### p
 
-Independent lighting variation makes individual responses identifiable. Changing a whole environment often changes several variables together. A complete set of orthogonal illumination patterns offers a particularly clean design: after normalization, it forms a well-conditioned basis for separating each input’s effect. Orthogonality is a useful design target, rather than a requirement for a neural model to learn.
+How many independent environments are enough?
 
 ### p
 
-Independent inputs → orthogonal lighting → OLAT
+N = hwE = [e1, …, eM] ∈ ℝN×MY = T Erank(E) = N ⇒ M ≥ N = hwOLAT: M = N, E = IN
 
 ### p
 
-Y = T Eei ≥ 0, ⟨ei, ej⟩ = 0 (i ≠ j)OLAT: E = IN ⇒ Y = T
+h and w are the environment-map dimensions; M is the number of illumination configurations. Each column ej of E is one map. For an image with P pixels, T ∈ ℝP×N maps directional illumination to linear image intensity, and Y ∈ ℝP×M contains the observed images. The rank condition identifies an arbitrary T in the noiseless, fixed-scene setting, per color channel. It is not a universal dataset-size requirement for a generative model.
 
 ### p
 
-For one fixed scene and color channel, the columns ei of E are illumination patterns; the columns of Y are their images. Nonnegative, orthogonal patterns have disjoint directional support. A complete set of N such patterns over N directions becomes the OLAT identity basis after normalization and ordering.
-
-### p
-
-Physical light intensities are nonnegative. Two such environment maps can be orthogonal only if they illuminate disjoint sets of directions. Requiring a complete orthogonal basis with one pattern per sampled direction therefore leads naturally to OLAT: each pattern lights exactly one direction, and each observation directly measures its transport response.
+OLAT is the most direct complete design. A normalized orthogonal basis avoids redundant lighting directions and has condition number one. Physical light is nonnegative, so orthogonal patterns cannot overlap in directional support. A complete set of N such patterns over N directions must light one direction at a time: after ordering, E = IN and Y = T. OLAT reaches the N-measurement lower bound for this ideal identification problem and removes the need to unmix measured responses.
 
 ### summary
 
-Why this design leads to OLAT—and what it assumes
+The rank argument, in plain language
 
 ### p
 
-For a fixed scene discretized into N lighting directions, Y = T E. If rank(E) < N, the observations cannot uniquely identify an unrestricted transport matrix T. Full row rank is sufficient in the noiseless case; poor conditioning makes recovery sensitive to measurement noise. Non-orthogonal environments can also provide a full-rank, well-conditioned design, and learned priors can reduce the required data.
+More images do not automatically mean more independent information. If every environment is just a brighter or darker copy of one map, the columns of E are proportional and its rank is only one. With fewer than N independent directions in their span, some changes in T remain invisible in all the training observations. Full row rank removes that linear ambiguity; good conditioning reduces sensitivity to noise.
 
 ### p
 
-For two nonnegative patterns, ⟨eᵢ, eⱼ⟩ = ∑ₖ eₖᵢ eₖⱼ = 0 means every product is zero: no direction is active in both. With N nonzero, pairwise orthogonal patterns over N directions, these disjoint supports must each contain exactly one direction. Thus the normalized columns of E are a permutation of the identity basis. Fewer orthogonal patterns may illuminate disjoint groups of directions; orthogonality alone does not uniquely specify OLAT.
+For nonnegative patterns, ⟨eᵢ, eⱼ⟩ = ∑ₖ eₖᵢ eₖⱼ = 0 means every product is zero. Hence the patterns illuminate disjoint direction sets. With N nonzero, pairwise orthogonal patterns over N bins, each set contains one bin. Non-orthogonal full-rank designs also work; orthogonality is a well-conditioned choice, not a requirement for learning.
 
 ### p
 
-This argument concerns input lighting patterns, not orthogonality of their rendered images. It assumes ideal, calibrated directional illumination; real captures have finite light footprints, calibration error, and noise. The benefit is explicit supervision of individual responses, not a guarantee of perfect learning. The capture-based works above use different representations; they are not all holistic environment-conditioned generators.
+This count assumes a fixed subject, pose, viewpoint, and linear response; varying the pose also changes T. Priors, reduced angular bandwidth, or a restricted response family can lower the data requirement. Orthogonality concerns the lighting inputs, not their images or learned latents. OLAT does not universally minimize capture time or noise: multiplexed lighting can have advantages under different sensor and illumination budgets.
 
 ### h2
 
-Learn the responses.Compose the light.
+Adapting the generative prior with orthogonal supervision.
+
+### a
+
+Light Stage
+
+### a
+
+HumanOLAT
+
+### a
+
+Relightable Gaussian Codec Avatars
+
+### p
+
+Real capture makes this supervision physically grounded. Paul Debevec’s team (Light Stage) measured directional facial reflectance; MPI Informatics / NVIDIA (HumanOLAT) provide multi-view full-body OLAT captures; and Meta’s Codec Avatars Lab (Relightable Gaussian Codec Avatars) learns relightable avatars from controlled lighting capture. These works establish the value of measured appearance across lighting conditions, using different capture patterns and model representations.
+
+### p
+
+Use isolated pairs to adapt a pretrained generative prior. A flat-lit / OLAT pair holds appearance and pose aligned while specifying one illumination direction. This gives the conditional generator a more explicit target than an unconstrained mixture of directions. In a latent diffusion model, adaptation trains the conditional denoising process on these pairs; it does not make the latent space itself orthogonal. The intended efficiency is in the supervision design, not a claimed universal speedup in optimization.
 
 ### p
 
@@ -444,19 +476,19 @@ Under ordinary linear light transport, contributions from separate lights add. A
 
 ### figcaption
 
-Predict once per direction, then compose. The illustrated lighting lobes represent basis responses; they are conceptual diagrams, not DynOLAT outputs.
+A consistent basis for composition. Each example uses the same pose, with color and shading matched to its light direction. The figures are conceptual illustrations; the weighted sum is performed in linear image space.
 
 ### p
 
-One basis video per light direction
+Adapt in latent space; compose in linear image space
 
 ### p
 
-It(x; L) ≈ ∑k wk(L) Bt,k(x)
+pθ(ZOLAT | Zflat, ωk)It(x; L) ≈ ∑k wk(L) Bt,k(x)
 
 ### p
 
-Bt,k is the OLAT response for direction k. Environment-derived weights wk control its contribution, per color channel, in linear color space. Finite lighting samples and prediction errors make this an approximation.
+Zflat and ZOLAT denote encoded paired sequences; pθ denotes the learned conditional generation distribution for direction ωk. The second line composes decoded OLAT responses Bt,k using environment-derived weights wk, per color channel in linear color space. It does not assume that latents or the generator are linear. Finite directional sampling and prediction errors remain.
 
 ### p
 
@@ -484,7 +516,7 @@ Our initial plan was to collect many conventional static flat-lit / OLAT pairs�
 
 ### figcaption
 
-From a pose to a performance. Dynamic capture gives changing poses paired lighting supervision without recording a full OLAT sweep at every instant. The illustrated frames are schematic.
+Static pose coverage versus aligned dynamic supervision. The top row shows representative OLAT images from three separately held poses, not successive lights in one sweep. The bottom row shows three training pairs after alignment: pose is matched within each pair and changes across pairs.
 
 ### p
 
@@ -568,7 +600,7 @@ Explore the method →
 | index.html | source | src | `assets/videos/shanghai-hdr.mp4` |
 | index.html | a | href | `assets/dynolat.pdf#page=19` |
 | project-source.html | link | href | `styles.css?v=20261019-4` |
-| project-source.html | link | href | `project-source.css?v=20261020-1` |
+| project-source.html | link | href | `project-source.css?v=20261020-2` |
 | project-source.html | a | href | `#project-source` |
 | project-source.html | a | href | `index.html` |
 | project-source.html | a | href | `#rendering` |
@@ -577,7 +609,12 @@ Explore the method →
 | project-source.html | a | href | `#motion` |
 | project-source.html | img | src | `assets/project-source/transport-paths.svg` |
 | project-source.html | a | href | `https://homepages.inf.ed.ac.uk/ksubr/Files/Papers/SIG22_Compactness.pdf` |
+| project-source.html | a | href | `https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf` |
+| project-source.html | a | href | `https://arxiv.org/abs/2501.18590` |
 | project-source.html | img | src | `assets/project-source/mixed-supervision.svg` |
+| project-source.html | a | href | `https://www.pauldebevec.com/Research/LS/debevec-siggraph2000-high.pdf` |
+| project-source.html | a | href | `https://arxiv.org/abs/2508.09137` |
+| project-source.html | a | href | `https://arxiv.org/abs/2312.03704` |
 | project-source.html | img | src | `assets/project-source/olat-composition.svg` |
 | project-source.html | a | href | `https://arxiv.org/abs/2410.08188` |
 | project-source.html | img | src | `assets/project-source/dynamic-pairs.svg` |

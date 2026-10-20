@@ -1,13 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
-<title>Linear composition of OLAT images</title><desc>Three illustrative directional responses are weighted 0.6, 0.3, and 0.1 and added. These are conceptual shapes, not model results.</desc>
+<title id="title">Color-consistent directional OLAT composition</title>
+<desc id="desc">Three small figures in the same pose show warm left, teal right, and blue overhead lighting. Each light matches the gradient on the figure. The overhead example includes a chin shadow and a compact ground shadow. The basis images are weighted and combined in linear color.</desc>
+
 <defs>
-<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10" fill="#83a9bc"/></marker>
-<linearGradient id="warm"><stop stop-color="#edc37a"/><stop offset="1" stop-color="#31404c"/></linearGradient>
-<linearGradient id="cool"><stop stop-color="#263947"/><stop offset="1" stop-color="#84bfdf"/></linearGradient>
-<linearGradient id="mix"><stop stop-color="#e9c88e"/><stop offset=".5" stop-color="#669b9b"/><stop offset="1" stop-color="#739bb9"/></linearGradient>
-<g id="person"><circle cy="-55" r="17"/><path d="M-17-32 Q0-41 17-32 L37 17 25 23 13-1 19 43 14 92 1 92 0 46-1 92-14 92-19 43-13-1-25 23-37 17Z"/></g>
-<g id="walk"><circle cx="4" cy="-55" r="17"/><path d="M-13-32 Q4-41 21-32 L43-2 35 8 14-12 17 33 35 81 23 87 0 43-21 87-33 81-13 29-12-5-33 27-43 20Z"/></g>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10" fill="#83a9bc"/></marker>
+  <linearGradient id="warm" gradientUnits="userSpaceOnUse" x1="-44" y1="0" x2="44" y2="0"><stop stop-color="#edc37a"/><stop offset=".45" stop-color="#b59461"/><stop offset="1" stop-color="#273342"/></linearGradient>
+  <linearGradient id="teal" gradientUnits="userSpaceOnUse" x1="-44" y1="0" x2="44" y2="0"><stop stop-color="#233142"/><stop offset=".55" stop-color="#4d8a84"/><stop offset="1" stop-color="#82c4bd"/></linearGradient>
+  <linearGradient id="top" gradientUnits="userSpaceOnUse" x1="0" y1="-75" x2="0" y2="94"><stop stop-color="#a9c5ee"/><stop offset=".3" stop-color="#6a88b0"/><stop offset=".58" stop-color="#364c6c"/><stop offset="1" stop-color="#182330"/></linearGradient>
+  <linearGradient id="envWarm"><stop stop-color="#b99c63"/><stop offset=".38" stop-color="#445267"/><stop offset="1" stop-color="#1c344b"/></linearGradient>
+  <linearGradient id="envTeal"><stop stop-color="#1a3545"/><stop offset=".55" stop-color="#274658"/><stop offset="1" stop-color="#83aaa3"/></linearGradient>
+  <linearGradient id="envBlue" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a2bad9"/><stop offset=".4" stop-color="#3b526b"/><stop offset="1" stop-color="#162533"/></linearGradient>
+  <g id="pose1"><circle cy="-55" r="17"/><path d="M-17-32 Q0-41 17-32 L37 17 25 23 13-1 19 43 14 92 1 92 0 46-1 92-14 92-19 43-13-1-25 23-37 17Z"/></g>
+  <g id="pose2"><circle cx="4" cy="-55" r="17"/><path d="M-13-32 Q4-41 21-32 L43-2 35 8 14-12 17 33 35 81 23 87 0 43-21 87-33 81-13 29-12-5-33 27-43 20Z"/></g>
+  <g id="pose3"><circle cy="-55" r="17"/><path d="M-17-32 -37-58 -45-82 -56-78 -49-46 -28-8 -17 8 -19 43 -26 91 -12 94 0 48 12 94 26 91 19 43 17 8 28-8 49-46 56-78 45-82 37-58 17-32 Q0-41 -17-32Z"/></g>
 </defs>
+
+<style>
+text{font-family:Arial,sans-serif;fill:#dbe7ef;font-size:20px}
+.heading{font-size:24px;font-weight:600}.small{font-size:18px}
+.muted{fill:#92a9ba}.arrow{stroke:#83a9bc;stroke-width:2;fill:none;marker-end:url(#arrow)}
+</style>
+
 <rect width="640" height="400" rx="12" fill="#080e13"/>
-<style>text{font-family:Arial,sans-serif;fill:#dbe7ef;font-size:22px} .muted{fill:#91a9bb} .small{font-size:19px} .label{font-size:24px;font-weight:600} .line{fill:none;stroke:#83a9bc;stroke-width:2.5;marker-end:url(#arrow)} .dash{stroke-dasharray:6 5}</style>
-<text x="25" y="36" text-anchor="start" class="label">Directional bases → a new environment</text><rect x="38" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/><use href="#person" transform="translate(113 146) scale(0.85)" fill="url(#warm)"/><circle cx="62" cy="100" r="7" fill="#e4b779"/><text x="113" y="275" text-anchor="middle" class="">0.6 × B₁</text><text x="215" y="165" text-anchor="middle" class="label">+</text><rect x="243" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/><use href="#person" transform="translate(318 146) scale(0.85)" fill="url(#cool)"/><circle cx="369" cy="100" r="7" fill="#82c4bd"/><text x="318" y="275" text-anchor="middle" class="">0.3 × B₂</text><text x="420" y="165" text-anchor="middle" class="label">+</text><rect x="448" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/><use href="#person" transform="translate(523 146) scale(0.85)" fill="#7dbbb2"/><circle cx="523" cy="87" r="7" fill="#8daeda"/><text x="523" y="275" text-anchor="middle" class="">0.1 × B₃</text><path d="M320 289 320 319" class="line" style="stroke:#83a9bc"/><rect x="112" y="332" width="416" height="48" rx="8" fill="#122029" stroke="#3c645f"/><text x="320" y="364" text-anchor="middle" class="">Weighted sum in linear color</text></svg>
+<text x="25" y="36" class="heading" text-anchor="start">Directional bases → a new environment</text>
+<rect x="38" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/>
+<path d="M48 218 H178" stroke="#273945"/>
+<ellipse cx="125" cy="219" rx="32" ry="5" fill="#03070c" stroke="#35445b" stroke-opacity=".45"/>
+<g transform="translate(113 151) scale(0.65)"><use href="#pose1" fill="url(#warm)"/></g>
+<circle cx="61" cy="100" r="7" fill="#edc37a"/>
+<text x="113" y="275" class="" text-anchor="middle">0.6 × B₁</text>
+<text x="215" y="165" class="heading" text-anchor="middle">+</text>
+<rect x="243" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/>
+<path d="M253 218 H383" stroke="#273945"/>
+<ellipse cx="306" cy="219" rx="32" ry="5" fill="#03070c" stroke="#35445b" stroke-opacity=".45"/>
+<g transform="translate(318 151) scale(0.65)"><use href="#pose1" fill="url(#teal)"/></g>
+<circle cx="369" cy="100" r="7" fill="#82c4bd"/>
+<text x="318" y="275" class="" text-anchor="middle">0.3 × B₂</text>
+<text x="420" y="165" class="heading" text-anchor="middle">+</text>
+<rect x="448" y="74" width="150" height="174" rx="8" fill="#101d27" stroke="#304655"/>
+<path d="M458 218 H588" stroke="#273945"/>
+<ellipse cx="523" cy="219" rx="22" ry="8" fill="#03070c" stroke="#35445b" stroke-opacity=".45"/>
+<g transform="translate(523 151) scale(0.65)"><use href="#pose1" fill="url(#top)"/><ellipse cx="0" cy="-31" rx="10" ry="4" fill="#101927" opacity=".8"/></g>
+<circle cx="523" cy="87" r="7" fill="#a9c5ee"/>
+<text x="523" y="275" class="" text-anchor="middle">0.1 × B₃</text>
+<path class="arrow" d="M320 291 L320 319"/>
+<rect x="112" y="332" width="416" height="48" rx="8" fill="#122029" stroke="#3c645f"/>
+<text x="320" y="363" class="" text-anchor="middle">Weighted sum in linear color</text>
+</svg>

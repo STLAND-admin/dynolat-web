@@ -4,7 +4,7 @@
 
 对应网页：[The Insights Behind DynOLAT](project-source.html)
 
-英文基准：`project-source.html`，Git 提交 `0e2ef19`，2026-10-20。
+同步基准：本次修订后的 `project-source.html`（2026-10-20）。
 
 **修改方式：** 直接修改各段的「中文」内容即可；下方英文保留当前网页原文作为对照。段落编号用于将修改对应回网页。公式由中英文共用；图注、折叠说明和图内文字均已收录。
 
@@ -24,19 +24,11 @@ The Insights Behind DynOLAT
 
 **中文｜核心问题**
 
-如何渲染任意光照下的人体，同时保持时序一致性？
+如何渲染任意光照下的人体，同时保持动态下时序一致性？
 
 **English**
 
-How can we render a person under arbitrary lighting while staying consistent over time?
-
-**中文｜引言**
-
-这个问题引导我们从渲染与生成模型出发，思考数据应该采用什么形式：学习单个光源的响应，并在运动中采集这些响应。
-
-**English**
-
-This question led us from rendering and generative models to a choice about data: learn individual light responses, and capture them in motion.
+How can we render a person under arbitrary lighting while preserving temporal consistency in motion?
 
 
 ---
@@ -47,11 +39,11 @@ This question led us from rendering and generative models to a choice about data
 
 **中文｜01 / 章节标题**
 
-精确的场景资产，严苛的近似要求。
+光传输在计算过程中的理论限制
 
 **English**
 
-Accurate assets. Demanding approximations.
+Theoretical limits of computing light transport.
 
 **中文｜01.P01**
 
@@ -128,19 +120,27 @@ $$
 
 **中文｜01.E01 / 公式说明**
 
-$\mathcal{K}$ 描述完整的、无限维辐亮度场经过一次反弹后的传输；$\mathcal{K}_N$ 是有限秩算子。算子范数衡量所有单位范数输入上的最坏情况误差。这里的算子不同于下文有限维的“光照到图像”传输矩阵。
+$\ell$ 是总辐亮度场；$e$ 是光源发出的辐亮度；$\mathcal{K}\ell$ 是光经过传播并反射一次后贡献的辐亮度。通俗地说：总光 = 光源发出的光 + 反射来的光。$\mathcal{K}_N$ 是有限秩近似，算子范数衡量所有单位范数输入上的最坏情况误差。
 
 **English**
 
-𝒦 transports the full, infinite-dimensional radiance field by one bounce; 𝒦<sub>N</sub> is finite-rank. The operator norm measures worst-case error over unit-norm inputs. This operator differs from the finite light-to-image transport matrices below.
+<i>ℓ</i> is the total radiance field; <i>e</i> is emitted radiance from the light sources; 𝒦<i>ℓ</i> is radiance arriving after propagation and one reflection. In plain terms: total light = emitted light + bounced light. 𝒦<sub>N</sub> is a finite-rank approximation; the operator norm measures worst-case error over unit-norm inputs.
 
 **中文｜01.P03**
 
-这一结果限制了使用不依赖具体光照的有限基进行一致近似的能力；它并不否定蒙特卡洛方法在固定渲染问题上的收敛性。我们的方向是通过结构化的光照监督学习实测的人体外观，同时评估仍然存在的近似误差与泛化误差。
+**为什么有限表示总可能漏掉一些东西？** 可以把有限基理解为一套数量有限的“光照词汇”。一般光传输仍能保留这套词汇之外的变化。增加词汇能改善特定输入的近似，却不能让所有可能的单位范数辐亮度场上的最坏情况误差都趋近于零。数学上的原因是：有限秩算子都是紧算子，而紧算子在算子范数下的极限仍然是紧的，因此非紧算子不可能成为这样的极限。
 
 **English**
 
-This result limits uniform approximation with lighting-independent finite bases; it does not rule out Monte Carlo convergence for a fixed rendering problem. Our direction is to learn measured human appearance with structured lighting supervision, while evaluating the remaining approximation and generalization errors.
+**Why can a finite representation miss something?** Think of a finite basis as a limited vocabulary of light patterns. General transport can preserve variations that lie outside any such finite vocabulary. Enlarging it helps for particular inputs, but cannot make the worst-case error vanish over every possible unit-norm radiance field. Mathematically, finite-rank operators are compact, and their operator-norm limits remain compact; a non-compact operator cannot be such a limit.
+
+**中文｜01.P04**
+
+这一结论针对完整辐亮度场的一致有限秩近似；它并不否定针对具体场景的渲染方法或蒙特卡洛方法的收敛性。下文将转向一个不同的问题：在有限分辨率下，如何设计足够有信息量的监督来学习生成模型。
+
+**English**
+
+This concerns uniform finite-rank approximation of the full radiance field; it does not rule out scene-specific rendering methods or Monte Carlo convergence. Next we turn to a different question: at finite resolution, how can we design informative supervision for a generative model?
 
 
 ---
@@ -159,135 +159,139 @@ A convincing image does not yet mean precise light control.
 
 **中文｜02.P01**
 
-视频生成模型为逼真的外观与运动提供了强大的先验。但如果缺少足够的真实配对监督，学习重光照仍可能面临训练数据与真实人体外观之间的差距。真实采集提供了直接监督：Paul Debevec 及其同事的 Light Stage 工作、MPI 的 Christian Theobalt 团队的 HumanOLAT，以及 Meta 的 Shunsuke Saito 及其同事的 Relightable Gaussian Codec Avatars，展示了测量和学习真实光照响应的不同方式。
+生成模型为外观与运动提供了强大的先验。以环境光照图作为条件，可以把重光照转化为生成任务：根据指定光照，预测新的图像或视频。但仍有两个问题：训练数据对是否忠实反映真实的光照变化，以及它们是否能独立约束不同光照方向的作用。
 
 **English**
 
-Video generation models offer strong priors for realistic appearance and motion. But learning relighting without sufficient real, paired supervision can leave a gap between training data and real human appearance. Real captures provide direct supervision: the Light Stage work of Paul Debevec and colleagues, HumanOLAT from Christian Theobalt’s group at MPI, and Shunsuke Saito and colleagues’ Relightable Gaussian Codec Avatars at Meta demonstrate different ways of measuring and learning real lighting responses.
+Generative models provide strong priors for appearance and motion. Environment-map conditioning turns relighting into a generation task: predict a new image or video for a requested illumination. Two questions remain: how faithfully the training pairs represent real lighting changes, and how independently they constrain different lighting directions.
+
+**中文｜02.P02**
+
+**Stanford / HKUST（[IC-Light](https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf)）。** 其自然图像分支通过退化或增强输入外观，并估计目标光照来构造重光照数据对，而不是在经过标定的不同光照下重新拍摄同一场景。完整方法也使用了渲染数据与真实 Light Stage 数据，并施加光传输一致性约束。我们关注的是：即使目标照片是真实的，增强流程和估计光照所提供的监督仍然是近似的。
+
+**English**
+
+**Stanford / HKUST ([IC-Light](https://proceedings.iclr.cc/paper_files/paper/2025/file/1cce374fec7829c24a97ae0e91cd0999-Paper-Conference.pdf)).** Its in-the-wild branch creates relighting pairs by degrading or augmenting input appearance and estimating target lighting, rather than recapturing the same scene under calibrated lights. The full method also uses rendered and real Light Stage data, and imposes light-transport consistency. Our concern is that augmentation and estimated lighting provide approximate supervision, even when the target photograph is real.
+
+**中文｜02.P03**
+
+**NVIDIA / University of Toronto（[DiffusionRenderer](https://arxiv.org/abs/2501.18590)）。** 其正向渲染器以 G-buffers 和环境光照图为条件生成视频。合成数据提供精确标签，但论文指出，仅用合成数据训练会产生域差距。因此，方法进一步加入自动标注的真实视频，以及用于真实数据的 LoRA；估计出的几何、材质和光照仍可能含有误差。这促使我们重视实测数据对，但并不意味着上述方法只使用合成监督。
+
+**English**
+
+**NVIDIA / University of Toronto ([DiffusionRenderer](https://arxiv.org/abs/2501.18590)).** Its forward renderer conditions video generation on G-buffers and an environment map. Synthetic data provides exact labels, but the paper reports a domain gap when training on synthetic data alone. It therefore adds auto-labeled real videos and a LoRA for real data; the estimated geometry, materials, and lighting can still contain errors. This motivates measured pairs without implying that either method uses only synthetic supervision.
 
 
 ### 02.F01 / 配图
 
-![具有重叠光照方向的环境光照图混合了多个方向的响应。三个非负、正交的 OLAT 光照模式分别照亮一个方向，并揭示对应的基响应。](assets/project-source/mixed-supervision.svg)
+![三个环境光照图纵向排列，每个环境图通过生成模型，得到同一姿态在不同光照下的一张对应图像。](assets/project-source/mixed-supervision.svg)
 
 **中文｜02.F01 / 图注**
 
-从光照方向相互重叠的环境图，转向正交的光照基。OLAT 将各个输入方向分离开来；得到的图像并不需要正交。图中的三个方向仅用于概念示意。
+每个环境图对应一张生成结果。三个环境图都混合了多个光照方向；更换环境图会同时改变多个变量。这个概念示例中，人物和姿态保持一致。
 
 **English**
 
-From overlapping environments to an orthogonal lighting basis. OLAT isolates each input direction; the resulting images need not be orthogonal. The three-direction example is schematic.
+One environment map, one generated result. The three maps mix multiple lighting directions; changing a map changes several variables together. The shared subject and pose are held fixed in this conceptual example.
 
 **中文｜图片替代文本**
 
-具有重叠光照方向的环境光照图混合了多个方向的响应。三个非负、正交的 OLAT 光照模式分别照亮一个方向，并揭示对应的基响应。
+三个环境光照图纵向排列，每个环境图通过生成模型，得到同一姿态在不同光照下的一张对应图像。
 
 **English alt text**
 
-Overlapping environment maps mix directional responses. Three nonnegative, orthogonal OLAT patterns each illuminate a separate direction and reveal its basis response.
+Three environment maps are arranged vertically. Each conditions generation of one corresponding image of the same pose, with a different lighting appearance.
 
 **图内文字对照**
 
 | 中文 | English |
 | --- | --- |
-| 方向相互重叠的光照 | Overlapping illumination |
-| 正交的方向光照输入 | Orthogonal directional inputs |
-| 环境光照 | Environments |
-| 光传输 | Transport |
-| 混合响应图像 | Mixed images |
-| 光源 1 → 基响应 1 | Light 1 → basis 1 |
-| 光源 2 → 基响应 2 | Light 2 → basis 2 |
-| 光源 3 → 基响应 3 | Light 3 → basis 3 |
+| 环境光照条件下的生成 | Environment-conditioned generation |
+| 环境光照图 | Environment map |
+| 生成图像 | Generated image |
+| 生成 | Generation |
+| 相同输入 | same input |
 
-**中文｜02.P02**
+**中文｜02.P04**
 
-监督形式本身还存在另一个问题。在环境光照图像中，多个方向同时产生贡献。当整个环境光照图作为生成器的条件时，各方向的贡献不一定被单独显式表示或约束。模型可能复现了整体外观，却没有准确遵循指定的阴影方向或相对强度——这正是促使我们开展本工作的现象。
+即使数据对完全准确，混合光照仍然带来一个辨识问题。把单颜色通道的 $h\times w$ 环境光照图展开为 $N=hw$ 个方向上的数值。对于固定场景，每个图像像素都有 $N$ 个待确定的方向系数；一张环境光照下的观测图像，为这些系数提供一个方程。要完整辨识不受额外约束的响应，至少需要 $N$ 个线性独立的光照配置。
 
 **English**
 
-There is a separate question about the supervision itself. In an environment-lit image, many directions contribute at once. When the entire environment map conditions a generator, each direction’s contribution is not necessarily exposed or constrained separately. The model may reproduce the overall appearance while missing the requested shadow direction or relative intensity—the behavior that motivated our work.
-
-**中文｜02.P03**
-
-**独立的光照变化使单个方向的响应可被辨识。** 改变整个环境光照，往往会同时改变多个变量。一组完整的正交光照模式提供了特别清晰的设计：归一化后，它构成一个条件良好的基，用于分离各个输入的作用。正交性是有用的设计目标，而不是神经模型能够学习的必要条件。
-
-**English**
-
-**Independent lighting variation makes individual responses identifiable.** Changing a whole environment often changes several variables together. A complete set of orthogonal illumination patterns offers a particularly clean design: after normalization, it forms a well-conditioned basis for separating each input’s effect. Orthogonality is a useful design target, rather than a requirement for a neural model to learn.
+Even with perfect pairs, mixed illumination leaves an identification question. Flatten an <i>h</i> × <i>w</i> environment map into <i>N</i> = <i>hw</i> directional values for one color channel. For a fixed scene, each image pixel has <i>N</i> unknown directional coefficients. One environment-lit observation supplies one equation for those coefficients. To identify an unrestricted response, we need at least <i>N</i> independent illumination configurations.
 
 
 ### 02.E01 / 公式
 
 **中文｜02.E01 / 公式标题**
 
-独立输入 → 正交光照 → OLAT
+需要多少个独立的环境光照？
 
 **English**
 
-Independent inputs → orthogonal lighting → OLAT
+How many independent environments are enough?
 
 **公式（中英文共用）**
 
 $$
 \begin{gathered}
-Y = TE
-\\
-e_i \geq 0,\qquad \langle e_i,e_j\rangle=0 \quad (i\ne j)
-\\
-\text{OLAT:}\quad E=I_N \;\Rightarrow\; Y=T
+N=hw,\qquad E=[e_1,\ldots,e_M]\in\mathbb{R}^{N\times M}
+\\ Y=TE
+\\ \operatorname{rank}(E)=N \;\Rightarrow\; M\geq N=hw
+\\ \text{OLAT:}\quad M=N,\quad E=I_N
 \end{gathered}
 $$
 
 **中文｜02.E01 / 公式说明**
 
-对于固定场景和单个颜色通道，$E$ 的列向量 $e_i$ 表示光照模式，$Y$ 的各列表示对应的图像。非负且正交的模式具有互不重叠的方向支撑集。在 $N$ 个方向上，由 $N$ 个这样的模式构成的完整集合，经过归一化与重排后，就成为 OLAT 的单位基。
+$h,w$ 是环境图的高与宽，$M$ 是光照配置数量；$E$ 的每一列 $e_j$ 都是一张展开后的环境图。若输出图像有 $P$ 个像素，则 $T\in\mathbb{R}^{P\times N}$ 将各方向的光照映射为线性图像强度，$Y\in\mathbb{R}^{P\times M}$ 存放对应的观测图像。秩条件用于在无噪声、固定场景、单颜色通道条件下辨识任意 $T$，并不是生成模型训练集规模的普遍下界。
 
 **English**
 
-For one fixed scene and color channel, the columns <i>e</i><sub>i</sub> of <i>E</i> are illumination patterns; the columns of <i>Y</i> are their images. Nonnegative, orthogonal patterns have disjoint directional support. A complete set of <i>N</i> such patterns over <i>N</i> directions becomes the OLAT identity basis after normalization and ordering.
+<i>h</i> and <i>w</i> are the environment-map dimensions; <i>M</i> is the number of illumination configurations. Each column <i>e</i><sub>j</sub> of <i>E</i> is one map. For an image with <i>P</i> pixels, <i>T</i> ∈ ℝ<sup>P×N</sup> maps directional illumination to linear image intensity, and <i>Y</i> ∈ ℝ<sup>P×M</sup> contains the observed images. The rank condition identifies an arbitrary <i>T</i> in the noiseless, fixed-scene setting, per color channel. It is not a universal dataset-size requirement for a generative model.
 
-**中文｜02.P04**
+**中文｜02.P05**
 
-**物理光强是非负的。** 两张这样的环境光照图，只有在照亮的方向集合互不重叠时才可能正交。因此，如果要求构造一个完整的正交基，并且光照模式的数量等于采样方向的数量，就会自然导向 OLAT：每个模式恰好照亮一个方向，每次观测直接测量该方向的光传输响应。
+**OLAT 是最直接的完整设计。** 归一化的正交基避免了光照方向上的冗余，其条件数为 1。物理光强非负，因此正交模式的方向支撑集不能重叠。在 $N$ 个方向上构造 $N$ 个这样的完整模式，就必须一次只照亮一个方向：重排后 $E=I_N$，于是 $Y=T$。对于这个理想的辨识问题，OLAT 达到了 $N$ 次测量的下界，并且不需要再从混合观测中分离各个响应。
 
 **English**
 
-**Physical light intensities are nonnegative.** Two such environment maps can be orthogonal only if they illuminate disjoint sets of directions. Requiring a complete orthogonal basis with one pattern per sampled direction therefore leads naturally to OLAT: each pattern lights exactly one direction, and each observation directly measures its transport response.
+**OLAT is the most direct complete design.** A normalized orthogonal basis avoids redundant lighting directions and has condition number one. Physical light is nonnegative, so orthogonal patterns cannot overlap in directional support. A complete set of <i>N</i> such patterns over <i>N</i> directions must light one direction at a time: after ordering, <i>E</i> = <i>I</i><sub>N</sub> and <i>Y</i> = <i>T</i>. OLAT reaches the <i>N</i>-measurement lower bound for this ideal identification problem and removes the need to unmix measured responses.
 
 
 ### 02.D01 / 网页中的折叠说明
 
 **中文｜02.D01 / 展开标题**
 
-为什么这种设计会导向 OLAT，以及它依赖哪些假设
+用直观语言理解秩条件
 
 **English**
 
-Why this design leads to OLAT—and what it assumes
+The rank argument, in plain language
 
 **中文｜02.D01.P01**
 
-将一个固定场景的光照离散为 $N$ 个方向，可以写成 $Y=TE$。如果 $\operatorname{rank}(E)<N$，这些观测就无法唯一确定一个不受额外约束的传输矩阵 $T$。在无噪声条件下，满行秩是充分条件；条件数不佳则会使恢复结果对测量噪声更加敏感。非正交的环境光照也可以构成满秩、条件良好的设计，而学习到的先验可以减少所需的数据量。
+图像更多，并不自动意味着独立信息更多。如果所有环境图只是一张图的变亮或变暗版本，$E$ 的各列成比例，秩仍然只有 1。如果这些列所张成的空间不足 $N$ 维，那么 $T$ 的某些变化在全部训练观测中都不可见。满行秩消除了这种线性歧义，而良好的条件数进一步降低了对噪声的敏感性。
 
 **English**
 
-For a fixed scene discretized into <i>N</i> lighting directions, $Y = TE$. If $\operatorname{rank}(E) < N$, the observations cannot uniquely identify an unrestricted transport matrix <i>T</i>. Full row rank is sufficient in the noiseless case; poor conditioning makes recovery sensitive to measurement noise. Non-orthogonal environments can also provide a full-rank, well-conditioned design, and learned priors can reduce the required data.
+More images do not automatically mean more independent information. If every environment is just a brighter or darker copy of one map, the columns of <i>E</i> are proportional and its rank is only one. With fewer than <i>N</i> independent directions in their span, some changes in <i>T</i> remain invisible in all the training observations. Full row rank removes that linear ambiguity; good conditioning reduces sensitivity to noise.
 
 **中文｜02.D01.P02**
 
-对于两个非负光照模式，$\langle e_i,e_j\rangle=\sum_k e_{ki}e_{kj}=0$ 意味着每一项乘积都为零：没有任何方向在两种模式中同时被点亮。在 $N$ 个方向上构造 $N$ 个非零、两两正交的模式时，这些互不重叠的支撑集就必须各自只包含一个方向。因此，$E$ 归一化后的各列是单位基的一种排列。数量更少的正交模式可以分别照亮互不重叠的方向组；仅有正交性本身，并不能唯一确定 OLAT。
+对于非负模式，$\langle e_i,e_j\rangle=\sum_k e_{ki}e_{kj}=0$ 意味着每项乘积都为零，因此各模式照亮的方向集合互不重叠。在 $N$ 个方向格上构造 $N$ 个非零、两两正交的模式时，每个集合就只能包含一个方向格。非正交的满秩设计同样可行；正交性是条件良好的选择，而不是学习的必要条件。
 
 **English**
 
-For two nonnegative patterns, $\langle e_i,e_j\rangle = \sum_k e_{ki}e_{kj} = 0$ means every product is zero: no direction is active in both. With <i>N</i> nonzero, pairwise orthogonal patterns over <i>N</i> directions, these disjoint supports must each contain exactly one direction. Thus the normalized columns of <i>E</i> are a permutation of the identity basis. Fewer orthogonal patterns may illuminate disjoint groups of directions; orthogonality alone does not uniquely specify OLAT.
+For nonnegative patterns, $\langle e_i,e_j\rangle = \sum_k e_{ki}e_{kj} = 0$ means every product is zero. Hence the patterns illuminate disjoint direction sets. With <i>N</i> nonzero, pairwise orthogonal patterns over <i>N</i> bins, each set contains one bin. Non-orthogonal full-rank designs also work; orthogonality is a well-conditioned choice, not a requirement for learning.
 
 **中文｜02.D01.P03**
 
-这个推导讨论的是输入光照模式，而不是其渲染图像之间的正交性。它假设使用理想、经过标定的方向光照；实际采集中，光源具有有限的覆盖范围，也存在标定误差与噪声。这种设计的优势在于对各个响应提供显式监督，并不保证模型能够完美学习。前文提到的真实采集工作使用了不同的表示形式，并非全部都是以整张环境光照图为条件的生成器。
+上述计数假设人物、姿态、视角及线性响应固定；姿态变化时，$T$ 也会改变。先验、受限的角度带宽或响应集合都可以降低数据需求。正交性指输入光照，不是图像或学习得到的 latent。OLAT 也不意味着在所有硬件条件下都具有最短采集时间或最低噪声；在不同的传感器与光照预算下，多光源复用可能有其优势。
 
 **English**
 
-This argument concerns input lighting patterns, not orthogonality of their rendered images. It assumes ideal, calibrated directional illumination; real captures have finite light footprints, calibration error, and noise. The benefit is explicit supervision of individual responses, not a guarantee of perfect learning. The capture-based works above use different representations; they are not all holistic environment-conditioned generators.
+This count assumes a fixed subject, pose, viewpoint, and linear response; varying the pose also changes <i>T</i>. Priors, reduced angular bandwidth, or a restricted response family can lower the data requirement. Orthogonality concerns the lighting inputs, not their images or learned latents. OLAT does not universally minimize capture time or noise: multiplexed lighting can have advantages under different sensor and illumination budgets.
 
 
 ---
@@ -298,13 +302,29 @@ This argument concerns input lighting patterns, not orthogonality of their rende
 
 **中文｜03 / 章节标题**
 
-学习响应，组合光照。
+用正交监督适配生成先验。
 
 **English**
 
-Learn the responses. Compose the light.
+Adapting the generative prior with orthogonal supervision.
 
 **中文｜03.P01**
+
+真实采集让这种监督具有物理依据。**Paul Debevec 团队（[Light Stage](https://www.pauldebevec.com/Research/LS/debevec-siggraph2000-high.pdf)）**测量方向性的面部反射；**MPI Informatics / NVIDIA（[HumanOLAT](https://arxiv.org/abs/2508.09137)）**提供多视角全身 OLAT 采集；**Meta Codec Avatars Lab（[Relightable Gaussian Codec Avatars](https://arxiv.org/abs/2312.03704)）**利用可控光照采集学习可重光照的虚拟人。这些工作采用不同的采集模式与模型表示，共同说明了跨光照条件实测外观的价值。
+
+**English**
+
+Real capture makes this supervision physically grounded. **Paul Debevec’s team ([Light Stage](https://www.pauldebevec.com/Research/LS/debevec-siggraph2000-high.pdf))** measured directional facial reflectance; **MPI Informatics / NVIDIA ([HumanOLAT](https://arxiv.org/abs/2508.09137))** provide multi-view full-body OLAT captures; and **Meta’s Codec Avatars Lab ([Relightable Gaussian Codec Avatars](https://arxiv.org/abs/2312.03704))** learns relightable avatars from controlled lighting capture. These works establish the value of measured appearance across lighting conditions, using different capture patterns and model representations.
+
+**中文｜03.P02**
+
+**用分离变量的数据对适配预训练生成先验。** 平光／OLAT 数据对保持外观与姿态对齐，同时指定一个光照方向，相比多个方向的无约束混合，为条件生成器提供了更明确的学习目标。在 latent diffusion 模型中，适配是用这些数据对训练条件去噪过程，并不意味着 latent space 本身变得正交。这里希望提高的是监督设计的信息效率，而不是宣称所有优化过程都会普遍加速。
+
+**English**
+
+**Use isolated pairs to adapt a pretrained generative prior.** A flat-lit / OLAT pair holds appearance and pose aligned while specifying one illumination direction. This gives the conditional generator a more explicit target than an unconstrained mixture of directions. In a latent diffusion model, adaptation trains the conditional denoising process on these pairs; it does not make the latent space itself orthogonal. The intended efficiency is in the supervision design, not a claimed universal speedup in optimization.
+
+**中文｜03.P03**
 
 在通常的线性光传输条件下，不同光源的贡献可以相加。一张 OLAT 图像包含单个光源的完整响应，包括其产生的阴影与间接散射。预测同一段表演在各光源下的响应后，新的环境光照就可以通过可控的线性组合得到。
 
@@ -315,23 +335,23 @@ Under ordinary linear light transport, contributions from separate lights add. A
 
 ### 03.F01 / 配图
 
-![三个方向的 OLAT 响应分别乘以对应权重，然后相加，得到一张重光照图像。](assets/project-source/olat-composition.svg)
+![较小的人体分别接受暖色左侧光、青色右侧光和蓝色顶光；光源与明暗渐变颜色一致，顶光在下巴下方与地面形成阴影。](assets/project-source/olat-composition.svg)
 
 **中文｜03.F01 / 图注**
 
-每个方向预测一次，然后进行组合。图中的光照瓣用于表示基响应；它们是概念示意图，并非 DynOLAT 的输出结果。
+用于组合的一致方向基。三个示例使用相同姿态，颜色和明暗变化与光照方向对应。这些人物是概念示意；加权求和在线性图像空间中进行。
 
 **English**
 
-Predict once per direction, then compose. The illustrated lighting lobes represent basis responses; they are conceptual diagrams, not DynOLAT outputs.
+A consistent basis for composition. Each example uses the same pose, with color and shading matched to its light direction. The figures are conceptual illustrations; the weighted sum is performed in linear image space.
 
 **中文｜图片替代文本**
 
-三个方向的 OLAT 响应分别乘以对应权重，然后相加，得到一张重光照图像。
+较小的人体分别接受暖色左侧光、青色右侧光和蓝色顶光；光源与明暗渐变颜色一致，顶光在下巴下方与地面形成阴影。
 
 **English alt text**
 
-Three directional OLAT responses are multiplied by separate weights and added into one relit image.
+A smaller human figure under warm left lighting, teal right lighting, and blue top lighting. Each light matches its shading color; top lighting adds a shadow below the chin and on the ground.
 
 **图内文字对照**
 
@@ -349,29 +369,30 @@ Three directional OLAT responses are multiplied by separate weights and added in
 
 **中文｜03.E01 / 公式标题**
 
-每个光照方向对应一段基视频
+在潜空间中适配，在线性图像空间中组合
 
 **English**
 
-One basis video per light direction
+Adapt in latent space; compose in linear image space
 
 **公式（中英文共用）**
 
 $$
 \begin{gathered}
-I_t(x;L)\approx\sum_k w_k(L)\,B_{t,k}(x)
+p_\theta\!\left(Z^{\mathrm{OLAT}}\mid Z^{\mathrm{flat}},\omega_k\right)
+\\ I_t(x;L)\approx\sum_k w_k(L)\,B_{t,k}(x)
 \end{gathered}
 $$
 
 **中文｜03.E01 / 公式说明**
 
-$B_{t,k}$ 是方向 $k$ 的 OLAT 响应。由环境光照计算出的权重 $w_k$，在线性颜色空间中按颜色通道分别控制该响应的贡献。由于光照采样有限且预测存在误差，这仍然是一个近似。
+$Z^{\mathrm{flat}}$ 与 $Z^{\mathrm{OLAT}}$ 表示配对序列编码后的 latent；$p_\theta$ 表示模型针对方向 $\omega_k$ 学习到的条件生成分布。第二行用环境光照确定的权重 $w_k$，在线性颜色空间中按通道组合解码后的 OLAT 响应 $B_{t,k}$。这不假设 latent 或生成器本身是线性的；有限方向采样与预测误差仍然存在。
 
 **English**
 
-<i>B</i><sub>t,k</sub> is the OLAT response for direction <i>k</i>. Environment-derived weights <i>w</i><sub>k</sub> control its contribution, per color channel, in linear color space. Finite lighting samples and prediction errors make this an approximation.
+<i>Z</i><sup>flat</sup> and <i>Z</i><sup>OLAT</sup> denote encoded paired sequences; <i>p</i><sub>θ</sub> denotes the learned conditional generation distribution for direction <i>ω</i><sub>k</sub>. The second line composes decoded OLAT responses <i>B</i><sub>t,k</sub> using environment-derived weights <i>w</i><sub>k</sub>, per color channel in linear color space. It does not assume that latents or the generator are linear. Finite directional sampling and prediction errors remain.
 
-**中文｜03.P02**
+**中文｜03.P04**
 
 **数据表示改变了我们需要采样的对象。** 任意环境光照图构成了庞大的光照组合空间。在固定光源归一化方式后，OLAT 转而在同一个紧致球面 $\omega\in\mathbb{S}^2$ 上采样方向。增加样本能够细化方向覆盖，而不同光照的组合由合成来实现。人物、运动、材质和视角仍然需要广泛覆盖。
 
@@ -379,7 +400,7 @@ $B_{t,k}$ 是方向 $k$ 的 OLAT 响应。由环境光照计算出的权重 $w_k
 
 **The data representation changes what we need to sample.** Arbitrary environment maps span a large space of lighting combinations. At fixed light normalization, OLAT instead samples directions on the same compact sphere, $\omega \in \mathbb{S}^2$. More samples refine directional coverage; composition supplies the combinations. People, motion, materials, and viewpoints still require broad coverage.
 
-**中文｜03.P03**
+**中文｜03.P05**
 
 这让我们想到，图像与视频空间中的 OLAT 响应可能构成一个可学习、具有结构的集合。方向域的紧致性与传输算子的紧性是不同的概念：球面上的函数仍然构成无限维空间。OLAT 并没有消除有限采样误差，也没有证明存在一个全局可学习的流形；它在这里的优势是显式的方向监督与线性组合。
 
@@ -387,7 +408,7 @@ $B_{t,k}$ 是方向 $k$ 的 OLAT 响应。由环境光照计算出的权重 $w_k
 
 This suggested a learnable, structured family of OLAT responses in image and video space. Compactness of the direction domain is different from compactness of a transport operator: functions on the sphere still form an infinite-dimensional space. OLAT does not remove finite-sampling error or prove a globally learnable manifold; its advantage here is explicit directional supervision and linear composition.
 
-**中文｜03.P04**
+**中文｜03.P06**
 
 在启动 DynOLAT 之前，我们受到 [DifFRelight](https://arxiv.org/abs/2410.08188) 的启发：它针对特定人物训练扩散模型，利用平光与 OLAT 采集实现了高度逼真的面部表演重光照。借助预训练视频模型的外观与时序先验，我们希望将这一方向扩展到**全身、动态以及未见过的人物**。
 
@@ -421,36 +442,38 @@ Our initial plan was to collect many conventional static flat-lit / OLAT pairs�
 
 ### 04.F01 / 配图
 
-![静态采集在切换光源时保持同一姿态；动态采集交替记录平光帧与 OLAT 帧，再将它们对齐为配对序列。](assets/project-source/dynamic-pairs.svg)
+![上方为三个不同的静态姿态，下方为三组对齐后的动态数据对。每对包含相同姿态的平光图像与带方向性明暗渐变的 OLAT 图像，不同数据对之间的姿态发生变化。](assets/project-source/dynamic-pairs.svg)
 
 **中文｜04.F01 / 图注**
 
-从一个姿态走向一段表演。动态采集为变化中的姿态提供配对光照监督，而不必在每个瞬间记录一整轮 OLAT。图中的帧仅用于概念示意。
+静态姿态覆盖与对齐后的动态监督。上方展示分别保持的三个静态姿态中具有代表性的 OLAT 图像，并非同一轮逐灯采集中的连续光源。下方展示对齐后的三组训练数据：每对内部姿态一致，不同数据对之间动作变化。
 
 **English**
 
-From a pose to a performance. Dynamic capture gives changing poses paired lighting supervision without recording a full OLAT sweep at every instant. The illustrated frames are schematic.
+Static pose coverage versus aligned dynamic supervision. The top row shows representative OLAT images from three separately held poses, not successive lights in one sweep. The bottom row shows three training pairs after alignment: pose is matched within each pair and changes across pairs.
 
 **中文｜图片替代文本**
 
-静态采集在切换光源时保持同一姿态；动态采集交替记录平光帧与 OLAT 帧，再将它们对齐为配对序列。
+上方为三个不同的静态姿态，下方为三组对齐后的动态数据对。每对包含相同姿态的平光图像与带方向性明暗渐变的 OLAT 图像，不同数据对之间的姿态发生变化。
 
 **English alt text**
 
-Static capture holds one pose across lights; dynamic capture interleaves flat-lit and OLAT frames, then aligns them into paired sequences.
+Three different static poses above three aligned dynamic pairs. Each pair contains a flat-lit and a directionally shaded OLAT image in the same pose, with the pose changing between pairs.
 
 **图内文字对照**
 
 | 中文 | English |
 | --- | --- |
-| 静态逐灯采集：保持姿态 | Static sweep: hold the pose |
-| OLAT 1 | OLAT 1 |
-| OLAT 2 | OLAT 2 |
-| OLAT 3 | OLAT 3 |
-| 动态采集：交替采样并对齐 | Dynamic capture: interleave and align |
+| 静态子集：分别保持的不同姿态 | Static subset: distinct held poses |
+| 姿态 1 · OLAT 1 | Pose 1 · OLAT 1 |
+| 姿态 2 · OLAT 2 | Pose 2 · OLAT 2 |
+| 姿态 3 · OLAT 3 | Pose 3 · OLAT 3 |
+| 动态数据对：对齐后姿态一致 | Dynamic pairs: matched after alignment |
 | 平光 | Flat |
 | OLAT | OLAT |
-| 对齐后的数据对 | Aligned pairs |
+| 数据对 1 | Pair 1 |
+| 数据对 2 | Pair 2 |
+| 数据对 3 | Pair 3 |
 
 **中文｜04.P02**
 
