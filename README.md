@@ -19,6 +19,7 @@ Open http://127.0.0.1:8766/. Set `PORT=8767` if the port is occupied. The previe
 - `index.html`: visible text, links, tables, and page sections.
 - `styles.css`: shared styles and main-page layout.
 - `project-source.html` / `project-source.css`: standalone project-origin story, with one formula and diagram per chapter.
+- `INSIGHTS_ZH_EN.md`: editable Chinese–English counterpart of the Insights page. Edit the Chinese paragraphs, then sync the English and HTML deliberately; do not overwrite this draft with an automatic export.
 - `assets/project-source/`: four editable SVG concept diagrams; these are illustrations, not model outputs.
 - `script.js`: video controls, comparison selector, navigation, and HDR status.
 - `assets/method-overview-dark.svg`: editable dark method schematic, including Delighting. This is a web schematic based on Fig. 2 and Supplement §C, not a reproduction of the original paper figure.
