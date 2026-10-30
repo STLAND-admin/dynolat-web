@@ -21,10 +21,10 @@ Open http://127.0.0.1:8766/. Set `PORT=8767` if the port is occupied. The previe
 - `project-source.html` / `project-source.css`: standalone project-origin story, with one formula and diagram per chapter.
 - `INSIGHTS_ZH_EN.md`: editable Chinese–English counterpart of the Insights page. Edit the Chinese paragraphs, then sync the English and HTML deliberately; do not overwrite this draft with an automatic export.
 - `assets/project-source/`: four editable SVG concept diagrams; these are illustrations, not model outputs.
-- `script.js`: demo playback, navigation, and HDR status.
-- `assets/method-overview-dark.svg`: editable dark reconstruction of paper Fig. 2, without a Delighting stage. Cropped paper imagery and its source notes are in `assets/method-figure/`.
-- More Results contains four manually playable cases from the supplementary demo: lighting response, captured scenes, in the wild, and temporal consistency.
-- `assets/videos/comparisons/`: four short comparison clips and their posters.
+- `script.js`: demo playback, synchronized Jcam multi-view playback, navigation, and HDR status.
+- `assets/method-overview-dark.svg`: editable dark reconstruction of paper Fig. 2, without a Delighting stage. It embeds masked original paper pixels for the people and environment maps; see `assets/method-figure/README.md`.
+- More Results presents the Jcam multi-camera sequence as a synchronized view grid, plus a download link for the longer Camera D forward/reverse source clip.
+- `assets/videos/jcam/`: the 12 synchronized camera clips and Camera D forward/reverse sequence copied from the project materials.
 - `RELEASE_CHECKLIST.md`: remaining release decisions and missing links.
 - `MEDIA.md`: video provenance, source timestamps, and compression notes.
 

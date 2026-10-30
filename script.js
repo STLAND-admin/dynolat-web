@@ -4,6 +4,7 @@ const sections = [...document.querySelectorAll("main section[id], main .hero-dem
 const navLinks = [...document.querySelectorAll(".topbar__link")];
 const hdrSupportNote = document.querySelector("#hdrSupportNote");
 const experimentVideos = [...document.querySelectorAll(".experiment-video")];
+const jcamVideos = [...document.querySelectorAll(".jcam-video[data-jcam-sync]")];
 
 let frameRequested = false;
 
@@ -86,11 +87,40 @@ function syncExperimentVideos() {
   }
 }
 
+function syncJcamVideos() {
+  if (jcamVideos.length < 2) return;
+
+  let syncing = false;
+  const mirror = (source, mode) => {
+    if (syncing) return;
+    syncing = true;
+    for (const target of jcamVideos) {
+      if (target === source) continue;
+      if (Math.abs(target.currentTime - source.currentTime) > 0.08) {
+        try { target.currentTime = source.currentTime; } catch {}
+      }
+      target.playbackRate = source.playbackRate;
+      if (mode === "play") target.play().catch(() => {});
+      if (mode === "pause") target.pause();
+    }
+    window.setTimeout(() => { syncing = false; }, 40);
+  };
+
+  for (const video of jcamVideos) {
+    video.addEventListener("play", () => mirror(video, "play"));
+    video.addEventListener("pause", () => mirror(video, "pause"));
+    video.addEventListener("seeking", () => mirror(video, "seek"));
+    video.addEventListener("timeupdate", () => mirror(video, "seek"));
+    video.addEventListener("ratechange", () => mirror(video, "seek"));
+  }
+}
+
 window.addEventListener("scroll", requestChromeUpdate, { passive: true });
 window.addEventListener("resize", requestChromeUpdate);
 
 updateHdrSupportNote();
 syncExperimentVideos();
+syncJcamVideos();
 updatePageChrome();
 
 const hdrVideo = document.querySelector(".hdr-video");

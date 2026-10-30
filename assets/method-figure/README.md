@@ -1,9 +1,9 @@
 # Method figure image sources
 
-The subject cutouts in `../method-overview-dark.svg` come from Fig. 2 on page 4 of `../dynolat.pdf`.
+The subject and environment-map images in `../method-overview-dark.svg` come from Fig. 2 on page 4 of `../dynolat.pdf`.
 
-- `input-paper.png`: crop of the paper's flat-lit input video example.
-- `output-warm-paper.png`: crop of the warm-environment relit output.
-- `output-cool-paper.png`: crop of the cool-environment relit output.
+- `input-paper.png`, `output-warm-paper.png`, and `output-cool-paper.png` are original-page crops retained as source references.
+- `input-cutout.png`, `output-warm-cutout.png`, and `output-cool-cutout.png` preserve the source RGB pixels with a transparent background mask.
+- `envmap-warm.png` and `envmap-cool.png` preserve the original environment-map pixels with a circular alpha mask.
 
-The crops are rendered from the bundled paper at 180 dpi. Their white page background is retained, and the PNGs are embedded in the SVG so the figure works as a standalone asset. The stages, connections, labels, and dark styling are editable SVG elements reconstructed from the figure caption and visible architecture. No Delight stage was present in the paper figure or added to this OLAT pipeline illustration. The surrounding Method text separately notes the trained delighting model for general video.
+The network blocks, connections, labels, and dark styling are reconstructed as editable SVG elements. No Delighting stage was present in the paper figure or added to this OLAT pipeline illustration. The surrounding Method text separately notes the trained delighting model for general video.

@@ -126,7 +126,7 @@ Given a flat-lit video, our model predicts temporally coherent OLAT basis videos
 
 ### figcaption
 
-Dark web reconstruction of Fig. 2. The subject examples are cropped from the original paper figure; network blocks and connections are redrawn as editable SVG. Swipe horizontally to inspect details on small screens.
+Dark web reconstruction of Fig. 2. The original paper pixels are retained, with the people and environment maps separated by transparent masks; network blocks and connections are redrawn as editable SVG. Swipe horizontally to inspect details on small screens.
 
 ### h3
 
@@ -228,25 +228,65 @@ Bold marks the best value in each column. ↑ Higher is better; ↓ lower is bet
 
 More Results
 
-### figcaption
-
-Lighting responseSupplementary video · 02:09–02:27 · Direction and intensity
-
-### figcaption
-
-Captured scenesSupplementary video · 02:30–02:54 · Multiple methods
-
-### figcaption
-
-In the wildSupplementary video · 03:30–03:45 · General video inputs
-
-### figcaption
-
-Temporal consistencySupplementary video · 03:47–03:53 · Sequence vs. per-frame inference
-
 ### p
 
-Clips are excerpts from the supplementary demo; original method labels are preserved. “In the wild” shows general input videos and is not a separate delighting ablation.
+Twelve synchronized camera views from one dynamic capture. Play any view to compare the full performance across cameras.
+
+### figcaption
+
+Camera ASynchronized multi-view capture
+
+### figcaption
+
+Camera BSynchronized multi-view capture
+
+### figcaption
+
+Camera CSynchronized multi-view capture
+
+### figcaption
+
+Camera DSynchronized multi-view capture
+
+### figcaption
+
+Camera ESynchronized multi-view capture
+
+### figcaption
+
+Camera FSynchronized multi-view capture
+
+### figcaption
+
+Camera HSynchronized multi-view capture
+
+### figcaption
+
+Camera ISynchronized multi-view capture
+
+### figcaption
+
+Camera JSynchronized multi-view capture
+
+### figcaption
+
+Camera KSynchronized multi-view capture
+
+### figcaption
+
+Camera LSynchronized multi-view capture
+
+### figcaption
+
+Camera MSynchronized multi-view capture
+
+### a
+
+↓Download clip
+
+### figcaption
+
+Camera D · Forward / reverseOriginal source is MPEG‑4 Part 2; this browser cannot decode it. Download for a compatible player.
 
 ### h3 · playback-title
 
@@ -550,18 +590,23 @@ Explore the method →
 | index.html | source | src | `assets/videos/dynolat-demo.mp4` |
 | index.html | a | href | `assets/videos/dynolat-demo.mp4` |
 | index.html | a | href | `project-source.html` |
-| index.html | a | href | `assets/method-overview-dark.svg?v=20261030-4` |
-| index.html | img | src | `assets/method-overview-dark.svg?v=20261030-4` |
+| index.html | a | href | `assets/method-overview-dark.svg?v=20261030-5` |
+| index.html | img | src | `assets/method-overview-dark.svg?v=20261030-5` |
 | index.html | a | href | `https://huggingface.co/datasets/STLAND/ZJU_OLAT` |
 | index.html | a | href | `assets/dynolat.pdf#page=12` |
-| index.html | video | poster | `assets/videos/comparisons/lighting-response.jpg` |
-| index.html | source | src | `assets/videos/comparisons/lighting-response.mp4` |
-| index.html | video | poster | `assets/videos/comparisons/captured-scenes.jpg` |
-| index.html | source | src | `assets/videos/comparisons/captured-scenes.mp4` |
-| index.html | video | poster | `assets/videos/comparisons/in-the-wild.jpg` |
-| index.html | source | src | `assets/videos/comparisons/in-the-wild.mp4` |
-| index.html | video | poster | `assets/videos/comparisons/temporal-consistency.jpg` |
-| index.html | source | src | `assets/videos/comparisons/temporal-consistency.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamA.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamB.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamC.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamD.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamE.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamF.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamH.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamI.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamJ.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamK.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamL.mp4` |
+| index.html | source | src | `assets/videos/jcam/JcamM.mp4` |
+| index.html | a | href | `assets/videos/jcam/JcamD_forward_reverse_x1.mp4` |
 | index.html | source | src | `assets/videos/shanghai-sdr.mp4` |
 | index.html | source | src | `assets/videos/shanghai-hdr.mp4` |
 | index.html | a | href | `assets/dynolat.pdf#page=19` |

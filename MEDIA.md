@@ -4,17 +4,14 @@ The full supplementary movie was supplied by the project author. The original MO
 
 `assets/videos/dynolat-demo.mp4` is a 1280 × 720 H.264 web transcode (target 2 Mb/s, about 68 MiB, duration 288.45 s). It is visually compressed; it is not a lossless master. The source has no audio track. The master is approximately 210 MiB and exceeds GitHub's regular 100 MiB file limit.
 
-Comparison excerpts are lossless passthrough trims from the supplied master, preserving all baked-in method labels. They are not cropped to remove other methods. Their posters are actual frames from the same source.
+## Jcam multi-view sequence
 
-| Clip | Source interval | Content |
-|---|---|---|
-| `lighting-response.mp4` | 02:09–02:27 | Light direction / relative intensity; DynOLAT, UniRelight, DiffusionRenderer |
-| `captured-scenes.mp4` | 02:30–02:54 | Captured test data; input, DynOLAT, UniRelight, DiffusionRenderer, RelightVid |
-| `in-the-wild.mp4` | 03:30–03:45 | General input videos; the same method comparison |
-| `temporal-consistency.mp4` | 03:47–03:53 | DynOLAT versus per-frame inference |
+The More Results camera gallery uses the Jcam clips copied from the author's `Demo_assets` folder. Camera A, B, C, D, E, F, H, I, J, K, L, and M are approximately 1.9 seconds each and are synchronized in the browser when any camera is played, paused, or scrubbed. `JcamD_forward_reverse_x1.mp4` is the longer 3.8-second forward/reverse sequence. It uses MPEG-4 Part 2 video, which the current browser cannot decode, so the gallery offers the original as a download instead of showing a broken player.
 
-The last clip is an inference-strategy comparison. The in-the-wild clip is not an explicit Delighting ablation. Do not imply a causal Delighting improvement from this clip alone.
+## Method figure
 
-The three short environment previews and SDR/HDR example come from the existing project materials. These illustrate relighting and display formats, not additional baseline comparisons.
+`assets/method-overview-dark.svg` reconstructs paper Figure 2 for the dark webpage. People and environment maps retain the original paper pixels with transparent masks. The SVG embeds these PNGs so it remains a self-contained, editable figure; its labels, model blocks, and connections are vector elements. No Delighting stage is added to the pipeline. The accompanying page text explains the separately trained delighting model for general videos.
+
+The short environment previews and SDR/HDR example come from existing project materials. They illustrate relighting and display formats, not additional baseline comparisons.
 
 GitHub file-size guidance: https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github
