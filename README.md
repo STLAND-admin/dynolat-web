@@ -21,8 +21,9 @@ Open http://127.0.0.1:8766/. Set `PORT=8767` if the port is occupied. The previe
 - `project-source.html` / `project-source.css`: standalone project-origin story, with one formula and diagram per chapter.
 - `INSIGHTS_ZH_EN.md`: editable Chinese–English counterpart of the Insights page. Edit the Chinese paragraphs, then sync the English and HTML deliberately; do not overwrite this draft with an automatic export.
 - `assets/project-source/`: four editable SVG concept diagrams; these are illustrations, not model outputs.
-- `script.js`: video controls, comparison selector, navigation, and HDR status.
-- `assets/method-overview-dark.svg`: editable dark method schematic, including Delighting. This is a web schematic based on Fig. 2 and Supplement §C, not a reproduction of the original paper figure.
+- `script.js`: demo playback, navigation, and HDR status.
+- `assets/method-overview-dark.svg`: editable dark reconstruction of paper Fig. 2, without a Delighting stage. Cropped paper imagery and its source notes are in `assets/method-figure/`.
+- More Results contains four manually playable cases from the supplementary demo: lighting response, captured scenes, in the wild, and temporal consistency.
 - `assets/videos/comparisons/`: four short comparison clips and their posters.
 - `RELEASE_CHECKLIST.md`: remaining release decisions and missing links.
 - `MEDIA.md`: video provenance, source timestamps, and compression notes.

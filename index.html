@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="DynOLAT predicts temporally consistent full-body OLAT basis videos from monocular video, with a delighting stage for general inputs under uncontrolled illumination.">
+  <meta name="description" content="DynOLAT predicts temporally consistent full-body OLAT basis videos from monocular video, with a trained delighting model for general inputs under uncontrolled illumination.">
   <title>DynOLAT: OLAT Video Prediction for Controllable Dynamic Full-Body Relighting</title>
   <link rel="preload" href="assets/fonts/lato-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css?v=20261019-4">
@@ -103,17 +103,17 @@
         <div class="section__head">
           <h2 class="section-title">Method</h2>
           <p class="section__lead section-text">
-            From general video to controllable light: a delighting stage bridges uncontrolled input illumination to the flat-lit domain. Our light-conditioned video model predicts a reusable set of OLAT basis videos, which can be recombined under new environment maps.
+            Given a flat-lit video, our model predicts temporally coherent OLAT basis videos for requested light directions and combines them in linear color space under a new environment map. For general videos with uncontrolled lighting, we also trained a lightweight delighting model to map the input toward the flat-lit domain.
           </p>
         </div>
         <figure class="method-figure">
-          <a href="assets/method-overview-dark.svg" target="_blank" rel="noopener" aria-label="Open the method diagram at full size"><img src="assets/method-overview-dark.svg" width="1360" height="490" loading="lazy" alt="General monocular video passes through Delighting, then an OLAT video predictor conditioned on light direction, and finally linear composition with environment-map weights to produce a relit video."></a>
-          <figcaption>System overview, redrawn for the web: the OLAT pipeline (Fig. 2) with the delighting stage described in Supplement §C. Click to enlarge.</figcaption>
+          <a href="assets/method-overview-dark.svg?v=20261030-4" target="_blank" rel="noopener" aria-label="Open the method diagram at full size"><img src="assets/method-overview-dark.svg?v=20261030-4" width="1480" height="590" loading="lazy" alt="Reconstruction of paper Figure 2 on a dark background: a flat-lit video is encoded; spherical harmonics of each target light direction condition an iterative bridge matching video model that predicts OLAT basis videos; the frozen decoder produces the bases, which are combined in linear color space with environment-map weights to create relit videos."></a>
+          <figcaption>Dark web reconstruction of Fig. 2. The subject examples are cropped from the original paper figure; network blocks and connections are redrawn as editable SVG. Swipe horizontally to inspect details on small screens.</figcaption>
         </figure>
         <ol class="method-list card-grid method-grid">
           <li class="info-card">
             <span class="method-list__index" aria-hidden="true">01</span>
-            <div><h3 class="card-title">Delighting for General Video</h3><p>A lightweight LoRA adaptation of Wan2.1 1.3B reduces uncontrolled illumination before OLAT prediction. This extends the system beyond directly captured flat-lit inputs; the internal OLAT predictor still uses the flat-lit domain.</p></div>
+            <div><h3 class="card-title">Light-conditioned video prediction</h3><p>Spherical harmonic embeddings encode target light directions. The video model predicts a corresponding sequence of OLAT basis frames for each direction.</p></div>
           </li>
           <li class="info-card">
             <span class="method-list__index" aria-hidden="true">02</span>
@@ -121,10 +121,6 @@
           </li>
           <li class="info-card">
             <span class="method-list__index" aria-hidden="true">03</span>
-            <div><h3 class="card-title">Light-Conditioned Video Prediction</h3><p>Lighting directions modulate the video model via AdaLN, producing temporally coherent OLAT basis videos that remain stable under dynamic body motion.</p></div>
-          </li>
-          <li class="info-card">
-            <span class="method-list__index" aria-hidden="true">04</span>
             <div><h3 class="card-title">Linear OLAT Recomposition</h3><p>Predicted OLAT basis frames are accumulated in linear color space with illumination weights, yielding controllable full-body relighting under arbitrary environment maps.</p></div>
           </li>
         </ol>
@@ -167,24 +163,7 @@
         <div class="section__head">
           <h2 class="section-title">Results</h2>
         </div>
-        <div class="comparison-showcase">
-          <h3 class="comparison-title">See the comparisons in motion</h3>
-          <p class="comparison-intro">Explore lighting response, captured test scenes, in-the-wild inputs, and temporal consistency. All clips are excerpts from the supplementary video, with the original method labels preserved.</p>
-          <div class="comparison-tabs" role="group" aria-label="Choose a video comparison">
-            <button type="button" data-comparison="lighting-response" aria-pressed="true">Lighting response</button>
-            <button type="button" data-comparison="captured-scenes" aria-pressed="false">Captured scenes</button>
-            <button type="button" data-comparison="in-the-wild" aria-pressed="false">In the wild</button>
-            <button type="button" data-comparison="temporal-consistency" aria-pressed="false">Temporal consistency</button>
-          </div>
-          <figure>
-            <div class="media-frame media-frame--video">
-              <video id="comparison-video" controls loop muted playsinline preload="metadata" poster="assets/videos/comparisons/lighting-response.jpg" aria-label="Lighting response comparison" src="assets/videos/comparisons/lighting-response.mp4"></video>
-            </div>
-            <figcaption id="comparison-caption" aria-live="polite">Light direction and relative intensity: DynOLAT, UniRelight, and DiffusionRenderer. Supplementary video 2:09–2:27.</figcaption>
-          </figure>
-          <div class="comparison-actions"><button class="preview-toggle" type="button" data-comparison-toggle>Play comparison</button><a id="comparison-download" href="assets/videos/comparisons/lighting-response.mp4" download>Download this clip ↗</a></div>
-        </div>
-        <p class="section-text prose">DynOLAT improves lighting-response fidelity across most reported image metrics and achieves the lowest errors in the reported temporal comparison. Results below reproduce Tables 2 and 3 of the paper.</p>
+        <p class="section-text prose">DynOLAT improves lighting-response fidelity across most reported image metrics and achieves the lowest errors in the reported temporal comparison. These tables reproduce Tables 2 and 3 of the paper.</p>
         <div class="results-table-wrap" tabindex="0" role="region" aria-label="Image relighting results; scroll horizontally on small screens">
           <table class="results-table">
             <caption>Image relighting · channel-aligned evaluation</caption>
@@ -218,29 +197,26 @@
       <div class="container section-inner">
         <div class="preview-heading short-preview-heading">
           <h2 class="section-title">More Results</h2>
-          <button class="preview-toggle" type="button" data-preview-toggle>Play previews</button>
         </div>
-        <div class="preview-grid" aria-label="Relighting video previews">
-          <figure class="preview-item">
-            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under the Shanghai environment">
-              <source src="assets/videos/shanghai-sdr.mp4" type="video/mp4">
-            </video>
-            <figcaption><span>01</span> Shanghai</figcaption>
+        <div class="case-grid" aria-label="More relighting results from the supplementary video">
+          <figure class="case-card">
+            <video controls playsinline preload="none" poster="assets/videos/comparisons/lighting-response.jpg" aria-label="Lighting direction and intensity comparison"><source src="assets/videos/comparisons/lighting-response.mp4" type="video/mp4"></video>
+            <figcaption><span>Lighting response</span><small>Supplementary video · 02:09–02:27 · Direction and intensity</small></figcaption>
           </figure>
-          <figure class="preview-item">
-            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under the sky environment">
-              <source src="assets/videos/sky-sdr.mp4" type="video/mp4">
-            </video>
-            <figcaption><span>02</span> Sky</figcaption>
+          <figure class="case-card">
+            <video controls playsinline preload="none" poster="assets/videos/comparisons/captured-scenes.jpg" aria-label="Captured test scene comparison"><source src="assets/videos/comparisons/captured-scenes.mp4" type="video/mp4"></video>
+            <figcaption><span>Captured scenes</span><small>Supplementary video · 02:30–02:54 · Multiple methods</small></figcaption>
           </figure>
-          <figure class="preview-item">
-            <video data-preview controls loop muted playsinline preload="metadata" aria-label="Relighting preview under environment one">
-              <source src="assets/videos/environment-01-sdr.mp4" type="video/mp4">
-            </video>
-            <figcaption><span>03</span> Environment 01</figcaption>
+          <figure class="case-card">
+            <video controls playsinline preload="none" poster="assets/videos/comparisons/in-the-wild.jpg" aria-label="In-the-wild general video comparison"><source src="assets/videos/comparisons/in-the-wild.mp4" type="video/mp4"></video>
+            <figcaption><span>In the wild</span><small>Supplementary video · 03:30–03:45 · General video inputs</small></figcaption>
+          </figure>
+          <figure class="case-card">
+            <video controls playsinline preload="none" poster="assets/videos/comparisons/temporal-consistency.jpg" aria-label="Temporal consistency comparison"><source src="assets/videos/comparisons/temporal-consistency.mp4" type="video/mp4"></video>
+            <figcaption><span>Temporal consistency</span><small>Supplementary video · 03:47–03:53 · Sequence vs. per-frame inference</small></figcaption>
           </figure>
         </div>
-        <p class="preview-caption">Short relighting previews under different environment maps. SDR playback.</p>
+        <p class="preview-caption">Clips are excerpts from the supplementary demo; original method labels are preserved. “In the wild” shows general input videos and is not a separate delighting ablation.</p>
         <aside class="playback-note" aria-labelledby="playback-title">
         <div class="playback-note__copy"><h3 class="playback-heading" id="playback-title">SDR / HDR playback</h3>
         <p class="section-text">The same relighting example in two display formats. HDR appearance depends on your browser and screen.</p></div>

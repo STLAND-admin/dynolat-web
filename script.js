@@ -98,63 +98,9 @@ hdrVideo?.addEventListener("loadedmetadata", updateHdrSupportNote);
 hdrVideo?.addEventListener("error", updateHdrSupportNote);
 
 const demoVideo = document.querySelector("#demo-video");
-const previews = [...document.querySelectorAll("video[data-preview]")];
-const previewToggle = document.querySelector("[data-preview-toggle]");
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-let previewsEnabled = !reducedMotion.matches && !navigator.connection?.saveData;
-let previewsVisible = true;
-
-function updatePreviewButton() {
-  if (!previewToggle) return;
-  previewToggle.textContent = previews.some(video => !video.paused) ? "Pause previews" : "Play previews";
-}
-
-function applyPreviewPlayback() {
-  const shouldPlay = previewsEnabled && previewsVisible && !document.hidden && (!demoVideo || demoVideo.paused);
-  for (const video of previews) {
-    if (shouldPlay) video.play().catch(updatePreviewButton);
-    else video.pause();
-  }
-  updatePreviewButton();
-}
-
-for (const video of previews) {
-  video.addEventListener("play", updatePreviewButton);
-  video.addEventListener("pause", updatePreviewButton);
-}
-previewToggle?.addEventListener("click", () => {
-  previewsEnabled = !previews.some(video => !video.paused);
-  applyPreviewPlayback();
-});
-document.addEventListener("visibilitychange", applyPreviewPlayback);
-reducedMotion.addEventListener("change", event => {
-  if (event.matches) { previewsEnabled = false; applyPreviewPlayback(); }
-});
-const previewGrid = document.querySelector(".preview-grid");
-if (previewGrid && "IntersectionObserver" in window) {
-  new IntersectionObserver(entries => {
-    previewsVisible = entries[0].isIntersecting;
-    applyPreviewPlayback();
-  }, { threshold: 0.1 }).observe(previewGrid);
-} else {
-  applyPreviewPlayback();
-}
-
-// Keep the short environment previews on a shared timeline once decoded.
-const previewLead = previews[0];
-previewLead?.addEventListener("timeupdate", () => {
-  if (previewLead.paused) return;
-  for (const video of previews.slice(1)) {
-    if (video.readyState >= 2 && Math.abs(video.currentTime - previewLead.currentTime) > 0.12) {
-      video.currentTime = Math.min(previewLead.currentTime, Math.max(0, video.duration - 0.01));
-    }
-  }
-});
-
 const demoToggle = document.querySelector("[data-demo-toggle]");
 function updateDemoPlayback() {
   if (demoToggle && demoVideo) demoToggle.textContent = demoVideo.paused ? "Play demo" : "Pause demo";
-  applyPreviewPlayback();
 }
 demoToggle?.addEventListener("click", () => {
   if (!demoVideo) return;
@@ -162,42 +108,3 @@ demoToggle?.addEventListener("click", () => {
   else demoVideo.pause();
 });
 for (const event of ["play", "pause", "ended"]) demoVideo?.addEventListener(event, updateDemoPlayback);
-
-const comparisonVideo = document.querySelector("#comparison-video");
-const comparisonToggle = document.querySelector("[data-comparison-toggle]");
-const comparisonButtons = [...document.querySelectorAll("[data-comparison]")];
-const comparisonDescriptions = {
-  "lighting-response": "Light direction and relative intensity: DynOLAT, UniRelight, and DiffusionRenderer. Supplementary video 2:09–2:27.",
-  "captured-scenes": "Captured test scenes: input, DynOLAT, UniRelight, DiffusionRenderer, and RelightVid. Supplementary video 2:30–2:54.",
-  "in-the-wild": "General video inputs: input, DynOLAT, UniRelight, DiffusionRenderer, and RelightVid. Supplementary video 3:30–3:45. This is a method comparison, not a delighting ablation.",
-  "temporal-consistency": "Temporal consistency: DynOLAT versus per-frame inference. Supplementary video 3:47–3:53. This compares inference strategies, not different baseline models."
-};
-function updateComparisonPlayback() {
-  if (comparisonToggle) comparisonToggle.textContent = comparisonVideo.paused ? "Play comparison" : "Pause comparison";
-}
-comparisonToggle?.addEventListener("click", () => {
-  if (comparisonVideo.paused) comparisonVideo.play().catch(updateComparisonPlayback);
-  else comparisonVideo.pause();
-});
-for (const button of comparisonButtons) button.addEventListener("click", () => {
-  if (button.getAttribute("aria-pressed") === "true") return;
-  comparisonVideo.pause();
-  const key = button.dataset.comparison;
-  const path = `assets/videos/comparisons/${key}`;
-  comparisonVideo.src = `${path}.mp4`;
-  comparisonVideo.poster = `${path}.jpg`;
-  comparisonVideo.setAttribute("aria-label", `${button.textContent} comparison`);
-  comparisonVideo.load();
-  document.querySelector("#comparison-caption").textContent = comparisonDescriptions[key];
-  document.querySelector("#comparison-download").href = `${path}.mp4`;
-  for (const other of comparisonButtons) other.setAttribute("aria-pressed", String(other === button));
-  updateComparisonPlayback();
-});
-comparisonVideo?.addEventListener("play", () => {
-  demoVideo?.pause();
-  previewsEnabled = false;
-  applyPreviewPlayback();
-  updateComparisonPlayback();
-});
-comparisonVideo?.addEventListener("pause", updateComparisonPlayback);
-demoVideo?.addEventListener("play", () => comparisonVideo?.pause());

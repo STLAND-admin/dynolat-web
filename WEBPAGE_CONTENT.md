@@ -122,19 +122,19 @@ Method
 
 ### p
 
-From general video to controllable light: a delighting stage bridges uncontrolled input illumination to the flat-lit domain. Our light-conditioned video model predicts a reusable set of OLAT basis videos, which can be recombined under new environment maps.
+Given a flat-lit video, our model predicts temporally coherent OLAT basis videos for requested light directions and combines them in linear color space under a new environment map. For general videos with uncontrolled lighting, we also trained a lightweight delighting model to map the input toward the flat-lit domain.
 
 ### figcaption
 
-System overview, redrawn for the web: the OLAT pipeline (Fig. 2) with the delighting stage described in Supplement §C. Click to enlarge.
+Dark web reconstruction of Fig. 2. The subject examples are cropped from the original paper figure; network blocks and connections are redrawn as editable SVG. Swipe horizontally to inspect details on small screens.
 
 ### h3
 
-Delighting for General Video
+Light-conditioned video prediction
 
 ### p
 
-A lightweight LoRA adaptation of Wan2.1 1.3B reduces uncontrolled illumination before OLAT prediction. This extends the system beyond directly captured flat-lit inputs; the internal OLAT predictor still uses the flat-lit domain.
+Spherical harmonic embeddings encode target light directions. The video model predicts a corresponding sequence of OLAT basis frames for each direction.
 
 ### h3
 
@@ -143,14 +143,6 @@ Bridge Latent Matching
 ### p
 
 Bridge matching transports flat-lit source latents toward OLAT target latents, reducing distribution mismatch while preserving temporal structure and identity details.
-
-### h3
-
-Light-Conditioned Video Prediction
-
-### p
-
-Lighting directions modulate the video model via AdaLN, producing temporally coherent OLAT basis videos that remain stable under dynamic body motion.
 
 ### h3
 
@@ -212,25 +204,9 @@ Time-multiplexed flat-lit and OLAT frames are aligned using optical flow to form
 
 Results
 
-### h3
-
-See the comparisons in motion
-
 ### p
 
-Explore lighting response, captured test scenes, in-the-wild inputs, and temporal consistency. All clips are excerpts from the supplementary video, with the original method labels preserved.
-
-### figcaption · comparison-caption
-
-Light direction and relative intensity: DynOLAT, UniRelight, and DiffusionRenderer. Supplementary video 2:09–2:27.
-
-### a · comparison-download
-
-Download this clip ↗
-
-### p
-
-DynOLAT improves lighting-response fidelity across most reported image metrics and achieves the lowest errors in the reported temporal comparison. Results below reproduce Tables 2 and 3 of the paper.
+DynOLAT improves lighting-response fidelity across most reported image metrics and achieves the lowest errors in the reported temporal comparison. These tables reproduce Tables 2 and 3 of the paper.
 
 ### caption
 
@@ -254,19 +230,23 @@ More Results
 
 ### figcaption
 
-01 Shanghai
+Lighting responseSupplementary video · 02:09–02:27 · Direction and intensity
 
 ### figcaption
 
-02 Sky
+Captured scenesSupplementary video · 02:30–02:54 · Multiple methods
 
 ### figcaption
 
-03 Environment 01
+In the wildSupplementary video · 03:30–03:45 · General video inputs
+
+### figcaption
+
+Temporal consistencySupplementary video · 03:47–03:53 · Sequence vs. per-frame inference
 
 ### p
 
-Short relighting previews under different environment maps. SDR playback.
+Clips are excerpts from the supplementary demo; original method labels are preserved. “In the wild” shows general input videos and is not a separate delighting ablation.
 
 ### h3 · playback-title
 
@@ -570,16 +550,18 @@ Explore the method →
 | index.html | source | src | `assets/videos/dynolat-demo.mp4` |
 | index.html | a | href | `assets/videos/dynolat-demo.mp4` |
 | index.html | a | href | `project-source.html` |
-| index.html | a | href | `assets/method-overview-dark.svg` |
-| index.html | img | src | `assets/method-overview-dark.svg` |
+| index.html | a | href | `assets/method-overview-dark.svg?v=20261030-4` |
+| index.html | img | src | `assets/method-overview-dark.svg?v=20261030-4` |
 | index.html | a | href | `https://huggingface.co/datasets/STLAND/ZJU_OLAT` |
-| index.html | video | src | `assets/videos/comparisons/lighting-response.mp4` |
-| index.html | video | poster | `assets/videos/comparisons/lighting-response.jpg` |
-| index.html | a | href | `assets/videos/comparisons/lighting-response.mp4` |
 | index.html | a | href | `assets/dynolat.pdf#page=12` |
-| index.html | source | src | `assets/videos/shanghai-sdr.mp4` |
-| index.html | source | src | `assets/videos/sky-sdr.mp4` |
-| index.html | source | src | `assets/videos/environment-01-sdr.mp4` |
+| index.html | video | poster | `assets/videos/comparisons/lighting-response.jpg` |
+| index.html | source | src | `assets/videos/comparisons/lighting-response.mp4` |
+| index.html | video | poster | `assets/videos/comparisons/captured-scenes.jpg` |
+| index.html | source | src | `assets/videos/comparisons/captured-scenes.mp4` |
+| index.html | video | poster | `assets/videos/comparisons/in-the-wild.jpg` |
+| index.html | source | src | `assets/videos/comparisons/in-the-wild.mp4` |
+| index.html | video | poster | `assets/videos/comparisons/temporal-consistency.jpg` |
+| index.html | source | src | `assets/videos/comparisons/temporal-consistency.mp4` |
 | index.html | source | src | `assets/videos/shanghai-sdr.mp4` |
 | index.html | source | src | `assets/videos/shanghai-hdr.mp4` |
 | index.html | a | href | `assets/dynolat.pdf#page=19` |
