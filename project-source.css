@@ -94,4 +94,7 @@
 .source-example p { margin: 0 0 .9rem; font-size: .9rem; line-height: 1.75; }
 .source-example p:last-child { margin-bottom: 0; }
 .source-example .source-example__title { color: #9bd5c9; font-size: 1.05rem; font-weight: 600; }
+.source-example__title span { color: #afc7da; font-size: .82em; font-weight: 400; }
+.source-candidate-titles { display: grid; gap: .75rem; margin: .4rem 0 .3rem; padding-left: 1.25rem; line-height: 1.75; }
+.source-candidate-titles li::marker { color: #80ccc2; }
 @media (max-width: 52rem) { .source-example { padding: 1rem; } }
