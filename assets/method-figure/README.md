@@ -7,3 +7,5 @@ The subject and environment-map images in `../method-overview-dark.svg` come fro
 - `envmap-warm.png` and `envmap-cool.png` preserve the original environment-map pixels with a circular alpha mask.
 
 The network blocks, connections, labels, and dark styling are reconstructed as editable SVG elements. No Delighting stage was present in the paper figure or added to this OLAT pipeline illustration. The surrounding Method text separately notes the trained delighting model for general video.
+
+- `paper-fig2-crop.png` is the full Fig. 2 crop rendered from page 4 of `dynolat.pdf` at 300 dpi. `../method-overview-paper-dark.svg` embeds that original crop, keys the paper-white page background to transparency, and restyles only the three captions below the input, OLAT bases, and relit outputs for contrast on the dark page.
