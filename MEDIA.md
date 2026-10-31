@@ -6,7 +6,7 @@ The full supplementary movie was supplied by the project author. The original MO
 
 ## Jcam multi-view sequence
 
-The More Results camera gallery uses the Jcam clips copied from the author's `Demo_assets` folder. Camera A, B, C, D, E, F, H, I, J, K, L, and M are approximately 1.9 seconds each and are synchronized in the browser when any camera is played, paused, or scrubbed. `JcamD_forward_reverse_x1.mp4` is the longer 3.8-second forward/reverse sequence. It uses MPEG-4 Part 2 video, which the current browser cannot decode, so the gallery offers the original as a download instead of showing a broken player.
+The More Results gallery uses 12 Jcam clips copied from the author's `Demo_assets` folder. Each clip is approximately 1.9 seconds and uses H.264 encoding. They are displayed as a simple three-column by four-row video grid.
 
 ## Method figure
 

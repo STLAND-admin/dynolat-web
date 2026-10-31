@@ -228,66 +228,6 @@ Bold marks the best value in each column. ↑ Higher is better; ↓ lower is bet
 
 More Results
 
-### p
-
-Twelve synchronized camera views from one dynamic capture. Play any view to compare the full performance across cameras.
-
-### figcaption
-
-Camera ASynchronized multi-view capture
-
-### figcaption
-
-Camera BSynchronized multi-view capture
-
-### figcaption
-
-Camera CSynchronized multi-view capture
-
-### figcaption
-
-Camera DSynchronized multi-view capture
-
-### figcaption
-
-Camera ESynchronized multi-view capture
-
-### figcaption
-
-Camera FSynchronized multi-view capture
-
-### figcaption
-
-Camera HSynchronized multi-view capture
-
-### figcaption
-
-Camera ISynchronized multi-view capture
-
-### figcaption
-
-Camera JSynchronized multi-view capture
-
-### figcaption
-
-Camera KSynchronized multi-view capture
-
-### figcaption
-
-Camera LSynchronized multi-view capture
-
-### figcaption
-
-Camera MSynchronized multi-view capture
-
-### a
-
-↓Download clip
-
-### figcaption
-
-Camera D · Forward / reverseOriginal source is MPEG‑4 Part 2; this browser cannot decode it. Download for a compatible player.
-
 ### h3 · playback-title
 
 SDR / HDR playback
@@ -571,7 +511,7 @@ Explore the method →
 | Page | Element | Attribute | Target |
 |---|---|---|---|
 | index.html | link | href | `assets/fonts/lato-latin-400-normal.woff2` |
-| index.html | link | href | `styles.css?v=20261019-4` |
+| index.html | link | href | `styles.css?v=20261031-1` |
 | index.html | script | src | `script.js` |
 | index.html | a | href | `#home` |
 | index.html | a | href | `#home` |
@@ -590,8 +530,8 @@ Explore the method →
 | index.html | source | src | `assets/videos/dynolat-demo.mp4` |
 | index.html | a | href | `assets/videos/dynolat-demo.mp4` |
 | index.html | a | href | `project-source.html` |
-| index.html | a | href | `assets/method-overview-dark.svg?v=20261030-5` |
-| index.html | img | src | `assets/method-overview-dark.svg?v=20261030-5` |
+| index.html | a | href | `assets/method-overview-dark.svg?v=20261031-1` |
+| index.html | img | src | `assets/method-overview-dark.svg?v=20261031-1` |
 | index.html | a | href | `https://huggingface.co/datasets/STLAND/ZJU_OLAT` |
 | index.html | a | href | `assets/dynolat.pdf#page=12` |
 | index.html | source | src | `assets/videos/jcam/JcamA.mp4` |
@@ -606,11 +546,10 @@ Explore the method →
 | index.html | source | src | `assets/videos/jcam/JcamK.mp4` |
 | index.html | source | src | `assets/videos/jcam/JcamL.mp4` |
 | index.html | source | src | `assets/videos/jcam/JcamM.mp4` |
-| index.html | a | href | `assets/videos/jcam/JcamD_forward_reverse_x1.mp4` |
 | index.html | source | src | `assets/videos/shanghai-sdr.mp4` |
 | index.html | source | src | `assets/videos/shanghai-hdr.mp4` |
 | index.html | a | href | `assets/dynolat.pdf#page=19` |
-| project-source.html | link | href | `styles.css?v=20261019-4` |
+| project-source.html | link | href | `styles.css?v=20261031-1` |
 | project-source.html | link | href | `project-source.css?v=20261020-3` |
 | project-source.html | a | href | `#project-source` |
 | project-source.html | a | href | `index.html` |

@@ -7,7 +7,7 @@ Updated 2026-10-30. This is a collaboration draft; it does not authorize public 
 - [x] DynOLAT name throughout visible website text.
 - [x] Centered title; Zhejiang University · 4DV.ai Relighting Project affiliation line requested by the authors.
 - [x] Complete supplementary demo near the top of the page.
-- [x] Jcam multi-view results gallery with synchronized playback across 12 camera views.
+- [x] Twelve Jcam result videos displayed in a simple 3 × 4 grid.
 - [x] General-input Delighting described in the overview, Method introduction, and limitations; the OLAT pipeline itself omits Delighting.
 - [x] Dark editable SVG system schematic with masked people and environment maps.
 - [x] Paper + supplement bundled; dataset points to the supplied Hugging Face page.
@@ -26,7 +26,6 @@ Updated 2026-10-30. This is a collaboration draft; it does not authorize public 
 - [ ] Check gated dataset access with an intended recipient account. Landing-page visibility does not establish access to all files.
 - [x] Reconstruct a dark editable Method schematic from Fig. 2, retaining the encoder, spherical-harmonic direction inputs, Bridge Matching video model, decoder, OLAT outputs, and linear recomposition.
 - [ ] Add a Delighting before/after or ablation clip if available.
-- [ ] Replace or transcode the Camera D forward/reverse source to web-compatible H.264; its current MPEG-4 Part 2 encoding is download-only in the tested browser.
 - [ ] Confirm that the supplied supplementary video corresponds to the final model and paper revision.
 - [ ] Choose the public web domain/hosting, then add canonical URL and social preview metadata. Repository creation alone is not webpage deployment.
 - [ ] Verify public-hosted video seeking, MIME types, loading time, mobile playback, paper download, and all external links after deployment.

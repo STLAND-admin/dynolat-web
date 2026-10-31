@@ -6,7 +6,7 @@
   <meta name="description" content="DynOLAT predicts temporally consistent full-body OLAT basis videos from monocular video, with a trained delighting model for general inputs under uncontrolled illumination.">
   <title>DynOLAT: OLAT Video Prediction for Controllable Dynamic Full-Body Relighting</title>
   <link rel="preload" href="assets/fonts/lato-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20261019-4">
+  <link rel="stylesheet" href="styles.css?v=20261031-1">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -107,20 +107,17 @@
           </p>
         </div>
         <figure class="method-figure">
-          <a href="assets/method-overview-dark.svg?v=20261030-5" target="_blank" rel="noopener" aria-label="Open the method diagram at full size"><img src="assets/method-overview-dark.svg?v=20261030-5" width="1480" height="590" loading="lazy" alt="Reconstruction of paper Figure 2 on a dark background: a flat-lit video is encoded; spherical harmonics of each target light direction condition an iterative bridge matching video model that predicts OLAT basis videos; the frozen decoder produces the bases, which are combined in linear color space with environment-map weights to create relit videos."></a>
+          <a href="assets/method-overview-dark.svg?v=20261031-1" target="_blank" rel="noopener" aria-label="Open the method diagram at full size"><img src="assets/method-overview-dark.svg?v=20261031-1" width="1480" height="590" loading="lazy" alt="Reconstruction of paper Figure 2 on a dark background: a flat-lit video is encoded; spherical harmonics of each target light direction condition an iterative bridge matching video model that predicts OLAT basis videos; the frozen decoder produces the bases, which are combined in linear color space with environment-map weights to create relit videos."></a>
           <figcaption>Dark web reconstruction of Fig. 2. The original paper pixels are retained, with the people and environment maps separated by transparent masks; network blocks and connections are redrawn as editable SVG. Swipe horizontally to inspect details on small screens.</figcaption>
         </figure>
         <ol class="method-list card-grid method-grid">
           <li class="info-card">
-            <span class="method-list__index" aria-hidden="true">01</span>
             <div><h3 class="card-title">Light-conditioned video prediction</h3><p>Spherical harmonic embeddings encode target light directions. The video model predicts a corresponding sequence of OLAT basis frames for each direction.</p></div>
           </li>
           <li class="info-card">
-            <span class="method-list__index" aria-hidden="true">02</span>
             <div><h3 class="card-title">Bridge Latent Matching</h3><p>Bridge matching transports flat-lit source latents toward OLAT target latents, reducing distribution mismatch while preserving temporal structure and identity details.</p></div>
           </li>
           <li class="info-card">
-            <span class="method-list__index" aria-hidden="true">03</span>
             <div><h3 class="card-title">Linear OLAT Recomposition</h3><p>Predicted OLAT basis frames are accumulated in linear color space with illumination weights, yielding controllable full-body relighting under arbitrary environment maps.</p></div>
           </li>
         </ol>
@@ -197,22 +194,20 @@
       <div class="container section-inner">
         <div class="preview-heading short-preview-heading">
           <h2 class="section-title">More Results</h2>
-          <p class="section-text">Twelve synchronized camera views from one dynamic capture. Play any view to compare the full performance across cameras.</p>
         </div>
-        <div class="case-grid jcam-grid" aria-label="Synchronized results from the Jcam multi-camera capture">
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera A view"><source src="assets/videos/jcam/JcamA.mp4" type="video/mp4"></video><figcaption><span>Camera A</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera B view"><source src="assets/videos/jcam/JcamB.mp4" type="video/mp4"></video><figcaption><span>Camera B</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera C view"><source src="assets/videos/jcam/JcamC.mp4" type="video/mp4"></video><figcaption><span>Camera C</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera D view"><source src="assets/videos/jcam/JcamD.mp4" type="video/mp4"></video><figcaption><span>Camera D</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera E view"><source src="assets/videos/jcam/JcamE.mp4" type="video/mp4"></video><figcaption><span>Camera E</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera F view"><source src="assets/videos/jcam/JcamF.mp4" type="video/mp4"></video><figcaption><span>Camera F</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera H view"><source src="assets/videos/jcam/JcamH.mp4" type="video/mp4"></video><figcaption><span>Camera H</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera I view"><source src="assets/videos/jcam/JcamI.mp4" type="video/mp4"></video><figcaption><span>Camera I</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera J view"><source src="assets/videos/jcam/JcamJ.mp4" type="video/mp4"></video><figcaption><span>Camera J</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera K view"><source src="assets/videos/jcam/JcamK.mp4" type="video/mp4"></video><figcaption><span>Camera K</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera L view"><source src="assets/videos/jcam/JcamL.mp4" type="video/mp4"></video><figcaption><span>Camera L</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card"><video class="jcam-video" data-jcam-sync controls playsinline muted loop preload="metadata" aria-label="Synchronized camera M view"><source src="assets/videos/jcam/JcamM.mp4" type="video/mp4"></video><figcaption><span>Camera M</span><small>Synchronized multi-view capture</small></figcaption></figure>
-          <figure class="case-card jcam-card jcam-card--reverse"><div class="jcam-download-preview"><a href="assets/videos/jcam/JcamD_forward_reverse_x1.mp4" download aria-label="Download Camera D forward and reverse clip"><span aria-hidden="true">↓</span><span>Download clip</span></a></div><figcaption><span>Camera D · Forward / reverse</span><small>Original source is MPEG‑4 Part 2; this browser cannot decode it. Download for a compatible player.</small></figcaption></figure>
+        <div class="case-grid jcam-grid" aria-label="Additional relighting videos">
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 1"><source src="assets/videos/jcam/JcamA.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 2"><source src="assets/videos/jcam/JcamB.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 3"><source src="assets/videos/jcam/JcamC.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 4"><source src="assets/videos/jcam/JcamD.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 5"><source src="assets/videos/jcam/JcamE.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 6"><source src="assets/videos/jcam/JcamF.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 7"><source src="assets/videos/jcam/JcamH.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 8"><source src="assets/videos/jcam/JcamI.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 9"><source src="assets/videos/jcam/JcamJ.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 10"><source src="assets/videos/jcam/JcamK.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 11"><source src="assets/videos/jcam/JcamL.mp4" type="video/mp4"></video></figure>
+          <figure class="jcam-card"><video controls playsinline muted loop preload="metadata" aria-label="Additional relighting video 12"><source src="assets/videos/jcam/JcamM.mp4" type="video/mp4"></video></figure>
         </div>
         <aside class="playback-note" aria-labelledby="playback-title">
         <div class="playback-note__copy"><h3 class="playback-heading" id="playback-title">SDR / HDR playback</h3>
