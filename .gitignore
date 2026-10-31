@@ -1,7 +1,7 @@
 .DS_Store
 __pycache__/
 *.pyc
-# Legacy unused source assets are retained locally, outside the web commit.
+# Local legacy source assets, not used by the webpage.
 assets/method-overview.png
 assets/pipeline_v5.pdf
 assets/teaser_v3.pdf
