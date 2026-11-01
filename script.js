@@ -86,11 +86,11 @@ function syncExperimentVideos() {
   }
 }
 
-window.addEventListener("scroll", requestChromeUpdate, { passive: true });
+function setupJcamAutoplay() {  const videos = [...document.querySelectorAll(".jcam-card video")];  if (videos.length === 0 || !("IntersectionObserver" in window)) return;  const observer = new IntersectionObserver((entries) => {    for (const entry of entries) {      const video = entry.target;      if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {        video.muted = true;        video.autoplay = true;        video.play().catch(() => {});      } else {        video.autoplay = false;        video.pause();      }    }  }, { threshold: [0, 0.35] });  for (const video of videos) {    video.muted = true;    observer.observe(video);  }}window.addEventListener("scroll", requestChromeUpdate, { passive: true });
 window.addEventListener("resize", requestChromeUpdate);
 
 updateHdrSupportNote();
-syncExperimentVideos();
+syncExperimentVideos();setupJcamAutoplay();
 updatePageChrome();
 
 const hdrVideo = document.querySelector(".hdr-video");
